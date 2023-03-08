@@ -1,0 +1,38 @@
+{
+  "name": "gitgram",
+  "version": "1.0.0",
+  "description": "GitGram is an AI-powered tool for generating clear and concise Git commit messages. It analyzes the diff of updated files in your Git repository to suggest relevant and meaningful messages that accurately describe your changes.",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "npx ts-node src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lokicoule/GitGram.git"
+  },
+  "keywords": [
+    "github",
+    "openai",
+    "commit",
+    "commitlint",
+    "typescript"
+  ],
+  "author": "Loik F.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Lokicoule/GitGram/issues"
+  },
+  "homepage": "https://github.com/Lokicoule/GitGram#readme",
+  "dependencies": {
+    "@clack/prompts": "^0.6.3",
+    "commander": "^10.0.0",
+    "openai": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.14.6",
+    "nodemon": "^2.0.21",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  }
+}
