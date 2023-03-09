@@ -1,7 +1,7 @@
 {
-  "name": "gitgram",
+  "name": "commit-craft",
   "version": "1.0.0",
-  "description": "GitGram is an AI-powered tool for generating clear and concise Git commit messages. It analyzes the diff of updated files in your Git repository to suggest relevant and meaningful messages that accurately describe your changes.",
+  "description": "CommitCraft is an AI-powered tool for generating clear and concise Git commit messages. It analyzes the diff of updated files in your Git repository to suggest relevant and meaningful messages that accurately describe your changes.",
   "main": "src/index.ts",
   "scripts": {
     "build": "npx tsc",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Lokicoule/GitGram.git"
+    "url": "git+https://github.com/Lokicoule/CommitCraft.git"
   },
   "keywords": [
     "github",
@@ -18,14 +18,14 @@
     "typescript",
     "cli",
     "git",
-    "gitgram"
+    "commit-craft"
   ],
   "author": "Loik F.",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Lokicoule/GitGram/issues"
+    "url": "https://github.com/Lokicoule/CommitCraft/issues"
   },
-  "homepage": "https://github.com/Lokicoule/GitGram#readme",
+  "homepage": "https://github.com/Lokicoule/CommitCraft#readme",
   "dependencies": {
     "@clack/prompts": "^0.6.3",
     "commander": "^10.0.0",
