@@ -1,11 +1,13 @@
-import { CommitBuilder } from "../commit/commit.builder";
-import { Commit, CommitType } from "../commit/commit.model";
+import { CommitBuilder } from "../../commit/interface/commit-builder";
+import { CommitBuilderFactory } from "../../commit/factory/commit-builder-factory";
+import { Commit, CommitType } from "../../commit/model/commit";
+import { WizardBuilder } from "../interfaces/wizard-builder";
 
-export class WizardBuilder {
+export class WizardBuilderImpl implements WizardBuilder {
   private commitBuilder: CommitBuilder;
 
   constructor() {
-    this.commitBuilder = new CommitBuilder();
+    this.commitBuilder = CommitBuilderFactory.create();
   }
 
   withCommitType(commitType: CommitType): WizardBuilder {

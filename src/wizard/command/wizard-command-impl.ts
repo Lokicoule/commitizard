@@ -1,22 +1,28 @@
-import { confirm, intro, outro, select, text } from "@clack/prompts";
+import {
+  cancel,
+  confirm,
+  intro,
+  isCancel,
+  outro,
+  select,
+  text,
+} from "@clack/prompts";
 import { exec } from "child_process";
 import { Command } from "commander";
-import { WizardBuilder } from "./wizard.builder";
-import { Commit, CommitType } from "../commit/commit.model";
 import pc from "picocolors";
+import { Commit, CommitType } from "../../commit/model/commit";
+import { WizardBuilderFactory } from "../factories/wizard-builder-factory";
+import { WizardCommand } from "../interfaces/wizard-command";
 
-export class WizardCommand extends Command {
+export class WizardCommandImpl extends Command implements WizardCommand {
   constructor() {
-    super("wizard");
-    this.version("0.0.1");
-    this.description("Launches the GitHub Commit Message Wizard");
-    this.action(this.run);
+    super();
   }
 
   async run() {
     intro("GitHub Commit Message Wizard");
 
-    const builder = new WizardBuilder();
+    const builder = WizardBuilderFactory.create();
 
     const commitType = await this.handleSelectCommitType();
     builder.withCommitType(commitType);
@@ -54,7 +60,7 @@ export class WizardCommand extends Command {
   }
 
   async handleSelectCommitType(): Promise<CommitType> {
-    const commitType = (await select({
+    const commitType = await select({
       message: "Select commit type:",
       options: [
         { value: "feat", label: "feat: A new feature" },
@@ -83,30 +89,41 @@ export class WizardCommand extends Command {
             "chore: Changes to the build process or auxiliary tools and libraries",
         },
       ],
-    })) as CommitType;
+    });
 
-    if (!Boolean(commitType)) {
-      throw new Error("Commit type is required");
+    if (isCancel(commitType)) {
+      cancel("Commit creation aborted!");
+      process.exit(0);
     }
 
-    return commitType;
+    return (commitType as CommitType) ?? null;
   }
 
   async handleCommitScope() {
-    return (
-      ((await text({
-        message: "Enter commit scope (optional):",
-        placeholder: "e.g., component name",
-      })) as string) ?? null
-    );
+    const scope = (await text({
+      message: "Enter commit scope (optional):",
+      placeholder: "e.g., component name",
+    })) as string;
+
+    if (isCancel(scope)) {
+      cancel("Commit creation aborted!");
+      process.exit(0);
+    }
+
+    return scope ?? null;
   }
 
   async handleCommitMessage() {
-    return (
-      ((await text({
-        message: "Please enter a commit message (optional):",
-      })) as string) ?? null
-    );
+    const message = (await text({
+      message: "Please enter a commit message (optional):",
+    })) as string;
+
+    if (isCancel(message)) {
+      cancel("Commit creation aborted!");
+      process.exit(0);
+    }
+
+    return message ?? null;
   }
 
   async handleBreakingChanges() {
