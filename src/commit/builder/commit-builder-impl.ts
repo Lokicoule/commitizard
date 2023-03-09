@@ -1,6 +1,7 @@
-import { Commit, CommitType } from "./commit.model";
+import { CommitBuilder } from "../interface/commit-builder";
+import { Commit, CommitType } from "../model/commit";
 
-export class CommitBuilder {
+export class CommitBuilderImpl implements CommitBuilder {
   private type: CommitType = "feat";
   private scope: string = "";
   private message: string = "";
