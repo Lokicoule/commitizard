@@ -28,10 +28,10 @@ export class Commit {
   public toString(): string {
     return [
       this.type,
-      this.scope ? `(${this.scope})` : "",
-      this.message ? `: ${this.message}` : "",
-      this.body ? `\n\n${this.body}` : "",
-      this.footer ? `\n\n${this.footer}` : "",
+      Boolean(this.scope) ? `(${this.scope})` : "",
+      Boolean(this.message) ? `: ${this.message}` : "",
+      Boolean(this.body) ? `\n\n${this.body}` : "",
+      Boolean(this.footer) ? `\n\n${this.footer}` : "",
     ]
       .filter(
         (value) => value !== null && value !== undefined && value.length > 0

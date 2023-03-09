@@ -12,23 +12,34 @@ export class CommitBuilder {
     return this;
   }
 
-  public withScope(scope: string): CommitBuilder {
-    this.scope = scope;
+  public withScope(scope: string | null): CommitBuilder {
+    if (scope) {
+      this.scope = scope;
+    }
     return this;
   }
 
-  public withMessage(message: string): CommitBuilder {
-    this.message = message;
+  public withMessage(message: string | null): CommitBuilder {
+    if (message) {
+      this.message = message;
+    }
+
     return this;
   }
 
-  public withBody(body: string): CommitBuilder {
-    this.body = body;
+  public withBody(body: string | null): CommitBuilder {
+    if (body) {
+      this.body = body;
+    }
+
     return this;
   }
 
-  public withFooter(footer: string): CommitBuilder {
-    this.footer = footer;
+  public withFooter(footer: string | null): CommitBuilder {
+    if (footer) {
+      this.footer = footer;
+    }
+
     return this;
   }
 
