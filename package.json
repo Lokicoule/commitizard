@@ -15,8 +15,10 @@
     "github",
     "openai",
     "commit",
-    "commitlint",
-    "typescript"
+    "typescript",
+    "cli",
+    "git",
+    "gitgram"
   ],
   "author": "Loik F.",
   "license": "MIT",
@@ -27,7 +29,8 @@
   "dependencies": {
     "@clack/prompts": "^0.6.3",
     "commander": "^10.0.0",
-    "openai": "^3.2.1"
+    "openai": "^3.2.1",
+    "picocolors": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.14.6",

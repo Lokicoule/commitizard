@@ -3,6 +3,7 @@ import { exec } from "child_process";
 import { Command } from "commander";
 import { WizardBuilder } from "./wizard.builder";
 import { Commit, CommitType } from "../commit/commit.model";
+import pc from "picocolors";
 
 export class WizardCommand extends Command {
   constructor() {
@@ -45,9 +46,11 @@ export class WizardCommand extends Command {
         console.log(`stdout: ${stdout}`);
         console.error(`stderr: ${stderr}`);
       });
-    }
 
-    outro("Thank you for using the Commit Wizard!");
+      outro(pc.green("✔") + " Commit created successfully!");
+    } else {
+      outro(pc.red("✖") + " Commit creation aborted!");
+    }
   }
 
   async handleSelectCommitType(): Promise<CommitType> {
