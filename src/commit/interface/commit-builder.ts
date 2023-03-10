@@ -1,4 +1,4 @@
-import { Commit } from "../model/commit";
+import { Commit } from "../models/commit";
 
 export interface CommitBuilder {
   withType(type: string): CommitBuilder;
