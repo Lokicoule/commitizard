@@ -45,7 +45,6 @@ export const getStagedFiles = async () => {
     return null;
   }
 
-  console.log(files);
   return files;
 };
 
