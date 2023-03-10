@@ -1,7 +1,7 @@
-import { Commit, CommitType } from "../model/commit";
+import { Commit } from "../model/commit";
 
 export interface CommitBuilder {
-  withType(type: CommitType): CommitBuilder;
+  withType(type: string): CommitBuilder;
   withScope(scope: string | null): CommitBuilder;
   withMessage(message: string | null): CommitBuilder;
   withBody(body: string | null): CommitBuilder;
