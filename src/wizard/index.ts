@@ -1,2 +1,2 @@
-export * from "./interfaces/wizard-command";
-export * from "./factories/wizard-command-factory";
+export * from "./interface/wizard-command";
+export * from "./factory/wizard-command-factory";
