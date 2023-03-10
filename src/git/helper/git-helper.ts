@@ -30,9 +30,10 @@ export async function isInsideGitRepo(): Promise<boolean> {
 }
 
 export const getStagedFiles = async () => {
-  const gitProcessBuilder = GitProcessBuilderFactory.create();
-  gitProcessBuilder.addArg("diff");
-  gitProcessBuilder.addArg("--cached");
+  const gitProcessBuilder = GitProcessBuilderFactory.create()
+    .addArg("diff")
+    .addArg("--cached")
+    .addArg("--name-only");
   excludeFromDiff.forEach((file) => gitProcessBuilder.addArg(file));
 
   const gitProcess = gitProcessBuilder.spawn();
@@ -44,13 +45,25 @@ export const getStagedFiles = async () => {
     return null;
   }
 
+  console.log(files);
   return files;
 };
 
 export const getStagedDiff = async (file?: string) => {
-  const diffProcessBuilder = GitProcessBuilderFactory.create();
-  diffProcessBuilder.addArg("diff");
-  diffProcessBuilder.addArg("--cached");
+  const diffProcessBuilder = GitProcessBuilderFactory.create()
+    .addArg("diff")
+    .addArg("--cached")
+    .addArg("--no-prefix")
+    .addArg("--no-commit-id")
+    .addArg("--summary")
+    .addArg("--no-ext-diff")
+    .addArg("--unified=0")
+    .addArg("--ignore-all-space")
+    .addArg("--ignore-blank-lines")
+    .addArg("--ignore-space-at-eol")
+    .addArg("--ignore-space-change")
+    .addArg("--diff-algorithm=minimal");
+
   excludeFromDiff.forEach((file) => diffProcessBuilder.addArg(file));
 
   if (file) {
