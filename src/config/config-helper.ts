@@ -1,10 +1,13 @@
 import * as fs from "fs";
 import { CommitType } from "~/commit";
+import { Logger } from "../logger";
 
-export interface Config {
+export type Config = {
   apiKey: string;
   commitTypes: CommitType[];
-}
+};
+
+export const DEFAULT_CONFIG_PATH = ".commitcraftrc";
 
 const COMMIT_TYPE_OPTIONS = [
   { value: "feat", label: "feat: A new feature" },
@@ -34,7 +37,7 @@ const COMMIT_TYPE_OPTIONS = [
   },
 ];
 
-const defaultConfig: Config = {
+export const defaultConfig: Config = {
   apiKey: "",
   commitTypes: COMMIT_TYPE_OPTIONS,
 };
@@ -50,7 +53,9 @@ export function mergeConfig(userConfig: any): any {
   return { ...defaultConfig, ...userConfig };
 }
 
-export function readUserConfig(userConfigPath?: string): any {
+export function readUserConfig(
+  userConfigPath: string = DEFAULT_CONFIG_PATH
+): any {
   if (!userConfigPath || !fs.existsSync(userConfigPath)) {
     return {};
   }
@@ -59,9 +64,19 @@ export function readUserConfig(userConfigPath?: string): any {
     const configStr = fs.readFileSync(userConfigPath, "utf-8");
     return JSON.parse(configStr);
   } catch (err: any) {
-    console.error(
-      `Error reading config file ${userConfigPath}: ${err.message}`
-    );
+    Logger.error(`Error reading config file ${userConfigPath}: ${err.message}`);
     return {};
+  }
+}
+
+export function writeUserConfig(
+  config: any,
+  userConfigPath: string = DEFAULT_CONFIG_PATH
+): void {
+  try {
+    const configStr = JSON.stringify(config, null, 2);
+    fs.writeFileSync(userConfigPath, configStr, "utf-8");
+  } catch (err: any) {
+    Logger.error(`Error writing config file ${userConfigPath}: ${err.message}`);
   }
 }
