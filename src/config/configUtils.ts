@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { CommitType } from "~/commit";
+import { CommitType } from "../commit";
 import { Logger } from "../logger";
 
 export type Config = {

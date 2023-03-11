@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG_PATH } from "..";
+import { DEFAULT_CONFIG_PATH } from "../configUtils";
 import { ConfigCommandImpl } from "../command/impl/ConfigCommandImpl";
 import { ConfigCommand } from "../command/ConfigCommand";
 

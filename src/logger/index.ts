@@ -1,1 +1,1 @@
-export * from "./PromptLogger";
+export * from "./Logger";
