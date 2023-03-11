@@ -1,6 +1,6 @@
 import { logMessage } from "../prompt/promptUtils";
 
-export class PromptLogger {
+export class Logger {
   public static info(message: string): void {
     logMessage(message, "info");
   }
