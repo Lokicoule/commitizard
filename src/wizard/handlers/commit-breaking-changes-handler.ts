@@ -1,4 +1,3 @@
-import { confirm, text } from "@clack/prompts";
 import pc from "picocolors";
 import { CommitBuilder } from "../../commit";
 import { PromptHelper } from "../../prompt/prompt-helper";
@@ -6,7 +5,14 @@ import { CommitHandler } from "./commit-handler";
 
 const ABORT_MESSAGE = pc.yellow("✖") + " Commit breaking changes aborted!";
 
-export class CommitBreakingChangesHandler extends CommitHandler {
+export interface CommitBreakingChangesHandler extends CommitHandler {
+  handle(commitBuilder: CommitBuilder): Promise<void>;
+}
+
+export class CommitBreakingChangesHandlerImpl
+  extends CommitHandler
+  implements CommitBreakingChangesHandler
+{
   public async handle(commitBuilder: CommitBuilder): Promise<void> {
     await this.processInput(commitBuilder);
     await super.handle(commitBuilder);

@@ -1,4 +1,4 @@
-import { intro, outro } from "@clack/prompts";
+import { intro } from "@clack/prompts";
 import { Command } from "commander";
 import { CommitBuilderFactory } from "../../commit";
 import { Config, loadConfig } from "../../config/config-helper";
@@ -13,40 +13,32 @@ import { WizardCommand } from "../interface/wizard-command";
 export class WizardCommandImpl extends Command implements WizardCommand {
   private config!: Config;
 
-  constructor(configPath?: string) {
+  constructor(
+    private readonly typeHandler: CommitTypeHandler,
+    private readonly scopeHandler: CommitScopeHandler,
+    private readonly messageHandler: CommitMessageHandler,
+    private readonly breakingChangesHandler: CommitBreakingChangesHandler,
+    private readonly issueNumbersHandler: CommitIssueNumbersHandler,
+    private readonly confirmHandler: CommitConfirmHandler
+  ) {
     super();
-    if (configPath) {
-      this.setup(configPath);
-    }
-  }
-
-  private setup(configPath?: string): void {
-    this.config = loadConfig(configPath);
   }
 
   async run(configPath?: string): Promise<void> {
     intro("GitHub Commit Message Wizard");
 
-    this.setup(configPath);
+    this.config = loadConfig(configPath);
 
     const builder = CommitBuilderFactory.create();
 
-    const typeHandler = new CommitTypeHandler(this.config.commitTypes);
-    const scopeHandler = new CommitScopeHandler();
-    const messageHandler = new CommitMessageHandler();
-    const breakingChangesHandler = new CommitBreakingChangesHandler();
-    const issueNumbersHandler = new CommitIssueNumbersHandler();
-    const confirmHandler = new CommitConfirmHandler();
+    this.typeHandler
+      .updateCommitTypes(this.config.commitTypes)
+      .setNext(this.scopeHandler)
+      .setNext(this.messageHandler)
+      .setNext(this.breakingChangesHandler)
+      .setNext(this.issueNumbersHandler)
+      .setNext(this.confirmHandler);
 
-    typeHandler
-      .setNext(scopeHandler)
-      .setNext(messageHandler)
-      .setNext(breakingChangesHandler)
-      .setNext(issueNumbersHandler)
-      .setNext(confirmHandler);
-
-    await typeHandler.handle(builder);
-
-    outro("Commit message wizard finished!");
+    await this.typeHandler.handle(builder);
   }
 }

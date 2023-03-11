@@ -11,7 +11,11 @@ const ABORT_MESSAGE = pc.yellow("✖") + " Commit confirmation aborted!";
 const ERROR_MESSAGE =
   pc.red("✖") + " An error occurred while creating the commit!";
 
-export class CommitConfirmHandler extends CommitHandler {
+export interface CommitConfirmHandler extends CommitHandler {
+  handle(commitBuilder: CommitBuilder): Promise<void>;
+}
+
+export class CommitConfirmHandlerImpl extends CommitHandler {
   public async handle(commitBuilder: CommitBuilder): Promise<void> {
     await this.processInput(commitBuilder);
     await super.handle(commitBuilder);

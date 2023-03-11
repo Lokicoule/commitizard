@@ -2,7 +2,11 @@ import { CommitBuilder } from "../../commit";
 import { PromptHelper } from "../../prompt/prompt-helper";
 import { CommitHandler } from "./commit-handler";
 
-export class CommitScopeHandler extends CommitHandler {
+export interface CommitScopeHandler extends CommitHandler {
+  handle(commitBuilder: CommitBuilder): Promise<void>;
+}
+
+export class CommitScopeHandlerImpl extends CommitHandler {
   public async handle(commitBuilder: CommitBuilder): Promise<void> {
     await this.processInput(commitBuilder);
     await super.handle(commitBuilder);

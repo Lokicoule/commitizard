@@ -5,7 +5,13 @@ import { CommitHandler } from "./commit-handler";
 
 const ABORT_MESSAGE = pc.yellow("✖") + " Commit issue numbers aborted!";
 
-export class CommitIssueNumbersHandler extends CommitHandler {
+export interface CommitIssueNumbersHandler extends CommitHandler {
+  handle(commitBuilder: CommitBuilder): Promise<void>;
+}
+export class CommitIssueNumbersHandlerImpl
+  extends CommitHandler
+  implements CommitIssueNumbersHandler
+{
   public async handle(commitBuilder: CommitBuilder): Promise<void> {
     await this.processInput(commitBuilder);
     await super.handle(commitBuilder);
