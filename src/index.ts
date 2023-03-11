@@ -1,9 +1,9 @@
 import { log } from "@clack/prompts";
 import { Command } from "commander";
-import { ConfigCommandFactory } from "./config/command/ConfigCommandFactory";
+import { ConfigCommandFactory } from "./config/factory/ConfigCommandFactory";
 import { defaultModel, listModels } from "./openai/openaiUtils";
 import { promptConfirm, promptSelect, promptText } from "./prompt";
-import { WizardCommandFactory } from "./wizard/command/WizardCommandFactory";
+import { WizardCommandFactory } from "./wizard/factory/WizardCommandFactory";
 
 const program = new Command();
 

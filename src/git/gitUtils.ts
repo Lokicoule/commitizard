@@ -1,4 +1,4 @@
-import { GitProcessBuilderFactory } from "./process/GitProcessBuilderFactory";
+import { GitProcessBuilderFactory } from "./process/factory/GitProcessBuilderFactory";
 
 const excludeFromDiff: readonly string[] = [
   "package-lock.json",

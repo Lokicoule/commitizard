@@ -1,6 +1,11 @@
 export type CommitProperty = "type" | "scope" | "message" | "body" | "footer";
 export type CommitProperties = Record<CommitProperty, string>;
 
+export type CommitType = {
+  value: string;
+  label: string;
+};
+
 export class Commit {
   public readonly type: string;
   public readonly scope: string;

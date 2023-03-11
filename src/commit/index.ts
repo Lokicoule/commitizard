@@ -1,4 +1,3 @@
-export * from "./CommitBuilderFactory";
-export * from "./CommitBuilder";
-export * from "./Commit";
-export * from "./CommitType";
+export * from "./factory/CommitBuilderFactory";
+export * from "./builder/CommitBuilder";
+export * from "./model/Commit";

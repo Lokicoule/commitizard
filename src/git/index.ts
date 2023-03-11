@@ -1,3 +1,3 @@
 export * from "./gitUtils";
-export * from "./process/GitProcessBuilder";
-export * from "./process/GitProcessBuilderFactory";
+export * from "./process/builder/GitProcessBuilder";
+export * from "./process/factory/GitProcessBuilderFactory";

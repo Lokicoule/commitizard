@@ -5,8 +5,8 @@ import { CommitIssueNumbersHandlerImpl } from "../handlers/impl/CommitIssueNumbe
 import { CommitMessageHandlerImpl } from "../handlers/impl/CommitMessageHandlerImpl";
 import { CommitScopeHandlerImpl } from "../handlers/impl/CommitScopeHandlerImpl";
 import { CommitTypeHandlerImpl } from "../handlers/impl/CommitTypeHandlerImpl";
-import { WizardCommand } from "./WizardCommand";
-import { WizardCommandImpl } from "./WizardCommandImpl";
+import { WizardCommand } from "../command/WizardCommand";
+import { WizardCommandImpl } from "../command/impl/WizardCommandImpl";
 
 export type WizardCommandFactoryOptions = {
   name?: string;
