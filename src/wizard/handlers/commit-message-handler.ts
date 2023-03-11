@@ -1,6 +1,5 @@
-import { text } from "@clack/prompts";
 import { CommitBuilder } from "../../commit";
-import { promptWithCancel } from "../../prompt/prompt-helper";
+import { PromptHelper } from "../../prompt/prompt-helper";
 import { CommitHandler } from "./commit-handler";
 
 export class CommitMessageHandler extends CommitHandler {
@@ -10,13 +9,10 @@ export class CommitMessageHandler extends CommitHandler {
   }
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
-    const commitMessage = await promptWithCancel<string>(
-      () =>
-        text({
-          message: "Enter commit message (optional):",
-        }),
-      "Commit message selection aborted!"
-    );
+    const commitMessage = await PromptHelper.promptText({
+      message: "Enter commit message (optional):",
+      abortMessage: "Commit message selection aborted!",
+    });
 
     commitBuilder.withMessage(commitMessage);
   }

@@ -1,6 +1,5 @@
-import { text } from "@clack/prompts";
 import { CommitBuilder } from "../../commit";
-import { promptWithCancel } from "../../prompt/prompt-helper";
+import { PromptHelper } from "../../prompt/prompt-helper";
 import { CommitHandler } from "./commit-handler";
 
 export class CommitScopeHandler extends CommitHandler {
@@ -10,13 +9,10 @@ export class CommitScopeHandler extends CommitHandler {
   }
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
-    const commitScope = await promptWithCancel<string>(
-      () =>
-        text({
-          message: "Enter commit scope (optional):",
-        }),
-      "Commit scope selection aborted!"
-    );
+    const commitScope = await PromptHelper.promptText({
+      message: "Enter commit scope (optional):",
+      abortMessage: "Commit scope selection aborted!",
+    });
 
     commitBuilder.withScope(commitScope);
   }

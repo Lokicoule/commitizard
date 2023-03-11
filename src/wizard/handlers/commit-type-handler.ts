@@ -1,6 +1,5 @@
-import { select } from "@clack/prompts";
 import { CommitBuilder, CommitType } from "../../commit";
-import { promptWithCancel } from "../../prompt/prompt-helper";
+import { PromptHelper } from "../../prompt/prompt-helper";
 import { CommitHandler } from "./commit-handler";
 
 export class CommitTypeHandler extends CommitHandler {
@@ -17,14 +16,11 @@ export class CommitTypeHandler extends CommitHandler {
   }
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
-    const commitType = await promptWithCancel<string>(
-      () =>
-        select<CommitType[], string>({
-          message: "Select commit type:",
-          options: this.commitTypes,
-        }),
-      "Commit type selection aborted!"
-    );
+    const commitType = await PromptHelper.promptSelect<CommitType[], string>({
+      message: "Select commit type:",
+      options: this.commitTypes,
+      abortMessage: "Commit type selection aborted!",
+    });
 
     commitBuilder.withType(commitType);
   }

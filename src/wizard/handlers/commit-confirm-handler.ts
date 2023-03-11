@@ -1,8 +1,8 @@
-import { confirm, outro } from "@clack/prompts";
+import { outro } from "@clack/prompts";
 import pc from "picocolors";
 import { CommitBuilder } from "../../commit";
 import { GitProcessBuilderFactory } from "../../git/process/factory/git-process-builder-factory";
-import { promptWithCancel } from "../../prompt/prompt-helper";
+import { PromptHelper } from "../../prompt/prompt-helper";
 import { CommitHandler } from "./commit-handler";
 
 const SUCCESS_MESSAGE =
@@ -19,15 +19,13 @@ export class CommitConfirmHandler extends CommitHandler {
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commit = commitBuilder.build();
-    const confirmCommit = await promptWithCancel<boolean>(
-      () =>
-        confirm({
-          message: `Commit message: \n\n${pc.green(
-            commit.toString()
-          )}\n\nDo you want to create this commit?`,
-        }),
-      "Commit confirmation aborted!"
-    );
+    const confirmCommit = await PromptHelper.promptConfirm({
+      defaultValue: true,
+      message: `Commit message: \n\n${pc.green(
+        commit.toString()
+      )}\n\nDo you want to create this commit?`,
+      abortMessage: ABORT_MESSAGE,
+    });
 
     if (confirmCommit) {
       try {

@@ -1,7 +1,6 @@
-import { confirm, text } from "@clack/prompts";
 import pc from "picocolors";
 import { CommitBuilder } from "../../commit";
-import { promptWithCancel } from "../../prompt/prompt-helper";
+import { PromptHelper } from "../../prompt/prompt-helper";
 import { CommitHandler } from "./commit-handler";
 
 const ABORT_MESSAGE = pc.yellow("✖") + " Commit issue numbers aborted!";
@@ -14,47 +13,33 @@ export class CommitIssueNumbersHandler extends CommitHandler {
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     let commitIssueNumbers: string[] = [];
-    let isIssueAffected = await promptWithCancel<boolean>(
-      () =>
-        confirm({
-          initialValue: false,
-          message: "Does this commit affect any open issues?",
-        }),
-      ABORT_MESSAGE
-    );
+    let isIssueAffected = await PromptHelper.promptConfirm({
+      defaultValue: false,
+      message: "Does this commit affect any open issues?",
+      abortMessage: ABORT_MESSAGE,
+    });
 
     while (isIssueAffected) {
-      const issueNumber = await this.handleIssueNumber();
+      const issueNumber = await PromptHelper.promptText({
+        message: "Please enter the issue number:",
+        placeholder: "e.g., #123 or 123",
+        abortMessage: ABORT_MESSAGE,
+      });
+
       issueNumber &&
         commitIssueNumbers.push(
           issueNumber.startsWith("#") ? issueNumber : `#${issueNumber}`
         );
 
-      isIssueAffected = await promptWithCancel<boolean>(
-        () =>
-          confirm({
-            initialValue: false,
-            message: "Does this commit affect any other open issues?",
-          }),
-        ABORT_MESSAGE
-      );
+      isIssueAffected = await PromptHelper.promptConfirm({
+        defaultValue: false,
+        message: "Does this commit affect any other open issues?",
+        abortMessage: ABORT_MESSAGE,
+      });
     }
 
     if (commitIssueNumbers.length > 0) {
       commitBuilder.withFooter(`Closes: ${commitIssueNumbers.join(", ")}`);
     }
-  }
-
-  private async handleIssueNumber() {
-    const issueNumber = await promptWithCancel<string>(
-      () =>
-        text({
-          message: "Please enter the issue number:",
-          placeholder: "e.g., #123 or 123",
-        }),
-      ABORT_MESSAGE
-    );
-
-    return issueNumber?.trim();
   }
 }
