@@ -1,1 +1,2 @@
-export * from "./prompt-helper";
+export * from "./prompt";
+export * from "./promptUtils";

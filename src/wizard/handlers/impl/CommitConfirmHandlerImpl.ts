@@ -1,9 +1,10 @@
 import { outro } from "@clack/prompts";
 import pc from "picocolors";
-import { CommitBuilder } from "../../commit";
-import { GitProcessBuilderFactory } from "../../git/process/factory/git-process-builder-factory";
-import { PromptHelper } from "../../prompt/prompt-helper";
-import { CommitHandler } from "./commit-handler";
+import { CommitBuilder } from "../../../commit";
+import { GitProcessBuilderFactory } from "../../../git";
+import { promptConfirm } from "../../../prompt";
+import { CommitConfirmHandler } from "../CommitConfirmHandler";
+import { CommitHandler } from "../CommitHandler";
 
 const SUCCESS_MESSAGE =
   pc.green("✔") + pc.bgGreen(" Commit created successfully!");
@@ -11,11 +12,10 @@ const ABORT_MESSAGE = pc.yellow("✖") + " Commit confirmation aborted!";
 const ERROR_MESSAGE =
   pc.red("✖") + " An error occurred while creating the commit!";
 
-export interface CommitConfirmHandler extends CommitHandler {
-  handle(commitBuilder: CommitBuilder): Promise<void>;
-}
-
-export class CommitConfirmHandlerImpl extends CommitHandler {
+export class CommitConfirmHandlerImpl
+  extends CommitHandler
+  implements CommitConfirmHandler
+{
   public async handle(commitBuilder: CommitBuilder): Promise<void> {
     await this.processInput(commitBuilder);
     await super.handle(commitBuilder);
@@ -23,7 +23,7 @@ export class CommitConfirmHandlerImpl extends CommitHandler {
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commit = commitBuilder.build();
-    const confirmCommit = await PromptHelper.promptConfirm({
+    const confirmCommit = await promptConfirm({
       defaultValue: true,
       message: `Commit message: \n\n${pc.green(
         commit.toString()

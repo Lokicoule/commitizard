@@ -1,14 +1,14 @@
 import { intro } from "@clack/prompts";
 import { Command } from "commander";
 import { CommitBuilderFactory } from "../../commit";
-import { Config, loadConfig } from "../../config/config-helper";
-import { CommitBreakingChangesHandler } from "../handlers/commit-breaking-changes-handler";
-import { CommitConfirmHandler } from "../handlers/commit-confirm-handler";
-import { CommitIssueNumbersHandler } from "../handlers/commit-issue-numbers-handler";
-import { CommitMessageHandler } from "../handlers/commit-message-handler";
-import { CommitScopeHandler } from "../handlers/commit-scope-handler";
-import { CommitTypeHandler } from "../handlers/commit-type-handler";
-import { WizardCommand } from "../interface/wizard-command";
+import { Config, loadConfig } from "../../config/configUtils";
+import { CommitBreakingChangesHandler } from "../handlers/CommitBreakingChangesHandler";
+import { CommitConfirmHandler } from "../handlers/CommitConfirmHandler";
+import { CommitIssueNumbersHandler } from "../handlers/CommitIssueNumbersHandler";
+import { CommitMessageHandler } from "../handlers/CommitMessageHandler";
+import { CommitScopeHandler } from "../handlers/CommitScopeHandler";
+import { CommitTypeHandler } from "../handlers/CommitTypeHandler";
+import { WizardCommand } from "./WizardCommand";
 
 export class WizardCommandImpl extends Command implements WizardCommand {
   private config!: Config;

@@ -1,19 +1,19 @@
-import { CommitBuilder } from "../../commit";
-import { PromptHelper } from "../../prompt/prompt-helper";
-import { CommitHandler } from "./commit-handler";
+import { CommitBuilder } from "../../../commit";
+import { promptText } from "../../../prompt";
+import { CommitHandler } from "../CommitHandler";
+import { CommitScopeHandler } from "../CommitScopeHandler";
 
-export interface CommitScopeHandler extends CommitHandler {
-  handle(commitBuilder: CommitBuilder): Promise<void>;
-}
-
-export class CommitScopeHandlerImpl extends CommitHandler {
+export class CommitScopeHandlerImpl
+  extends CommitHandler
+  implements CommitScopeHandler
+{
   public async handle(commitBuilder: CommitBuilder): Promise<void> {
     await this.processInput(commitBuilder);
     await super.handle(commitBuilder);
   }
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
-    const commitScope = await PromptHelper.promptText({
+    const commitScope = await promptText({
       message: "Enter commit scope (optional):",
       abortMessage: "Commit scope selection aborted!",
     });

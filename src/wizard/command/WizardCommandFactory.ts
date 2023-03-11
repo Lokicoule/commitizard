@@ -1,12 +1,12 @@
 import { DEFAULT_CONFIG_PATH } from "../../config";
-import { WizardCommandImpl } from "../command/wizard-command-impl";
-import { CommitBreakingChangesHandlerImpl } from "../handlers/commit-breaking-changes-handler";
-import { CommitConfirmHandlerImpl } from "../handlers/commit-confirm-handler";
-import { CommitIssueNumbersHandlerImpl } from "../handlers/commit-issue-numbers-handler";
-import { CommitMessageHandlerImpl } from "../handlers/commit-message-handler";
-import { CommitScopeHandlerImpl } from "../handlers/commit-scope-handler";
-import { CommitTypeHandlerImpl } from "../handlers/commit-type-handler";
-import { WizardCommand } from "../interface/wizard-command";
+import { CommitBreakingChangesHandlerImpl } from "../handlers/impl/CommitBreakingChangesHandlerImpl";
+import { CommitConfirmHandlerImpl } from "../handlers/impl/CommitConfirmHandlerImpl";
+import { CommitIssueNumbersHandlerImpl } from "../handlers/impl/CommitIssueNumbersHandlerImpl";
+import { CommitMessageHandlerImpl } from "../handlers/impl/CommitMessageHandlerImpl";
+import { CommitScopeHandlerImpl } from "../handlers/impl/CommitScopeHandlerImpl";
+import { CommitTypeHandlerImpl } from "../handlers/impl/CommitTypeHandlerImpl";
+import { WizardCommand } from "./WizardCommand";
+import { WizardCommandImpl } from "./WizardCommandImpl";
 
 export type WizardCommandFactoryOptions = {
   name?: string;

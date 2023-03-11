@@ -1,6 +1,6 @@
-import { DEFAULT_CONFIG_PATH } from "../../config";
-import { ConfigCommandImpl } from "../command/config-command-impl";
-import { ConfigCommand } from "../interface/Config-command";
+import { DEFAULT_CONFIG_PATH } from "..";
+import { ConfigCommandImpl } from "./ConfigCommandImpl";
+import { ConfigCommand } from "./ConfigCommand";
 
 export type ConfigCommandFactoryOptions = {
   name?: string;

@@ -1,11 +1,7 @@
-import { CommitBuilder, CommitType } from "../../commit";
-import { PromptHelper } from "../../prompt/prompt-helper";
-import { CommitHandler } from "./commit-handler";
-
-export interface CommitTypeHandler extends CommitHandler {
-  handle(commitBuilder: CommitBuilder): Promise<void>;
-  updateCommitTypes(commitTypes: CommitType[]): CommitTypeHandler;
-}
+import { CommitBuilder, CommitType } from "../../../commit";
+import { promptSelect } from "../../../prompt";
+import { CommitHandler } from "../CommitHandler";
+import { CommitTypeHandler } from "../CommitTypeHandler";
 
 export class CommitTypeHandlerImpl
   extends CommitHandler
@@ -29,7 +25,7 @@ export class CommitTypeHandlerImpl
   }
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
-    const commitType = await PromptHelper.promptSelect<CommitType[], string>({
+    const commitType = await promptSelect<CommitType[], string>({
       message: "Select commit type:",
       options: this.commitTypes,
       abortMessage: "Commit type selection aborted!",

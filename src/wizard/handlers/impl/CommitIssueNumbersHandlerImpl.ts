@@ -1,13 +1,11 @@
 import pc from "picocolors";
-import { CommitBuilder } from "../../commit";
-import { PromptHelper } from "../../prompt/prompt-helper";
-import { CommitHandler } from "./commit-handler";
+import { CommitBuilder } from "../../../commit";
+import { promptConfirm, promptText } from "../../../prompt";
+import { CommitHandler } from "../CommitHandler";
+import { CommitIssueNumbersHandler } from "../CommitIssueNumbersHandler";
 
 const ABORT_MESSAGE = pc.yellow("✖") + " Commit issue numbers aborted!";
 
-export interface CommitIssueNumbersHandler extends CommitHandler {
-  handle(commitBuilder: CommitBuilder): Promise<void>;
-}
 export class CommitIssueNumbersHandlerImpl
   extends CommitHandler
   implements CommitIssueNumbersHandler
@@ -19,14 +17,14 @@ export class CommitIssueNumbersHandlerImpl
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     let commitIssueNumbers: string[] = [];
-    let isIssueAffected = await PromptHelper.promptConfirm({
+    let isIssueAffected = await promptConfirm({
       defaultValue: false,
       message: "Does this commit affect any open issues?",
       abortMessage: ABORT_MESSAGE,
     });
 
     while (isIssueAffected) {
-      const issueNumber = await PromptHelper.promptText({
+      const issueNumber = await promptText({
         message: "Please enter the issue number:",
         placeholder: "e.g., #123 or 123",
         abortMessage: ABORT_MESSAGE,
@@ -37,7 +35,7 @@ export class CommitIssueNumbersHandlerImpl
           issueNumber.startsWith("#") ? issueNumber : `#${issueNumber}`
         );
 
-      isIssueAffected = await PromptHelper.promptConfirm({
+      isIssueAffected = await promptConfirm({
         defaultValue: false,
         message: "Does this commit affect any other open issues?",
         abortMessage: ABORT_MESSAGE,

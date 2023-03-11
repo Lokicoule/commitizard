@@ -1,4 +1,4 @@
-[] create a command in order to init a .commitcreactrc
+[x] create a command in order to init a .commitcreactrc
 
 - by default in root folder
 - custom path

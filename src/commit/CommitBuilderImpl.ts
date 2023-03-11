@@ -1,5 +1,5 @@
-import { CommitBuilder } from "../interface/commit-builder";
-import { Commit } from "../models/commit";
+import { CommitBuilder } from "./CommitBuilder";
+import { Commit } from "./Commit";
 
 export class CommitBuilderImpl implements CommitBuilder {
   private type: string = "";

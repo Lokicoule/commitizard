@@ -28,7 +28,10 @@
   "homepage": "https://github.com/Lokicoule/CommitCraft#readme",
   "dependencies": {
     "@clack/prompts": "^0.6.3",
+    "@dqbd/tiktoken": "^0.4.0",
     "commander": "^10.0.0",
+    "diff2html": "^3.4.33",
+    "gpt-3-encoder": "^1.1.4",
     "openai": "^3.2.1",
     "picocolors": "^1.0.0"
   },

@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { CommitType } from "~/commit";
-import { Logger } from "../logger";
+import { PromptLogger } from "../logger";
 
 export type Config = {
   apiKey: string;
@@ -64,7 +64,9 @@ export function readUserConfig(
     const configStr = fs.readFileSync(userConfigPath, "utf-8");
     return JSON.parse(configStr);
   } catch (err: any) {
-    Logger.error(`Error reading config file ${userConfigPath}: ${err.message}`);
+    PromptLogger.error(
+      `Error reading config file ${userConfigPath}: ${err.message}`
+    );
     return {};
   }
 }
@@ -77,6 +79,8 @@ export function writeUserConfig(
     const configStr = JSON.stringify(config, null, 2);
     fs.writeFileSync(userConfigPath, configStr, "utf-8");
   } catch (err: any) {
-    Logger.error(`Error writing config file ${userConfigPath}: ${err.message}`);
+    PromptLogger.error(
+      `Error writing config file ${userConfigPath}: ${err.message}`
+    );
   }
 }

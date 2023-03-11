@@ -1,5 +1,5 @@
 import { ChildProcessWithoutNullStreams, spawn } from "child_process";
-import { GitProcessBuilder } from "../interface/git-process-builder";
+import { GitProcessBuilder } from "./GitProcessBuilder";
 
 export class GitProcessBuilderImpl implements GitProcessBuilder {
   private args: string[] = [];
