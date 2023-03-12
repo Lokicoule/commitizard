@@ -13,11 +13,6 @@ export class GitProcessBuilderImpl implements GitProcessBuilder {
     return this;
   }
 
-  addArgs(args: string[]): GitProcessBuilder {
-    this.args.push(...args);
-    return this;
-  }
-
   spawn(): ChildProcessWithoutNullStreams {
     return spawn("git", this.args);
   }
