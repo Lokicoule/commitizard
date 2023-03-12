@@ -1,11 +1,11 @@
 import { CommitBuilder } from "../../../commit";
-import { promptText } from "../../../prompt/";
+import { promptText } from "../../../prompt";
 import { CommitHandler } from "../CommitHandler";
-import { CommitMessageHandler } from "../CommitMessageHandler";
+import { CommitSubjectHandler } from "../CommitSubjectHandler";
 
-export class CommitMessageHandlerImpl
+export class CommitSubjectHandlerImpl
   extends CommitHandler
-  implements CommitMessageHandler
+  implements CommitSubjectHandler
 {
   public async handle(commitBuilder: CommitBuilder): Promise<void> {
     await this.processInput(commitBuilder);
@@ -14,10 +14,10 @@ export class CommitMessageHandlerImpl
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commitMessage = await promptText({
-      message: "Enter commit message (optional):",
-      abortMessage: "Commit message selection aborted!",
+      message: "Enter commit subject (optional):",
+      abortMessage: "Commit subject selection aborted!",
     });
 
-    commitBuilder.withMessage(commitMessage);
+    commitBuilder.withSubject(commitMessage);
   }
 }

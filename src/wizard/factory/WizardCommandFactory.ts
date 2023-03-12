@@ -2,7 +2,7 @@ import { DEFAULT_CONFIG_PATH } from "../../config";
 import { CommitBreakingChangesHandlerImpl } from "../handlers/impl/CommitBreakingChangesHandlerImpl";
 import { CommitConfirmHandlerImpl } from "../handlers/impl/CommitConfirmHandlerImpl";
 import { CommitIssueNumbersHandlerImpl } from "../handlers/impl/CommitIssueNumbersHandlerImpl";
-import { CommitMessageHandlerImpl } from "../handlers/impl/CommitMessageHandlerImpl";
+import { CommitSubjectHandlerImpl } from "../handlers/impl/CommitSubjectHandlerImpl";
 import { CommitScopeHandlerImpl } from "../handlers/impl/CommitScopeHandlerImpl";
 import { CommitTypeHandlerImpl } from "../handlers/impl/CommitTypeHandlerImpl";
 import { WizardCommand } from "../command/WizardCommand";
@@ -35,7 +35,7 @@ export class WizardCommandFactory {
     const command = new WizardCommandImpl(
       new CommitTypeHandlerImpl(),
       new CommitScopeHandlerImpl(),
-      new CommitMessageHandlerImpl(),
+      new CommitSubjectHandlerImpl(),
       new CommitBreakingChangesHandlerImpl(),
       new CommitIssueNumbersHandlerImpl(),
       new CommitConfirmHandlerImpl()

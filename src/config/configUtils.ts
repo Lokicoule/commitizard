@@ -2,14 +2,19 @@ import * as fs from "fs";
 import { CommitType } from "../commit";
 import { Logger } from "../logger";
 
+export type CommitOptions = {
+  format: string;
+  types: CommitType[];
+};
+
 export type Config = {
   apiKey: string;
-  commitTypes: CommitType[];
+  commitOptions: CommitOptions;
 };
 
 export const DEFAULT_CONFIG_PATH = ".commitcraftrc";
 
-const COMMIT_TYPE_OPTIONS = [
+const DEFAULT_COMMIT_TYPE_OPTIONS = [
   { value: "feat", label: "feat: A new feature" },
   { value: "fix", label: "fix: A bug fix" },
   { value: "docs", label: "docs: Documentation only changes" },
@@ -31,15 +36,24 @@ const COMMIT_TYPE_OPTIONS = [
     label: "test: Adding missing tests or correcting existing tests",
   },
   {
+    value: "ci",
+    label: "ci: Changes to our CI configuration files and scripts",
+  },
+  {
     value: "chore",
     label:
       "chore: Changes to the build process or auxiliary tools and libraries",
   },
 ];
 
+const DEFAULT_COMMIT_OPTIONS: CommitOptions = {
+  format: "${type}(${scope}): ${subject}${body}${footer}",
+  types: DEFAULT_COMMIT_TYPE_OPTIONS,
+};
+
 export const defaultConfig: Config = {
   apiKey: "",
-  commitTypes: COMMIT_TYPE_OPTIONS,
+  commitOptions: DEFAULT_COMMIT_OPTIONS,
 };
 
 export function loadConfig(userConfigPath?: string): Config {

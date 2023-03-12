@@ -5,7 +5,7 @@ import { Config, loadConfig } from "../../../config/configUtils";
 import { CommitBreakingChangesHandler } from "../../handlers/CommitBreakingChangesHandler";
 import { CommitConfirmHandler } from "../../handlers/CommitConfirmHandler";
 import { CommitIssueNumbersHandler } from "../../handlers/CommitIssueNumbersHandler";
-import { CommitMessageHandler } from "../../handlers/CommitMessageHandler";
+import { CommitSubjectHandler } from "../../handlers/CommitSubjectHandler";
 import { CommitScopeHandler } from "../../handlers/CommitScopeHandler";
 import { CommitTypeHandler } from "../../handlers/CommitTypeHandler";
 import { WizardCommand } from "../WizardCommand";
@@ -16,7 +16,7 @@ export class WizardCommandImpl extends Command implements WizardCommand {
   constructor(
     private readonly typeHandler: CommitTypeHandler,
     private readonly scopeHandler: CommitScopeHandler,
-    private readonly messageHandler: CommitMessageHandler,
+    private readonly subjectHandler: CommitSubjectHandler,
     private readonly breakingChangesHandler: CommitBreakingChangesHandler,
     private readonly issueNumbersHandler: CommitIssueNumbersHandler,
     private readonly confirmHandler: CommitConfirmHandler
@@ -32,12 +32,14 @@ export class WizardCommandImpl extends Command implements WizardCommand {
     const builder = CommitBuilderFactory.create();
 
     this.typeHandler
-      .updateCommitTypes(this.config.commitTypes)
+      .updateCommitTypes(this.config.commitOptions.types)
       .setNext(this.scopeHandler)
-      .setNext(this.messageHandler)
+      .setNext(this.subjectHandler)
       .setNext(this.breakingChangesHandler)
       .setNext(this.issueNumbersHandler)
-      .setNext(this.confirmHandler);
+      .setNext(
+        this.confirmHandler.setMessageFormat(this.config.commitOptions.format)
+      );
 
     await this.typeHandler.handle(builder);
   }

@@ -4,7 +4,7 @@ import { Commit } from "../../model/Commit";
 export class CommitBuilderImpl implements CommitBuilder {
   private type: string = "";
   private scope: string = "";
-  private message: string = "";
+  private subject: string = "";
   private body: string = "";
   private footer: string = "";
 
@@ -20,9 +20,9 @@ export class CommitBuilderImpl implements CommitBuilder {
     return this;
   }
 
-  public withMessage(message: string | null): CommitBuilder {
-    if (message) {
-      this.message = message;
+  public withSubject(subject: string | null): CommitBuilder {
+    if (subject) {
+      this.subject = subject;
     }
 
     return this;
@@ -52,23 +52,9 @@ export class CommitBuilderImpl implements CommitBuilder {
     return new Commit({
       type: this.type,
       scope: this.scope,
-      message: this.message,
+      subject: this.subject,
       body: this.body,
       footer: this.footer,
     });
-  }
-
-  public toString(): string {
-    return [
-      this.type,
-      Boolean(this.scope) ? `(${this.scope})` : "",
-      Boolean(this.message) ? `: ${this.message}` : "",
-      Boolean(this.body) ? `\n\n${this.body}` : "",
-      Boolean(this.footer) ? `\n\n${this.footer}` : "",
-    ]
-      .filter(
-        (value) => value !== null && value !== undefined && value.length > 0
-      )
-      .join("");
   }
 }
