@@ -1,4 +1,4 @@
-import { confirm, select, text } from "@clack/prompts";
+import { confirm, select, text, multiselect } from "@clack/prompts";
 import { promptWithCancel } from "./promptUtils";
 
 export type SelectOption<Value> = Value extends string | boolean | number
@@ -54,6 +54,28 @@ export async function promptSelect<Option extends SelectOption<T>[], T>({
         message,
         options,
         initialValue: defaultValue,
+      }),
+    abortMessage
+  );
+}
+
+export async function promptMultiselect<Option extends SelectOption<T>[], T>({
+  message,
+  options,
+  required = false,
+  abortMessage,
+}: {
+  message: string;
+  options: Option;
+  required?: boolean;
+  abortMessage?: string;
+}): Promise<T[]> {
+  return promptWithCancel<T[]>(
+    () =>
+      multiselect<Option, T>({
+        message,
+        options,
+        required,
       }),
     abortMessage
   );

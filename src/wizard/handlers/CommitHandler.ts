@@ -1,4 +1,4 @@
-import { CommitBuilder } from "../../commit";
+import { CommitBuilder } from "../../commit-old";
 
 export abstract class CommitHandler {
   private nextHandler: CommitHandler | null = null;

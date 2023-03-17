@@ -1,10 +1,21 @@
-import { Commit } from "../model/Commit";
+import {
+  Commit,
+  CommitBody,
+  CommitBreakingChanges,
+  CommitFooter,
+  CommitIssueNumbers,
+  CommitScope,
+  CommitSubject,
+  CommitType,
+} from "../types";
 
 export interface CommitBuilder {
-  withType(type: string): CommitBuilder;
-  withScope(scope: string | null): CommitBuilder;
-  withSubject(subject: string | null): CommitBuilder;
-  withBody(body: string | null): CommitBuilder;
-  withFooter(footer: string | null): CommitBuilder;
+  withType(type: CommitType): CommitBuilder;
+  withScope(scope: CommitScope): CommitBuilder;
+  withSubject(subject: CommitSubject): CommitBuilder;
+  withBreakingChanges(breakingChanges: CommitBreakingChanges): CommitBuilder;
+  withIssueNumbers(issueNumbers: CommitIssueNumbers): CommitBuilder;
+  withBody(body: CommitBody): CommitBuilder;
+  withFooter(footer: CommitFooter): CommitBuilder;
   build(): Commit;
 }

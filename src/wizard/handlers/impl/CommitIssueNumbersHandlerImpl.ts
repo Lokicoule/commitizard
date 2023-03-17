@@ -1,5 +1,5 @@
 import pc from "picocolors";
-import { CommitBuilder } from "../../../commit";
+import { CommitBuilder } from "../../../commit-old";
 import { promptConfirm, promptText } from "../../../prompt";
 import { CommitHandler } from "../CommitHandler";
 import { CommitIssueNumbersHandler } from "../CommitIssueNumbersHandler";
@@ -43,7 +43,7 @@ export class CommitIssueNumbersHandlerImpl
     }
 
     if (commitIssueNumbers.length > 0) {
-      commitBuilder.withFooter(`Closes: ${commitIssueNumbers.join(", ")}`);
+      commitBuilder.addFooterLine(`Closes: ${commitIssueNumbers.join(", ")}`);
     }
   }
 }

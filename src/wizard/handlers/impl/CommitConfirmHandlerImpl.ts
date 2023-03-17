@@ -1,6 +1,6 @@
 import { outro } from "@clack/prompts";
 import pc from "picocolors";
-import { CommitBuilder } from "../../../commit";
+import { CommitBuilder } from "../../../commit-old";
 import { defaultConfig } from "../../../config";
 import { GitProcessBuilderFactory } from "../../../git";
 import { logMessage, promptConfirm } from "../../../prompt";

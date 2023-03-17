@@ -1,12 +1,8 @@
 import { DEFAULT_CONFIG_PATH } from "../../config";
-import { CommitBreakingChangesHandlerImpl } from "../handlers/impl/CommitBreakingChangesHandlerImpl";
-import { CommitConfirmHandlerImpl } from "../handlers/impl/CommitConfirmHandlerImpl";
-import { CommitIssueNumbersHandlerImpl } from "../handlers/impl/CommitIssueNumbersHandlerImpl";
-import { CommitSubjectHandlerImpl } from "../handlers/impl/CommitSubjectHandlerImpl";
-import { CommitScopeHandlerImpl } from "../handlers/impl/CommitScopeHandlerImpl";
-import { CommitTypeHandlerImpl } from "../handlers/impl/CommitTypeHandlerImpl";
-import { WizardCommand } from "../command/WizardCommand";
+import { Container } from "../../core/container";
 import { WizardCommandImpl } from "../command/impl/WizardCommandImpl";
+import { WizardCommand } from "../command/WizardCommand";
+import { WizardModule } from "../WizardModule";
 
 export type WizardCommandFactoryOptions = {
   name?: string;
@@ -32,14 +28,10 @@ export class WizardCommandFactory {
       options
     );
 
-    const command = new WizardCommandImpl(
-      new CommitTypeHandlerImpl(),
-      new CommitScopeHandlerImpl(),
-      new CommitSubjectHandlerImpl(),
-      new CommitBreakingChangesHandlerImpl(),
-      new CommitIssueNumbersHandlerImpl(),
-      new CommitConfirmHandlerImpl()
-    );
+    const wizardModule = new WizardModule(Container.getInstance());
+    wizardModule.register();
+
+    const command = wizardModule.getWizardCommand();
 
     command
       .name(name ?? this.defaultOptions.name)

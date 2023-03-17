@@ -1,4 +1,4 @@
-import { CommitBuilder } from "../../commit";
+import { CommitBuilder } from "../../commit-old";
 import { CommitHandler } from "./CommitHandler";
 
 export interface CommitScopeHandler extends CommitHandler {

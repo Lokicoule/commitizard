@@ -1,9 +1,20 @@
 import { log } from "@clack/prompts";
 import { Command } from "commander";
 import { ConfigCommandFactory } from "./config/factory/ConfigCommandFactory";
-import { defaultModel, listModels } from "./openai/openaiUtils";
+import { getStagedDiff, getStagedFiles, isInsideGitRepo } from "./git";
+import { DEFAULT_MODEL, listModels } from "./openai/openaiUtils";
+import { sanitize } from "./openai/sanitize";
 import { promptConfirm, promptSelect, promptText } from "./prompt";
+import { SmartCommitCommandFactory } from "./smart-commit";
 import { WizardCommandFactory } from "./wizard/factory/WizardCommandFactory";
+
+import "reflect-metadata";
+
+//Import modules
+import { WizardModule } from "./wizard/WizardModule";
+
+/* const wizardModule = new WizardModule(Container.getInstance());
+wizardModule.register(); */
 
 const program = new Command();
 
@@ -15,7 +26,7 @@ program
 
 program.addCommand(
   program.createCommand("git").action(async () => {
-    /* if (!(await isInsideGitRepo())) {
+    if (!(await isInsideGitRepo())) {
       log.error("You are not inside a git repository");
       log.info("Please run this command inside a git repository");
       return;
@@ -27,11 +38,14 @@ program.addCommand(
       return;
     }
     log.success("Staged files:");
-    console.log(stagedFiles); */
+    console.log(stagedFiles);
     //log.success(stagedFiles.join("\n"));
-    /* log.info("Generating diff...");
+    log.info("Generating diff...");
     const diff = await getStagedDiff();
-    console.log(diff); */
+    //console.log(diff);
+    console.log(sanitize(diff));
+    console.log("------------");
+
     /*     for (const file of stagedFiles) {
       log.info(`Generating diff for ${file}...`);
       const diff = await getStagedDiff(file);
@@ -60,7 +74,7 @@ program.addCommand(
       const model = promptSelect({
         message: "Select a model",
         options: models,
-        defaultValue: defaultModel,
+        defaultValue: DEFAULT_MODEL,
       });
 
       const saveConfig = await promptConfirm({
@@ -86,4 +100,5 @@ program.addCommand(
 );
 program.addCommand(WizardCommandFactory.create());
 program.addCommand(ConfigCommandFactory.create());
+program.addCommand(SmartCommitCommandFactory.create());
 program.parse(process.argv);

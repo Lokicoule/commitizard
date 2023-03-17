@@ -1,4 +1,4 @@
-import { CommitBuilder } from "../../../commit";
+import { CommitBuilder } from "../../../commit-old";
 import { promptText } from "../../../prompt";
 import { CommitHandler } from "../CommitHandler";
 import { CommitScopeHandler } from "../CommitScopeHandler";

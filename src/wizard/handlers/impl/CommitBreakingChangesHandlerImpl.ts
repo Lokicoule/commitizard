@@ -1,5 +1,5 @@
 import pc from "picocolors";
-import { CommitBuilder } from "../../../commit";
+import { CommitBuilder } from "../../../commit-old";
 import { promptConfirm, promptText } from "../../../prompt";
 import { CommitBreakingChangesHandler } from "../CommitBreakingChangesHandler";
 import { CommitHandler } from "../CommitHandler";
@@ -39,7 +39,7 @@ export class CommitBreakingChangesHandlerImpl
     }
 
     if (commitBreakingChanges.length > 0) {
-      commitBuilder.withBody(
+      commitBuilder.addBodyLine(
         `BREAKING CHANGE: \n${commitBreakingChanges.join("\n")}`
       );
     }
