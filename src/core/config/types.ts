@@ -28,8 +28,12 @@ export interface CliOptions {
   types: Type[];
 }
 
-export interface Config {
-  apiKey?: string;
+export type ConventionOptions = {
   commitOptions: CommitOptions;
   cliOptions: CliOptions;
-}
+};
+
+export type Config = {
+  conventional: ConventionOptions;
+  "red-green-refactor": ConventionOptions;
+};
