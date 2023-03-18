@@ -1,8 +1,11 @@
 import { Command } from "commander";
 import { loadConfig, writeUserConfig } from "../../../../core/config";
-import { ConfigCommand } from "../ConfigCommand";
+import { ConfigGeneratorCommand } from "../ConfigGeneratorCommand";
 
-export class ConfigCommandImpl extends Command implements ConfigCommand {
+export class ConfigGeneratorCommandImpl
+  extends Command
+  implements ConfigGeneratorCommand
+{
   public async run(configPath?: string): Promise<void> {
     const { ...safeConfig } = loadConfig();
     writeUserConfig(safeConfig, configPath);

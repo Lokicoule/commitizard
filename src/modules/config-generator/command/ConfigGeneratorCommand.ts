@@ -1,5 +1,5 @@
 import { Command } from "commander";
 
-export interface ConfigCommand extends Command {
+export interface ConfigGeneratorCommand extends Command {
   run(configPath?: string): Promise<void>;
 }

@@ -1,12 +1,6 @@
-import { log } from "@clack/prompts";
 import { Command } from "commander";
-import { ConfigCommandFactory } from "./modules/config/factory/ConfigCommandFactory";
-import { getStagedDiff, getStagedFiles, isInsideGitRepo } from "./libs/git";
-import { promptConfirm, promptSelect, promptText } from "./libs/prompt";
-/* import { SmartCommitCommandFactory } from "./modules/smart-commit";
- */ import { WizardCommandFactory } from "./modules/wizard/factory/WizardCommandFactory";
-
-import "reflect-metadata";
+import { ConfigGeneratorCommandFactory } from "./modules/config-generator/factory/ConfigGeneratorCommandFactory";
+import { WizardCommandFactory } from "./modules/wizard/factory/WizardCommandFactory";
 
 const program = new Command();
 
@@ -17,6 +11,6 @@ program
   .helpOption("-h, --help", "Display help for command");
 
 program.addCommand(WizardCommandFactory.create());
-program.addCommand(ConfigCommandFactory.create());
+program.addCommand(ConfigGeneratorCommandFactory.create());
 
 program.parse(process.argv);
