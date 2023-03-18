@@ -1,7 +1,7 @@
 import { yellow } from "picocolors";
 import { promptConfirm, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { AbstractCommitHandler } from "../../../commit/handlers/AbstractCommitHandler";
+import { AbstractCommitHandler } from "../../../commit/handlers/impl/AbstractCommitHandler";
 import { CommitHandler } from "../../../commit/handlers/CommitHandler";
 import { CommitBody } from "../../../commit/types";
 

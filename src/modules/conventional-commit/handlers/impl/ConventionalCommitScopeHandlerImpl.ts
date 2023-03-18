@@ -3,7 +3,7 @@ import { Configuration } from "../../../../core/config/Configuration";
 import { Scope } from "../../../../core/config/types";
 import { promptSelect, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { AbstractCommitHandler } from "../../../commit/handlers/AbstractCommitHandler";
+import { AbstractCommitHandler } from "../../../commit/handlers/impl/AbstractCommitHandler";
 import { CommitHandler } from "../../../commit/handlers/CommitHandler";
 import { CommitScope } from "../../../commit/types";
 

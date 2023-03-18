@@ -1,6 +1,6 @@
-import { AbstractHandler } from "../../../core/handler/impl/AbstractHandler";
-import { CommitBuilder } from "../builder/CommitBuilder";
-import { CommitHandler } from "./CommitHandler";
+import { AbstractHandler } from "../../../../core/handler/impl/AbstractHandler";
+import { CommitBuilder } from "../../builder/CommitBuilder";
+import { CommitHandler } from "../CommitHandler";
 
 export abstract class AbstractCommitHandler
   extends AbstractHandler<CommitBuilder>
