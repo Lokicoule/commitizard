@@ -1,5 +1,5 @@
 import { ProcessBuilderFactory } from "../../../../core/process/factory/ProcessBuilderFactory";
-import { getUpdatedFiles } from "../../../../libs/git";
+import { getStagedFiles, getUpdatedFiles } from "../../../../libs/git";
 import { logMessage, promptMultiselect } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
 import { AbstractWizardCommitHandler } from "../AbstractWizardCommitHandler";
@@ -11,8 +11,9 @@ export class WizardAddFilesToCommitHandlerImpl
 {
   protected async processInput(_commitBuilder: CommitBuilder): Promise<void> {
     const updatedFiles = await getUpdatedFiles();
-    if (updatedFiles?.length === 0) {
-      logMessage("No updated files found");
+
+    if (updatedFiles.length === 0) {
+      logMessage("No files to add to commit.");
       return;
     }
 

@@ -41,7 +41,9 @@ export const getUpdatedFiles = async () => {
     .split("\n")
     .filter(Boolean);
 
-  return files ?? [];
+  const stagedFiles = await getStagedFiles();
+
+  return files.filter((file) => !stagedFiles?.includes(file));
 };
 
 export const getStagedFiles = async () => {
