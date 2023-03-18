@@ -1,7 +1,7 @@
 import { outro } from "@clack/prompts";
 import pc from "picocolors";
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { CommitHandlerImpl } from "../../../commit/handlers/impl/CommitHandlerImpl";
+import { AbstractCommitHandler } from "../../../commit/handlers/AbstractCommitHandler";
 import { Commit } from "../../../commit/types";
 import { defaultConfig } from "../../../../core/config";
 import { Configuration } from "../../../../core/config/Configuration";
@@ -18,15 +18,10 @@ const ERROR_MESSAGE = `${pc.red(
 )} An error occurred while creating the commit!`;
 
 export class WizardCommitValidationHandlerImpl
-  extends CommitHandlerImpl
+  extends AbstractCommitHandler
   implements WizardCommitValidationHandler
 {
   private messageFormat: string = defaultConfig.commitOptions.format;
-
-  public async handle(commitBuilder: CommitBuilder): Promise<void> {
-    await this.processInput(commitBuilder);
-    await super.handle(commitBuilder);
-  }
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     let commit = commitBuilder.build();

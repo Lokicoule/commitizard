@@ -1,10 +1,4 @@
-import { CommitBodyHandler } from "../../handlers/CommitBodyHandler";
-import { CommitBreakingChangesHandler } from "../../handlers/CommitBreakingChangesHandler";
-import { CommitFooterHandler } from "../../handlers/CommitFooterHandler";
-import { CommitIssueNumbersHandler } from "../../handlers/CommitIssueNumbersHandler";
-import { CommitScopeHandler } from "../../handlers/CommitScopeHandler";
-import { CommitSubjectHandler } from "../../handlers/CommitSubjectHandler";
-import { CommitTypeHandler } from "../../handlers/CommitTypeHandler";
+import { CommitHandler } from "../../handlers/CommitHandler";
 import { CommitBodyHandlerImpl } from "../../handlers/impl/CommitBodyHandlerImpl";
 import { CommitBreakingChangesHandlerImpl } from "../../handlers/impl/CommitBreakingChangesHandlerImpl";
 import { CommitFooterHandlerImpl } from "../../handlers/impl/CommitFooterHandlerImpl";
@@ -15,31 +9,31 @@ import { CommitTypeHandlerImpl } from "../../handlers/impl/CommitTypeHandlerImpl
 import { CommitHandlerFactory } from "../CommitHandlerFactory";
 
 export class CommitHandlerFactoryImpl implements CommitHandlerFactory {
-  public createCommitTypeHandler(): CommitTypeHandler {
+  public createCommitTypeHandler(): CommitHandler {
     return new CommitTypeHandlerImpl();
   }
 
-  public createCommitScopeHandler(): CommitScopeHandler {
+  public createCommitScopeHandler(): CommitHandler {
     return new CommitScopeHandlerImpl();
   }
 
-  public createCommitSubjectHandler(): CommitSubjectHandler {
+  public createCommitSubjectHandler(): CommitHandler {
     return new CommitSubjectHandlerImpl();
   }
 
-  public createCommitBreakingChangesHandler(): CommitBreakingChangesHandler {
+  public createCommitBreakingChangesHandler(): CommitHandler {
     return new CommitBreakingChangesHandlerImpl();
   }
 
-  public createCommitIssueNumbersHandler(): CommitIssueNumbersHandler {
+  public createCommitIssueNumbersHandler(): CommitHandler {
     return new CommitIssueNumbersHandlerImpl();
   }
 
-  public createCommitBodyHandler(): CommitBodyHandler {
+  public createCommitBodyHandler(): CommitHandler {
     return new CommitBodyHandlerImpl();
   }
 
-  public createCommitFooterHandler(): CommitFooterHandler {
+  public createCommitFooterHandler(): CommitHandler {
     return new CommitFooterHandlerImpl();
   }
 }

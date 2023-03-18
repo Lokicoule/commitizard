@@ -1,15 +1,15 @@
-import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitIssueNumbers } from "../../types";
-import { CommitIssueNumbersHandler } from "../CommitIssueNumbersHandler";
-import { CommitHandlerImpl } from "./CommitHandlerImpl";
 import { yellow } from "picocolors";
 import { promptConfirm, promptText } from "../../../../libs/prompt";
+import { CommitBuilder } from "../../builder/CommitBuilder";
+import { CommitIssueNumbers } from "../../types";
+import { CommitHandler } from "../CommitHandler";
+import { AbstractCommitHandler } from "../AbstractCommitHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit issue numbers aborted!";
 
 export class CommitIssueNumbersHandlerImpl
-  extends CommitHandlerImpl
-  implements CommitIssueNumbersHandler
+  extends AbstractCommitHandler
+  implements CommitHandler
 {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commitIssueNumbers = await this.selectCommitIssueNumbers();

@@ -1,12 +1,12 @@
-import { CommitHandlerImpl } from "./CommitHandlerImpl";
-import { CommitSubjectHandler } from "../CommitSubjectHandler";
+import { promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
 import { CommitSubject } from "../../types";
-import { promptText } from "../../../../libs/prompt";
+import { CommitHandler } from "../CommitHandler";
+import { AbstractCommitHandler } from "../AbstractCommitHandler";
 
 export class CommitSubjectHandlerImpl
-  extends CommitHandlerImpl
-  implements CommitSubjectHandler
+  extends AbstractCommitHandler
+  implements CommitHandler
 {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commitSubject = await this.selectCommitSubject();

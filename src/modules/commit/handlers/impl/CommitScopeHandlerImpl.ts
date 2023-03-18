@@ -3,14 +3,14 @@ import { Configuration } from "../../../../core/config/Configuration";
 import { promptSelect, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
 import { CommitScope, CommitScopeOption } from "../../types";
-import { CommitScopeHandler } from "../CommitScopeHandler";
-import { CommitHandlerImpl } from "./CommitHandlerImpl";
+import { CommitHandler } from "../CommitHandler";
+import { AbstractCommitHandler } from "../AbstractCommitHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit scope selection aborted!";
 
 export class CommitScopeHandlerImpl
-  extends CommitHandlerImpl
-  implements CommitScopeHandler
+  extends AbstractCommitHandler
+  implements CommitHandler
 {
   private commitScopes: CommitScopeOption[] = [];
 

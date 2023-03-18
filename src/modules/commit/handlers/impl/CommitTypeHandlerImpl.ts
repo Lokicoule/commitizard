@@ -1,13 +1,13 @@
-import { CommitHandlerImpl } from "./CommitHandlerImpl";
-import { CommitTypeHandler } from "../CommitTypeHandler";
-import { CommitType, CommitTypeOption } from "../../types";
-import { CommitBuilder } from "../../builder/CommitBuilder";
-import { promptSelect } from "../../../../libs/prompt";
 import { Configuration } from "../../../../core/config/Configuration";
+import { promptSelect } from "../../../../libs/prompt";
+import { CommitBuilder } from "../../builder/CommitBuilder";
+import { CommitType, CommitTypeOption } from "../../types";
+import { CommitHandler } from "../CommitHandler";
+import { AbstractCommitHandler } from "../AbstractCommitHandler";
 
 export class CommitTypeHandlerImpl
-  extends CommitHandlerImpl
-  implements CommitTypeHandler
+  extends AbstractCommitHandler
+  implements CommitHandler
 {
   private commitTypes: CommitTypeOption[];
 

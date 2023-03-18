@@ -1,20 +1,15 @@
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { CommitHandlerImpl } from "../../../commit/handlers/impl/CommitHandlerImpl";
+import { AbstractCommitHandler } from "../../../commit/handlers/AbstractCommitHandler";
 import { getUpdatedFiles } from "../../../../libs/git";
 import { ProcessBuilderFactory } from "../../../../core/process/factory/ProcessBuilderFactory";
 import { logMessage, promptMultiselect } from "../../../../libs/prompt";
 import { WizardAddFilesToCommitHandler } from "../WizardAddFilesToCommitHandler";
 
 export class WizardAddFilesToCommitHandlerImpl
-  extends CommitHandlerImpl
+  extends AbstractCommitHandler
   implements WizardAddFilesToCommitHandler
 {
-  public async handle(commitBuilder: CommitBuilder): Promise<void> {
-    await this.processInput(commitBuilder);
-    await super.handle(commitBuilder);
-  }
-
-  protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
+  protected async processInput(_commitBuilder: CommitBuilder): Promise<void> {
     const updatedFiles = await getUpdatedFiles();
     if (updatedFiles?.length === 0) {
       logMessage("No updated files found");

@@ -2,14 +2,14 @@ import { yellow } from "picocolors";
 import { promptConfirm, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
 import { CommitBreakingChanges } from "../../types";
-import { CommitBreakingChangesHandler } from "../CommitBreakingChangesHandler";
-import { CommitHandlerImpl } from "./CommitHandlerImpl";
+import { CommitHandler } from "../CommitHandler";
+import { AbstractCommitHandler } from "../AbstractCommitHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit breaking changes aborted!";
 
 export class CommitBreakingChangesHandlerImpl
-  extends CommitHandlerImpl
-  implements CommitBreakingChangesHandler
+  extends AbstractCommitHandler
+  implements CommitHandler
 {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commitBreakingChanges = await this.selectCommitBreakingChanges();
