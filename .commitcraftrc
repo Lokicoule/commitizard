@@ -1,12 +1,12 @@
 {
   "commitOptions": {
     "template": {
-      "type": "{{type}}",
+      "type": "✅{{type}}",
       "scope": "({{scope}}): ",
       "subject": "{{subject}}",
       "body": "\n\n{{body}}",
       "footer": "\n\n{{footer}}",
-      "breaking": "\n\nBREAKING CHANGE:\n{{breaking}}",
+      "breaking": "\n\nBREAKING CHANGE:\n {{breaking}}",
       "refs": "\n\nRefs: {{refs}}"
     },
     "templateOrder": [
@@ -23,35 +23,39 @@
     "types": [
       {
         "value": "feat",
-        "name": "Features"
+        "label": "feat: A new feature"
       },
       {
         "value": "fix",
-        "name": "Bug Fixes"
+        "label": "fix: A bug fix"
       },
       {
         "value": "docs",
-        "name": "Documentation"
+        "label": "docs: Documentation only changes"
       },
       {
         "value": "style",
-        "name": "Styles"
+        "label": "style: Changes that do not affect the meaning of the code"
       },
       {
         "value": "refactor",
-        "name": "Code Refactoring"
+        "label": "refactor: A code change that neither fixes a bug nor adds a feature"
       },
       {
         "value": "perf",
-        "name": "Performance Improvements"
+        "label": "perf: A code change that improves performance"
       },
       {
         "value": "test",
-        "name": "Tests"
+        "label": "test: Adding missing tests or correcting existing tests"
+      },
+      {
+        "value": "ci",
+        "label": "ci: Changes to our CI configuration files and scripts"
       },
       {
         "value": "chore",
-        "name": "Chores"
+        "label": "chore: Changes to the build process or auxiliary tools and libraries"
       }
     ]
   }

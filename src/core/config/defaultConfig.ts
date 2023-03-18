@@ -4,11 +4,11 @@ export const defaultConfig = {
   commitOptions: {
     template: {
       type: "{{type}}",
-      scope: "({{scope):}} ",
+      scope: "({{scope}}): ",
       subject: "{{subject}}",
       body: "\n\n{{body}}",
       footer: "\n\n{{footer}}",
-      breaking: "\n\nBREAKING CHANGE: {{breaking}}",
+      breaking: "\n\nBREAKING CHANGE:\n {{breaking}}",
       refs: "\n\nRefs: {{refs}}",
     },
     templateOrder: [
