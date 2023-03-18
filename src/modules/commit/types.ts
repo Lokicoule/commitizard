@@ -1,13 +1,3 @@
-export type CommitTypeOption = {
-  value: string;
-  label: string;
-};
-
-export interface CommitScopeOption {
-  value: string;
-  label: string;
-}
-
 export interface CommitType {
   data: string;
   emoji?: string;
@@ -22,12 +12,10 @@ export interface CommitSubject {
 }
 
 export interface CommitBreakingChanges {
-  title: string;
   data: string;
 }
 
-export interface CommitIssueNumbers {
-  title: string;
+export interface CommitReferences {
   data: string;
 }
 
@@ -44,7 +32,7 @@ export interface Commit {
   scope?: CommitScope;
   subject: CommitSubject;
   breakingChanges?: CommitBreakingChanges;
-  issueNumbers?: CommitIssueNumbers;
+  references?: CommitReferences;
   body?: CommitBody;
   footer?: CommitFooter;
 }

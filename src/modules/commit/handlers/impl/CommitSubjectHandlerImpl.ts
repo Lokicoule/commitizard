@@ -19,10 +19,14 @@ export class CommitSubjectHandlerImpl
   }
 
   private async promptCommitSubject(): Promise<CommitSubject> {
-    const commitMessage = await promptText({
-      message: "Enter commit subject (optional):",
-      abortMessage: "Commit subject selection aborted!",
-    });
+    let commitMessage;
+
+    while (!commitMessage) {
+      commitMessage = await promptText({
+        message: "Enter commit subject:",
+        abortMessage: "Commit subject selection aborted!",
+      });
+    }
 
     return {
       data: commitMessage,

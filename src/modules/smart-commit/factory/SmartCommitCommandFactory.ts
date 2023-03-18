@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG_PATH } from "../../../core/config";
+/* import { DEFAULT_CONFIG_PATH } from "../../../core/config";
 import { SmartCommitCommandImpl } from "../command/impl/SmartCommitCommandImpl";
 import { SmartCommitCommand } from "../command/SmartCommitCommand";
 
@@ -43,3 +43,4 @@ export class SmartCommitCommandFactory {
     return command;
   }
 }
+ */

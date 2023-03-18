@@ -1,4 +1,5 @@
-import { Config, loadConfig } from "./configUtils";
+import { loadConfig } from "./configUtils";
+import { Config } from "./types";
 
 export class Configuration {
   private static instance: Configuration;

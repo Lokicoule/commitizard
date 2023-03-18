@@ -2,7 +2,7 @@ import { CommitHandler } from "../../handlers/CommitHandler";
 import { CommitBodyHandlerImpl } from "../../handlers/impl/CommitBodyHandlerImpl";
 import { CommitBreakingChangesHandlerImpl } from "../../handlers/impl/CommitBreakingChangesHandlerImpl";
 import { CommitFooterHandlerImpl } from "../../handlers/impl/CommitFooterHandlerImpl";
-import { CommitIssueNumbersHandlerImpl } from "../../handlers/impl/CommitIssueNumbersHandlerImpl";
+import { CommitReferencesHandlerImpl } from "../../handlers/impl/CommitReferencesHandlerImpl";
 import { CommitScopeHandlerImpl } from "../../handlers/impl/CommitScopeHandlerImpl";
 import { CommitSubjectHandlerImpl } from "../../handlers/impl/CommitSubjectHandlerImpl";
 import { CommitTypeHandlerImpl } from "../../handlers/impl/CommitTypeHandlerImpl";
@@ -25,8 +25,8 @@ export class CommitHandlerFactoryImpl implements CommitHandlerFactory {
     return new CommitBreakingChangesHandlerImpl();
   }
 
-  public createCommitIssueNumbersHandler(): CommitHandler {
-    return new CommitIssueNumbersHandlerImpl();
+  public createCommitReferencesHandler(): CommitHandler {
+    return new CommitReferencesHandlerImpl();
   }
 
   public createCommitBodyHandler(): CommitHandler {

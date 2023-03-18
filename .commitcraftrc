@@ -1,16 +1,25 @@
 {
   "commitOptions": {
-    "format": "${type}(${scope}): ${subject}${body}${footer}",
-    "scopes": [
-      {
-        "name": "core",
-        "value": "core"
-      },
-      {
-        "name": "cli",
-        "value": "cli"
-      }
-    ],
+    "template": {
+      "type": "{{type}}",
+      "scope": "({{scope}}): ",
+      "subject": "{{subject}}",
+      "body": "\n\n{{body}}",
+      "footer": "\n\n{{footer}}",
+      "breaking": "\n\nBREAKING CHANGE:\n{{breaking}}",
+      "refs": "\n\nRefs: {{refs}}"
+    },
+    "templateOrder": [
+      "type",
+      "scope",
+      "subject",
+      "body",
+      "breaking",
+      "footer",
+      "refs"
+    ]
+  },
+  "cliOptions": {
     "types": [
       {
         "value": "feat",

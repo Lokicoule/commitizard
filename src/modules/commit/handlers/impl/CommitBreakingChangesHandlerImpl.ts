@@ -34,8 +34,7 @@ export class CommitBreakingChangesHandlerImpl
         message: "Please enter a description for the breaking change:",
         abortMessage: ABORT_MESSAGE,
       });
-      Boolean(breakingChange) &&
-        commitBreakingChanges.push(`- ${breakingChange}`);
+      Boolean(breakingChange) && commitBreakingChanges.push(breakingChange);
 
       isBreakingChange = await promptConfirm({
         defaultValue: false,
@@ -44,11 +43,8 @@ export class CommitBreakingChangesHandlerImpl
       });
     }
 
-    return commitBreakingChanges.length > 0
-      ? {
-          title: "BREAKING CHANGE",
-          data: commitBreakingChanges.join("\n"),
-        }
-      : { title: "", data: "" };
+    return {
+      data: commitBreakingChanges.join("\n"),
+    };
   }
 }

@@ -24,8 +24,8 @@ export class CommitHandlerChainFactoryImpl
       this.commitHandlerFactory.createCommitSubjectHandler();
     const commitBreakingChangesHandler =
       this.commitHandlerFactory.createCommitBreakingChangesHandler();
-    const commitIssueNumbersHandler =
-      this.commitHandlerFactory.createCommitIssueNumbersHandler();
+    const commitReferencesHandler =
+      this.commitHandlerFactory.createCommitReferencesHandler();
     const commitBodyHandler =
       this.commitHandlerFactory.createCommitBodyHandler();
     const commitFooterHandler =
@@ -35,9 +35,9 @@ export class CommitHandlerChainFactoryImpl
       commitTypeHandler,
       commitScopeHandler,
       commitSubjectHandler,
-      commitBreakingChangesHandler,
-      commitIssueNumbersHandler,
       commitBodyHandler,
+      commitBreakingChangesHandler,
+      commitReferencesHandler,
       commitFooterHandler,
     ];
 

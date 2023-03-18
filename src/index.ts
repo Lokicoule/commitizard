@@ -5,8 +5,8 @@ import { getStagedDiff, getStagedFiles, isInsideGitRepo } from "./libs/git";
 import { DEFAULT_MODEL, listModels } from "./libs/openai/openaiUtils";
 import { sanitize } from "./libs/openai/sanitize";
 import { promptConfirm, promptSelect, promptText } from "./libs/prompt";
-import { SmartCommitCommandFactory } from "./modules/smart-commit";
-import { WizardCommandFactory } from "./modules/wizard/factory/WizardCommandFactory";
+/* import { SmartCommitCommandFactory } from "./modules/smart-commit";
+ */ import { WizardCommandFactory } from "./modules/wizard/factory/WizardCommandFactory";
 
 import "reflect-metadata";
 
@@ -94,5 +94,5 @@ program.addCommand(
 );
 program.addCommand(WizardCommandFactory.create());
 program.addCommand(ConfigCommandFactory.create());
-program.addCommand(SmartCommitCommandFactory.create());
-program.parse(process.argv);
+/* program.addCommand(SmartCommitCommandFactory.create());
+ */ program.parse(process.argv);

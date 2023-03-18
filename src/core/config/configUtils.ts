@@ -1,65 +1,9 @@
 import * as fs from "fs";
-import {
-  CommitScopeOption,
-  CommitTypeOption,
-} from "../../modules/commit/types";
 import { Logger } from "../logger";
-
-export type CommitOptions = {
-  format: string;
-  types: CommitTypeOption[];
-  scopes: CommitScopeOption[];
-};
-
-export type Config = {
-  apiKey: string;
-  commitOptions: CommitOptions;
-};
+import { defaultConfig } from "./defaultConfig";
+import { Config } from "./types";
 
 export const DEFAULT_CONFIG_PATH = ".commitcraftrc";
-
-const DEFAULT_COMMIT_TYPE_OPTIONS = [
-  { value: "feat", label: "feat: A new feature" },
-  { value: "fix", label: "fix: A bug fix" },
-  { value: "docs", label: "docs: Documentation only changes" },
-  {
-    value: "style",
-    label: "style: Changes that do not affect the meaning of the code",
-  },
-  {
-    value: "refactor",
-    label:
-      "refactor: A code change that neither fixes a bug nor adds a feature",
-  },
-  {
-    value: "perf",
-    label: "perf: A code change that improves performance",
-  },
-  {
-    value: "test",
-    label: "test: Adding missing tests or correcting existing tests",
-  },
-  {
-    value: "ci",
-    label: "ci: Changes to our CI configuration files and scripts",
-  },
-  {
-    value: "chore",
-    label:
-      "chore: Changes to the build process or auxiliary tools and libraries",
-  },
-];
-
-const DEFAULT_COMMIT_OPTIONS: CommitOptions = {
-  format: "${type}(${scope}): ${subject}${body}${footer}",
-  types: DEFAULT_COMMIT_TYPE_OPTIONS,
-  scopes: [],
-};
-
-export const defaultConfig: Config = {
-  apiKey: "",
-  commitOptions: DEFAULT_COMMIT_OPTIONS,
-};
 
 export function loadConfig(userConfigPath?: string): Config {
   const userConfig = readUserConfig(userConfigPath);

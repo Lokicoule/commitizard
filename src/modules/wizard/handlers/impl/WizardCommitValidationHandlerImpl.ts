@@ -1,10 +1,10 @@
 import { outro } from "@clack/prompts";
 import pc from "picocolors";
-import { defaultConfig } from "../../../../core/config";
 import { Configuration } from "../../../../core/config/Configuration";
 import { ProcessBuilderFactory } from "../../../../core/process/factory/ProcessBuilderFactory";
 import { promptConfirm } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { CommitFormatter } from "../../../commit/formatter/CommitFormatter";
 import { Commit } from "../../../commit/types";
 import { AbstractWizardCommitHandler } from "../AbstractWizardCommitHandler";
 import { WizardCommitHandler } from "../WizardCommitHandler";
@@ -21,12 +21,10 @@ export class WizardCommitValidationHandlerImpl
   extends AbstractWizardCommitHandler
   implements WizardCommitHandler
 {
-  private messageFormat: string = defaultConfig.commitOptions.format;
-
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     let commit = commitBuilder.build();
 
-    const commitMessage = this.format(commit);
+    const commitMessage = CommitFormatter.format(commit);
 
     const confirmCommit = await promptConfirm({
       defaultValue: true,
@@ -50,18 +48,5 @@ export class WizardCommitValidationHandlerImpl
     } else {
       outro(ABORT_MESSAGE);
     }
-  }
-
-  private format(commit: Commit): string {
-    const { type, scope, subject, body, footer } = commit;
-    const formattedBody = body ? `\n\n${body}` : "";
-    const formattedFooter = footer ? `\n\n${footer}` : "";
-
-    return Configuration.getConfig()
-      .commitOptions.format.replace("${type}", type.data)
-      .replace("${scope}", scope?.data || "")
-      .replace("${subject}", subject.data)
-      .replace("${body}", formattedBody)
-      .replace("${footer}", formattedFooter);
   }
 }

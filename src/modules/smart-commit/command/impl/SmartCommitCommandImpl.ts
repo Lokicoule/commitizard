@@ -1,6 +1,6 @@
-import { intro, spinner } from "@clack/prompts";
+/* import { intro, spinner } from "@clack/prompts";
 import { Command } from "commander";
-import { Config, loadConfig } from "../../../../core/config/configUtils";
+import { loadConfig } from "../../../../core/config/configUtils";
 import {
   getStagedDiff,
   getStagedFiles,
@@ -10,6 +10,7 @@ import { SmartCommitCommand } from "../SmartCommitCommand";
 import { sanitize } from "../../../../libs/openai/sanitize";
 import { logMessage } from "../../../../libs/prompt";
 import { createCompletion } from "../../../../libs/openai";
+import { Config } from "../../../../core/config";
 
 export class SmartCommitCommandImpl
   extends Command
@@ -55,3 +56,4 @@ export class SmartCommitCommandImpl
     logMessage("Commit message generated");
   }
 }
+ */

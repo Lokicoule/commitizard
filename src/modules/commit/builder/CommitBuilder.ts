@@ -3,7 +3,7 @@ import {
   CommitBody,
   CommitBreakingChanges,
   CommitFooter,
-  CommitIssueNumbers,
+  CommitReferences,
   CommitScope,
   CommitSubject,
   CommitType,
@@ -14,7 +14,7 @@ export interface CommitBuilder {
   withScope(scope: CommitScope): CommitBuilder;
   withSubject(subject: CommitSubject): CommitBuilder;
   withBreakingChanges(breakingChanges: CommitBreakingChanges): CommitBuilder;
-  withIssueNumbers(issueNumbers: CommitIssueNumbers): CommitBuilder;
+  withReferences(references: CommitReferences): CommitBuilder;
   withBody(body: CommitBody): CommitBuilder;
   withFooter(footer: CommitFooter): CommitBuilder;
   build(): Commit;

@@ -1,10 +1,11 @@
 import { yellow } from "picocolors";
 import { Configuration } from "../../../../core/config/Configuration";
+import { Scope } from "../../../../core/config/types";
 import { promptSelect, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitScope, CommitScopeOption } from "../../types";
-import { CommitHandler } from "../CommitHandler";
+import { CommitScope } from "../../types";
 import { AbstractCommitHandler } from "../AbstractCommitHandler";
+import { CommitHandler } from "../CommitHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit scope selection aborted!";
 
@@ -12,11 +13,11 @@ export class CommitScopeHandlerImpl
   extends AbstractCommitHandler
   implements CommitHandler
 {
-  private commitScopes: CommitScopeOption[] = [];
+  private commitScopes: Scope[] = [];
 
   constructor() {
     super();
-    this.commitScopes = Configuration.getConfig().commitOptions.scopes ?? [];
+    this.commitScopes = Configuration.getConfig().cliOptions.scopes ?? [];
   }
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
@@ -44,7 +45,7 @@ export class CommitScopeHandlerImpl
   }
 
   private async promptSelectCommitScope(): Promise<CommitScope> {
-    const commitType = await promptSelect<CommitScopeOption[], string>({
+    const commitType = await promptSelect<Scope[], string>({
       message: "Select commit scope:",
       options: this.commitScopes,
       abortMessage: ABORT_MESSAGE,

@@ -3,7 +3,7 @@ import {
   CommitBody,
   CommitBreakingChanges,
   CommitFooter,
-  CommitIssueNumbers,
+  CommitReferences,
   CommitScope,
   CommitSubject,
   CommitType,
@@ -15,7 +15,7 @@ export class CommitBuilderImpl implements CommitBuilder {
   private scope?: CommitScope;
   private subject!: CommitSubject;
   private breakingChanges?: CommitBreakingChanges;
-  private issueNumbers?: CommitIssueNumbers;
+  private references?: CommitReferences;
   private body?: CommitBody;
   private footer?: CommitFooter;
 
@@ -41,8 +41,8 @@ export class CommitBuilderImpl implements CommitBuilder {
     return this;
   }
 
-  public withIssueNumbers(issueNumbers: CommitIssueNumbers): CommitBuilder {
-    this.issueNumbers = issueNumbers;
+  public withReferences(references: CommitReferences): CommitBuilder {
+    this.references = references;
     return this;
   }
 
@@ -64,7 +64,7 @@ export class CommitBuilderImpl implements CommitBuilder {
       scope: this.scope,
       subject: this.subject,
       breakingChanges: this.breakingChanges,
-      issueNumbers: this.issueNumbers,
+      references: this.references,
       body: this.body,
       footer: this.footer,
     };

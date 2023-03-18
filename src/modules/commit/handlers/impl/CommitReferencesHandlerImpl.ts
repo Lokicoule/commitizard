@@ -1,28 +1,28 @@
 import { yellow } from "picocolors";
 import { promptConfirm, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitIssueNumbers } from "../../types";
+import { CommitReferences } from "../../types";
 import { CommitHandler } from "../CommitHandler";
 import { AbstractCommitHandler } from "../AbstractCommitHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit issue numbers aborted!";
 
-export class CommitIssueNumbersHandlerImpl
+export class CommitReferencesHandlerImpl
   extends AbstractCommitHandler
   implements CommitHandler
 {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
-    const commitIssueNumbers = await this.selectCommitIssueNumbers();
-    commitBuilder.withIssueNumbers(commitIssueNumbers);
+    const commitReferences = await this.selectCommitReferences();
+    commitBuilder.withReferences(commitReferences);
   }
 
-  private async selectCommitIssueNumbers(): Promise<CommitIssueNumbers> {
-    const commitIssueNumbers = await this.promptCommitIssueNumbers();
-    return commitIssueNumbers;
+  private async selectCommitReferences(): Promise<CommitReferences> {
+    const commitReferences = await this.promptCommitReferences();
+    return commitReferences;
   }
 
-  private async promptCommitIssueNumbers(): Promise<CommitIssueNumbers> {
-    let commitIssueNumbers: string[] = [];
+  private async promptCommitReferences(): Promise<CommitReferences> {
+    let commitReferences: string[] = [];
     let isIssueAffected = await promptConfirm({
       defaultValue: false,
       message: "Does this commit affect any open issues?",
@@ -31,13 +31,13 @@ export class CommitIssueNumbersHandlerImpl
 
     while (isIssueAffected) {
       const issueNumber = await promptText({
-        message: "Please enter the issue number:",
+        message: "Please enter a reference number:",
         placeholder: "e.g., #123 or 123",
         abortMessage: ABORT_MESSAGE,
       });
 
       issueNumber &&
-        commitIssueNumbers.push(
+        commitReferences.push(
           issueNumber.startsWith("#") ? issueNumber : `#${issueNumber}`
         );
 
@@ -48,8 +48,6 @@ export class CommitIssueNumbersHandlerImpl
       });
     }
 
-    return commitIssueNumbers.length > 0
-      ? { title: "Closes", data: commitIssueNumbers.join(", ") }
-      : { title: "", data: "" };
+    return { data: commitReferences.join(", ") };
   }
 }
