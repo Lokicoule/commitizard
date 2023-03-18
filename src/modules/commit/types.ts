@@ -1,6 +1,5 @@
 export interface CommitType {
   data: string;
-  emoji?: string;
 }
 
 export interface CommitScope {
