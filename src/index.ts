@@ -1,20 +1,14 @@
 import { log } from "@clack/prompts";
 import { Command } from "commander";
-import { ConfigCommandFactory } from "./config/factory/ConfigCommandFactory";
-import { getStagedDiff, getStagedFiles, isInsideGitRepo } from "./git";
-import { DEFAULT_MODEL, listModels } from "./openai/openaiUtils";
-import { sanitize } from "./openai/sanitize";
-import { promptConfirm, promptSelect, promptText } from "./prompt";
-import { SmartCommitCommandFactory } from "./smart-commit";
-import { WizardCommandFactory } from "./wizard/factory/WizardCommandFactory";
+import { ConfigCommandFactory } from "./modules/config/factory/ConfigCommandFactory";
+import { getStagedDiff, getStagedFiles, isInsideGitRepo } from "./libs/git";
+import { DEFAULT_MODEL, listModels } from "./libs/openai/openaiUtils";
+import { sanitize } from "./libs/openai/sanitize";
+import { promptConfirm, promptSelect, promptText } from "./libs/prompt";
+import { SmartCommitCommandFactory } from "./modules/smart-commit";
+import { WizardCommandFactory } from "./modules/wizard/factory/WizardCommandFactory";
 
 import "reflect-metadata";
-
-//Import modules
-import { WizardModule } from "./wizard/WizardModule";
-
-/* const wizardModule = new WizardModule(Container.getInstance());
-wizardModule.register(); */
 
 const program = new Command();
 

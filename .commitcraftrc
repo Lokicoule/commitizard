@@ -1,6 +1,16 @@
 {
   "commitOptions": {
     "format": "${type}(${scope}): ${subject}${body}${footer}",
+    "scopes": [
+      {
+        "name": "core",
+        "value": "core"
+      },
+      {
+        "name": "cli",
+        "value": "cli"
+      }
+    ],
     "types": [
       {
         "value": "feat",
