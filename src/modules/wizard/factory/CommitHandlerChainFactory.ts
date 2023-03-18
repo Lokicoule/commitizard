@@ -20,10 +20,11 @@ export class WizardCommitHandlerChainFactoryImpl {
       this.commitHandlerFactory.createWizardCommitGenerationHandler();
     const wizardCommitValidationHandler =
       this.commitHandlerFactory.createWizardCommitValidationHandler();
-
+    const wizardSelectCommitConventionHandler =
+      this.commitHandlerFactory.createWizardSelectCommitConventionHandler();
     const wizardCommitHandlers = [
       wizardAddFilesToCommitHandler,
-      wizardCommitGenerationHandler,
+      wizardSelectCommitConventionHandler,
       wizardCommitValidationHandler,
     ];
 

@@ -23,17 +23,35 @@ export interface Type {
   label: string;
 }
 
-export interface CliOptions {
+export interface ConventionalCliOptions {
   scopes?: Scope[];
   types: Type[];
 }
 
-export type ConventionOptions = {
+export type RedGreenRefactorOptions = {
+  value: string;
+  options: Type[];
+};
+
+export type RedGreenCliOptions = {
+  types: Type[];
+  redPatterns: string[];
+  greenPatterns: string[];
+  refactorPatterns: string[];
+  refactorOptions: RedGreenRefactorOptions[];
+};
+
+export type ConventionalOptions = {
   commitOptions: CommitOptions;
-  cliOptions: CliOptions;
+  cliOptions: ConventionalCliOptions;
+};
+
+export type RedGreenOptions = {
+  commitOptions: CommitOptions;
+  cliOptions: RedGreenCliOptions;
 };
 
 export type Config = {
-  conventional: ConventionOptions;
-  "red-green-refactor": ConventionOptions;
+  conventional: ConventionalOptions;
+  "red-green-refactor": RedGreenOptions;
 };
