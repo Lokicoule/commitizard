@@ -18,7 +18,7 @@ export class WizardAddFilesToCommitHandlerImpl
 
     const commitUpdatedFiles = await promptMultiselect<any, string>({
       message:
-        "Select staged files (optional, press space to select, enter to confirm):",
+        "Select updated files (optional, press space to select, enter to confirm):",
       options: [
         ...updatedFiles.map((file) => ({
           value: file,
