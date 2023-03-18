@@ -1,10 +1,10 @@
 import { promptText } from "../../../../libs/prompt";
-import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitSubject } from "../../types";
-import { CommitHandler } from "../CommitHandler";
-import { AbstractCommitHandler } from "../AbstractCommitHandler";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { AbstractCommitHandler } from "../../../commit/handlers/AbstractCommitHandler";
+import { CommitHandler } from "../../../commit/handlers/CommitHandler";
+import { CommitSubject } from "../../../commit/types";
 
-export class CommitSubjectHandlerImpl
+export class ConventionalCommitSubjectHandlerImpl
   extends AbstractCommitHandler
   implements CommitHandler
 {

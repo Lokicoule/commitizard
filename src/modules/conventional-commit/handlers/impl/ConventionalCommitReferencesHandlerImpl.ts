@@ -1,13 +1,13 @@
 import { yellow } from "picocolors";
 import { promptConfirm, promptText } from "../../../../libs/prompt";
-import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitReferences } from "../../types";
-import { CommitHandler } from "../CommitHandler";
-import { AbstractCommitHandler } from "../AbstractCommitHandler";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { AbstractCommitHandler } from "../../../commit/handlers/AbstractCommitHandler";
+import { CommitHandler } from "../../../commit/handlers/CommitHandler";
+import { CommitReferences } from "../../../commit/types";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit issue numbers aborted!";
 
-export class CommitReferencesHandlerImpl
+export class ConventionalCommitReferencesHandlerImpl
   extends AbstractCommitHandler
   implements CommitHandler
 {

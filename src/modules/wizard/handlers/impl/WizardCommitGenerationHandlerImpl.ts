@@ -1,6 +1,6 @@
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { CommitHandlerChainFactoryImpl } from "../../../commit/factories/impl/CommitHandlerChainFactoryImpl";
-import { CommitHandlerFactoryImpl } from "../../../commit/factories/impl/CommitHandlerFactoryImpl";
+import { ConventionalCommitHandlerChainFactoryImpl } from "../../../conventional-commit/factories/impl/ConventionalCommitHandlerChainFactoryImpl";
+import { ConventionalCommitHandlerFactoryImpl } from "../../../conventional-commit/factories/impl/ConventionalCommitHandlerFactoryImpl";
 import { AbstractWizardCommitHandler } from "../AbstractWizardCommitHandler";
 import { WizardCommitHandler } from "../WizardCommitHandler";
 
@@ -9,12 +9,11 @@ export class WizardCommitGenerationHandlerImpl
   implements WizardCommitHandler
 {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
-    const commitHandlerFactory = new CommitHandlerFactoryImpl();
-    const commitHandlerChainFactory = new CommitHandlerChainFactoryImpl(
-      commitHandlerFactory
-    );
+    const commitHandlerFactory = new ConventionalCommitHandlerFactoryImpl();
+    const commitHandlerChainFactory =
+      new ConventionalCommitHandlerChainFactoryImpl(commitHandlerFactory);
     const commitHandlerChain =
-      commitHandlerChainFactory.createCommitHandlerChain();
+      commitHandlerChainFactory.createConventionalCommitHandlerChain();
 
     await commitHandlerChain.handle(commitBuilder);
   }

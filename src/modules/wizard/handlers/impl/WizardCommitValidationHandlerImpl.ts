@@ -1,11 +1,9 @@
 import { outro } from "@clack/prompts";
 import pc from "picocolors";
-import { Configuration } from "../../../../core/config/Configuration";
 import { ProcessBuilderFactory } from "../../../../core/process/factory/ProcessBuilderFactory";
 import { promptConfirm } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { CommitFormatter } from "../../../commit/formatter/CommitFormatter";
-import { Commit } from "../../../commit/types";
+import { ConventionalCommitFormatter } from "../../../conventional-commit/formatter/ConventionalCommitFormatter";
 import { AbstractWizardCommitHandler } from "../AbstractWizardCommitHandler";
 import { WizardCommitHandler } from "../WizardCommitHandler";
 
@@ -24,7 +22,7 @@ export class WizardCommitValidationHandlerImpl
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     let commit = commitBuilder.build();
 
-    const commitMessage = CommitFormatter.format(commit);
+    const commitMessage = ConventionalCommitFormatter.format(commit);
 
     const confirmCommit = await promptConfirm({
       defaultValue: true,

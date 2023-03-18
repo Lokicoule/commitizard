@@ -1,13 +1,13 @@
 import { yellow } from "picocolors";
 import { promptConfirm, promptText } from "../../../../libs/prompt";
-import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitBreakingChanges } from "../../types";
-import { CommitHandler } from "../CommitHandler";
-import { AbstractCommitHandler } from "../AbstractCommitHandler";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { AbstractCommitHandler } from "../../../commit/handlers/AbstractCommitHandler";
+import { CommitHandler } from "../../../commit/handlers/CommitHandler";
+import { CommitBreakingChanges } from "../../../commit/types";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit breaking changes aborted!";
 
-export class CommitBreakingChangesHandlerImpl
+export class ConventionalCommitBreakingChangesHandlerImpl
   extends AbstractCommitHandler
   implements CommitHandler
 {

@@ -4,7 +4,7 @@ import { ConfigCommand } from "../ConfigCommand";
 
 export class ConfigCommandImpl extends Command implements ConfigCommand {
   public async run(configPath?: string): Promise<void> {
-    const { apiKey, ...safeConfig } = loadConfig();
+    const { ...safeConfig } = loadConfig();
     writeUserConfig(safeConfig, configPath);
   }
 }

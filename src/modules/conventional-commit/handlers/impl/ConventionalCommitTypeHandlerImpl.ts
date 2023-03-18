@@ -1,12 +1,12 @@
 import { Configuration } from "../../../../core/config/Configuration";
-import { promptSelect } from "../../../../libs/prompt";
-import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitType } from "../../types";
-import { CommitHandler } from "../CommitHandler";
-import { AbstractCommitHandler } from "../AbstractCommitHandler";
 import { Type } from "../../../../core/config/types";
+import { promptSelect } from "../../../../libs/prompt";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { AbstractCommitHandler } from "../../../commit/handlers/AbstractCommitHandler";
+import { CommitHandler } from "../../../commit/handlers/CommitHandler";
+import { CommitType } from "../../../commit/types";
 
-export class CommitTypeHandlerImpl
+export class ConventionalCommitTypeHandlerImpl
   extends AbstractCommitHandler
   implements CommitHandler
 {
@@ -14,7 +14,8 @@ export class CommitTypeHandlerImpl
 
   constructor() {
     super();
-    this.commitTypes = Configuration.getConfig().cliOptions.types ?? [];
+    this.commitTypes =
+      Configuration.getConfig().conventional.cliOptions.types ?? [];
   }
 
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
