@@ -1,13 +1,13 @@
 import { outro } from "@clack/prompts";
 import pc from "picocolors";
-import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { AbstractCommitHandler } from "../../../commit/handlers/AbstractCommitHandler";
-import { Commit } from "../../../commit/types";
 import { defaultConfig } from "../../../../core/config";
 import { Configuration } from "../../../../core/config/Configuration";
-import { promptConfirm } from "../../../../libs/prompt";
-import { WizardCommitValidationHandler } from "../WizardCommitValidationHandler";
 import { ProcessBuilderFactory } from "../../../../core/process/factory/ProcessBuilderFactory";
+import { promptConfirm } from "../../../../libs/prompt";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { Commit } from "../../../commit/types";
+import { AbstractWizardCommitHandler } from "../AbstractWizardCommitHandler";
+import { WizardCommitHandler } from "../WizardCommitHandler";
 
 const SUCCESS_MESSAGE = `${pc.green("✔")} ${pc.bgGreen(
   " Commit created successfully!"
@@ -18,8 +18,8 @@ const ERROR_MESSAGE = `${pc.red(
 )} An error occurred while creating the commit!`;
 
 export class WizardCommitValidationHandlerImpl
-  extends AbstractCommitHandler
-  implements WizardCommitValidationHandler
+  extends AbstractWizardCommitHandler
+  implements WizardCommitHandler
 {
   private messageFormat: string = defaultConfig.commitOptions.format;
 

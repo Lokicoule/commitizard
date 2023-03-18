@@ -1,13 +1,13 @@
-import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { AbstractCommitHandler } from "../../../commit/handlers/AbstractCommitHandler";
-import { getUpdatedFiles } from "../../../../libs/git";
 import { ProcessBuilderFactory } from "../../../../core/process/factory/ProcessBuilderFactory";
+import { getUpdatedFiles } from "../../../../libs/git";
 import { logMessage, promptMultiselect } from "../../../../libs/prompt";
-import { WizardAddFilesToCommitHandler } from "../WizardAddFilesToCommitHandler";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { AbstractWizardCommitHandler } from "../AbstractWizardCommitHandler";
+import { WizardCommitHandler } from "../WizardCommitHandler";
 
 export class WizardAddFilesToCommitHandlerImpl
-  extends AbstractCommitHandler
-  implements WizardAddFilesToCommitHandler
+  extends AbstractWizardCommitHandler
+  implements WizardCommitHandler
 {
   protected async processInput(_commitBuilder: CommitBuilder): Promise<void> {
     const updatedFiles = await getUpdatedFiles();

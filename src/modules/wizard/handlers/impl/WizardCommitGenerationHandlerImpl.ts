@@ -1,12 +1,12 @@
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
 import { CommitHandlerChainFactoryImpl } from "../../../commit/factories/impl/CommitHandlerChainFactoryImpl";
 import { CommitHandlerFactoryImpl } from "../../../commit/factories/impl/CommitHandlerFactoryImpl";
-import { AbstractCommitHandler } from "../../../commit/handlers/AbstractCommitHandler";
-import { WizardCommitGenerationHandler } from "../WizardCommitGenerationHandler";
+import { AbstractWizardCommitHandler } from "../AbstractWizardCommitHandler";
+import { WizardCommitHandler } from "../WizardCommitHandler";
 
 export class WizardCommitGenerationHandlerImpl
-  extends AbstractCommitHandler
-  implements WizardCommitGenerationHandler
+  extends AbstractWizardCommitHandler
+  implements WizardCommitHandler
 {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commitHandlerFactory = new CommitHandlerFactoryImpl();

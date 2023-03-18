@@ -1,27 +1,26 @@
 import { WizardAddFilesToCommitHandlerImpl } from "../handlers/impl/WizardAddFilesToCommitHandlerImpl";
 import { WizardCommitGenerationHandlerImpl } from "../handlers/impl/WizardCommitGenerationHandlerImpl";
 import { WizardCommitValidationHandlerImpl } from "../handlers/impl/WizardCommitValidationHandlerImpl";
-import { WizardCommitGenerationHandler } from "../handlers/WizardCommitGenerationHandler";
-import { WizardCommitValidationHandler } from "../handlers/WizardCommitValidationHandler";
+import { WizardCommitHandler } from "../handlers/WizardCommitHandler";
 
 export interface WizardCommitHandlerFactory {
-  createWizardCommitValidationHandler(): WizardCommitValidationHandler;
-  createWizardCommitGenerationHandler(): WizardCommitGenerationHandler;
-  createWizardAddFilesToCommitHandler(): WizardCommitGenerationHandler;
+  createWizardCommitValidationHandler(): WizardCommitHandler;
+  createWizardCommitGenerationHandler(): WizardCommitHandler;
+  createWizardAddFilesToCommitHandler(): WizardCommitHandler;
 }
 
 export class WizardCommitHandlerFactoryImpl
   implements WizardCommitHandlerFactory
 {
-  public createWizardCommitValidationHandler(): WizardCommitValidationHandler {
+  public createWizardCommitValidationHandler(): WizardCommitHandler {
     return new WizardCommitValidationHandlerImpl();
   }
 
-  public createWizardCommitGenerationHandler(): WizardCommitGenerationHandler {
+  public createWizardCommitGenerationHandler(): WizardCommitHandler {
     return new WizardCommitGenerationHandlerImpl();
   }
 
-  public createWizardAddFilesToCommitHandler(): WizardCommitGenerationHandler {
+  public createWizardAddFilesToCommitHandler(): WizardCommitHandler {
     return new WizardAddFilesToCommitHandlerImpl();
   }
 }
