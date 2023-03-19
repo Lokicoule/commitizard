@@ -7,6 +7,13 @@ import {
 } from "../../state-machine/RedGreenRefactorStateMachine";
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
+/**
+ * @class TypeSelectionHandler
+ * @extends BaseRedGreenRefactorHandler
+ * @description
+ * It is responsible for handling the state of the type selection.
+ * @returns {RedGreenRefactorState | null}
+ */
 export class TypeSelectionHandler extends BaseRedGreenRefactorHandler {
   private configuration: Config;
 

@@ -7,6 +7,12 @@ import {
 } from "../../state-machine/RedGreenRefactorStateMachine";
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
+/**
+ * @class PatternGroupSelectionHandler
+ * @extends BaseRedGreenRefactorHandler
+ * @description
+ * It is responsible for handling the state of the pattern group selection.
+ */
 export class PatternGroupSelectionHandler extends BaseRedGreenRefactorHandler {
   private configuration: Config;
 

@@ -20,6 +20,11 @@ export interface Context {
   store: Store;
 }
 
+/**
+ * The transitions of the state machine.
+ * The key is the current state, and the value is the list of possible next states.
+ * The list of possible next states is used to determine if a transition is valid.
+ */
 const transitions: Record<RedGreenRefactorState, RedGreenRefactorState[]> = {
   [RedGreenRefactorState.TYPE_SELECTION]: [
     RedGreenRefactorState.PATTERN_SUBJECT_SELECTION,

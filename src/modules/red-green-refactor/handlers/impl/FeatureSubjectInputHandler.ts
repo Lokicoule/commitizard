@@ -6,6 +6,12 @@ import {
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 import { yellow } from "picocolors";
 
+/**
+ * @class FeatureSubjectInputHandler
+ * @extends BaseRedGreenRefactorHandler
+ * @description
+ * It is responsible for handling the state of the subject's feature input.
+ */
 export class FeatureSubjectInputHandler extends BaseRedGreenRefactorHandler {
   public async handle(
     stateMachine: RedGreenRefactorStateMachine

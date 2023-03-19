@@ -11,6 +11,12 @@ import {
 } from "../../state-machine/RedGreenRefactorStateMachine";
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
+/**
+ * @class PatternSubjectSelectionHandler
+ * @extends BaseRedGreenRefactorHandler
+ * @description
+ * It is responsible for handling the state of the pattern subject selection.
+ */
 export class PatternSubjectSelectionHandler extends BaseRedGreenRefactorHandler {
   private configuration: Config;
 

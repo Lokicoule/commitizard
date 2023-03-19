@@ -5,6 +5,12 @@ import {
 } from "../../state-machine/RedGreenRefactorStateMachine";
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
+/**
+ * @class CustomSubjectInputHandler
+ * @extends BaseRedGreenRefactorHandler
+ * @description
+ * It is responsible for handling the state of the subject input.
+ */
 export class CustomSubjectInputHandler extends BaseRedGreenRefactorHandler {
   public async handle(
     stateMachine: RedGreenRefactorStateMachine
