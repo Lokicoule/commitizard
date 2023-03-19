@@ -29,10 +29,19 @@ export async function isInsideGitRepo(): Promise<boolean> {
   return Boolean(stdout);
 }
 
-export const getUpdatedFiles = async () => {
+export const getFiles = async () => {
+  const unstagedFiles = await getUnstagedFiles();
+  const untrackedFiles = await getUntrackedFiles();
+  const stagedFiles = await getStagedFiles();
+
+  const files = [...unstagedFiles, ...untrackedFiles];
+
+  return files.filter((file) => !stagedFiles?.includes(file));
+};
+
+export const getUnstagedFiles = async () => {
   const gitProcessBuilder = ProcessBuilderFactory.create()
     .addArg("diff")
-    .addArg("HEAD")
     .addArg("--name-only");
   excludeFromDiff.forEach((file) => gitProcessBuilder.addArg(file));
 
@@ -41,9 +50,22 @@ export const getUpdatedFiles = async () => {
     .split("\n")
     .filter(Boolean);
 
-  const stagedFiles = await getStagedFiles();
+  return files || [];
+};
 
-  return files.filter((file) => !stagedFiles?.includes(file));
+export const getUntrackedFiles = async () => {
+  const gitProcessBuilder = ProcessBuilderFactory.create()
+    .addArg("ls-files")
+    .addArg("--others")
+    .addArg("--exclude-standard");
+  excludeFromDiff.forEach((file) => gitProcessBuilder.addArg(file));
+
+  const gitProcess = gitProcessBuilder.spawn("git");
+  const files = (await streamToString(gitProcess.stdout))
+    .split("\n")
+    .filter(Boolean);
+
+  return files || [];
 };
 
 export const getStagedFiles = async () => {

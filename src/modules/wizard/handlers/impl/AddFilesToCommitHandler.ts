@@ -1,5 +1,5 @@
 import { ProcessBuilderFactory } from "../../../../core/process/factory/ProcessBuilderFactory";
-import { getStagedFiles, getUpdatedFiles } from "../../../../libs/git";
+import { getStagedFiles, getFiles } from "../../../../libs/git";
 import {
   WizardCommitState,
   WizardCommitStateMachine,
@@ -16,7 +16,7 @@ const MAX_FILES_TO_SHOW = 5;
  */
 async function logFiles(files: string[], promptManager: any): Promise<void> {
   promptManager.log({
-    message: `Found ${files.length} files:`,
+    message: `Found ${files.length} staged files:`,
     level: "info",
   });
 
@@ -48,16 +48,16 @@ export class AddFilesToCommitHandler extends BaseWizardCommitHandler {
 
     // Get list of staged files
     const stagedFiles = await getStagedFiles();
+    const filesToLog = stagedFiles.slice(0, MAX_FILES_TO_SHOW);
 
-    if (stagedFiles.length > 0) {
-      // If there are staged files, log them to the console
-      await logFiles(stagedFiles, promptManager);
-    } else {
+    // If there are staged files, log them to the console
+    await logFiles(filesToLog, promptManager);
+
+    if (stagedFiles.length <= MAX_FILES_TO_SHOW) {
       // Otherwise, prompt user to select updated files to add to the commit
-      const updatedFiles = await getUpdatedFiles();
+      const updatedFiles = await getFiles();
 
       if (updatedFiles.length === 0) {
-        // If there are no updated files to commit, return null to indicate the handler is done
         promptManager.log({
           message: "You have no updated files to commit!",
           level: "info",
@@ -68,7 +68,7 @@ export class AddFilesToCommitHandler extends BaseWizardCommitHandler {
       // Prompt user to select files to add to the commit
       const commitUpdatedFiles = await promptManager.multiSelect<any, string>({
         message:
-          "Select updated files (optional, press space to select, enter to confirm):",
+          "Select files (optional, press space to select, enter to confirm):",
         options: updatedFiles.map((file) => ({ value: file, label: file })),
       });
 
