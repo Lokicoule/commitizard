@@ -1,3 +1,4 @@
+import { Configuration } from "../../../../core/config";
 import { RedGreenRefactorStateMachineFactoryImpl } from "../../../red-green-refactor/factories/impl/RedGreenRefactorStateMachineFactoryImpl";
 import { RedGreenRefactorFormatter } from "../../../red-green-refactor/formatter/RedGreenRefactorFormatter";
 import {
@@ -14,7 +15,12 @@ export class UseRedGreenRefactorHandler extends BaseWizardCommitHandler {
 
     await stateMachine.handleCommit();
 
-    wizard.setMessage(RedGreenRefactorFormatter.format(stateMachine));
+    wizard.setMessage(
+      RedGreenRefactorFormatter.format(
+        stateMachine,
+        Configuration.getConfig()["red-green-refactor"]
+      )
+    );
 
     return WizardCommitState.REVIEW_COMMIT_MESSAGE;
   }

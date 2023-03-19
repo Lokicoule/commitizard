@@ -1,4 +1,4 @@
-import { Configuration } from "../../../core/config";
+import { RedGreenOptions } from "../../../core/config/types";
 import { RedGreenRefactorStateMachine } from "../state-machine/RedGreenRefactorStateMachine";
 
 /**
@@ -20,12 +20,12 @@ export class RedGreenRefactorFormatter {
    * @returns {string}
    * @memberof RedGreenRefactorFormatter
    */
-  public static format(stateMachine: RedGreenRefactorStateMachine): string {
-    const template =
-      Configuration.getConfig()["red-green-refactor"].commitOptions.template;
-    const templateOrder =
-      Configuration.getConfig()["red-green-refactor"].commitOptions
-        .templateOrder;
+  public static format(
+    stateMachine: RedGreenRefactorStateMachine,
+    options: RedGreenOptions
+  ): string {
+    const template = options.commitOptions.template;
+    const templateOrder = options.commitOptions.templateOrder;
 
     const formattedCommit = templateOrder
       .map((templateKey) => {
