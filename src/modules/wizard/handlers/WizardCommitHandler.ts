@@ -1,6 +1,9 @@
-import { Handler } from "../../../core/handler/Handler";
-import { CommitBuilder } from "../../commit/builder/CommitBuilder";
+import {
+  WizardCommitState,
+  WizardCommitStateMachine,
+} from "../state-machine/WizardCommitStateMachine";
 
-export interface WizardCommitHandler extends Handler<CommitBuilder> {
-  handle(commitBuilder: CommitBuilder): Promise<void>;
+export interface WizardCommitHandler {
+  setNext(handler: WizardCommitHandler): WizardCommitHandler;
+  handle(wizard: WizardCommitStateMachine): Promise<WizardCommitState | null>;
 }

@@ -1,4 +1,11 @@
-import { confirm, select, text, multiselect } from "@clack/prompts";
+import {
+  confirm,
+  select,
+  text,
+  multiselect,
+  intro,
+  outro,
+} from "@clack/prompts";
 import { promptWithCancel } from "./promptUtils";
 
 export type SelectOption<Value> = Value extends string | boolean | number
@@ -98,4 +105,12 @@ export async function promptConfirm({
       }),
     abortMessage
   );
+}
+
+export function promptIntro(message: string): void {
+  intro(message);
+}
+
+export function promptOutro(message: string): void {
+  outro(message);
 }
