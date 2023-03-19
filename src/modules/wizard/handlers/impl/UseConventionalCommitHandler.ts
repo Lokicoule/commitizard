@@ -7,6 +7,7 @@ import {
   WizardCommitState,
 } from "../../state-machine/WizardCommitStateMachine";
 import { BaseWizardCommitHandler } from "./BaseWizardCommitHandler";
+import { Configuration } from "../../../../core/config";
 
 export class UseConventionalCommitHandler extends BaseWizardCommitHandler {
   public async handle(
@@ -21,7 +22,10 @@ export class UseConventionalCommitHandler extends BaseWizardCommitHandler {
 
     await commitHandlerChain.handle(commitBuilder);
 
-    const message = ConventionalCommitFormatter.format(commitBuilder.build());
+    const message = ConventionalCommitFormatter.format(
+      commitBuilder.build(),
+      Configuration.getConfig().conventional
+    );
 
     wizard.setMessage(message);
     return WizardCommitState.REVIEW_COMMIT_MESSAGE;

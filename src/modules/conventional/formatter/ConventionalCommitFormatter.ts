@@ -1,15 +1,14 @@
 import { Configuration } from "../../../core/config/Configuration";
+import { ConventionalOptions } from "../../../core/config/types";
 import { Commit } from "../types";
 
 export class ConventionalCommitFormatter {
-  public static format(commit: Commit): string {
+  public static format(commit: Commit, options: ConventionalOptions): string {
     const { type, scope, subject, body, footer, breakingChanges, references } =
       commit;
 
-    const template =
-      Configuration.getConfig().conventional.commitOptions.template;
-    const templateOrder =
-      Configuration.getConfig().conventional.commitOptions.templateOrder;
+    const template = options.commitOptions.template;
+    const templateOrder = options.commitOptions.templateOrder;
 
     const formattedCommit = templateOrder
       .map((templateKey) => {
