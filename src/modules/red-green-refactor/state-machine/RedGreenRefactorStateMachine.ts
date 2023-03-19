@@ -1,3 +1,5 @@
+import { Store } from "./impl/RedGreenRefactorStateMachineImpl";
+
 /**
  * @enum RedGreenRefactorState
  * @description
@@ -67,6 +69,16 @@ export interface RedGreenRefactorStateMachine {
    * @see RedGreenRefactorHandler
    */
   handleCommit(): Promise<void>;
+
+  /**
+   * @method getStore
+   * @description
+   * It is responsible for getting the store.
+   * @returns {Readonly<Store>}
+   * @memberof RedGreenRefactorStateMachine
+   * @see Store
+   */
+  getStore(): Readonly<Store>;
 
   /**
    * @method setMessage

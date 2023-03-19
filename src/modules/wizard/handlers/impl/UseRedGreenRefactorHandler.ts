@@ -11,13 +11,16 @@ export class UseRedGreenRefactorHandler extends BaseWizardCommitHandler {
   public async handle(
     wizard: WizardCommitStateMachine
   ): Promise<WizardCommitState | null> {
-    const stateMachine = new RedGreenRefactorStateMachineFactoryImpl().create();
+    const stateMachine = new RedGreenRefactorStateMachineFactoryImpl().create(
+      this.promptManager,
+      this.configuration
+    );
 
     await stateMachine.handleCommit();
 
     wizard.setMessage(
       RedGreenRefactorFormatter.format(
-        stateMachine,
+        stateMachine.getStore(),
         Configuration.getConfig()["red-green-refactor"]
       )
     );

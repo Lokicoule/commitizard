@@ -1,6 +1,5 @@
-import { RedGreenRefactorStateMachineFactoryImpl } from "../factories/impl/RedGreenRefactorStateMachineFactoryImpl";
-import { RedGreenRefactorFormatter } from "./RedGreenRefactorFormatter";
 import { RedGreenOptions } from "../../../core/config/types";
+import { RedGreenRefactorFormatter } from "./RedGreenRefactorFormatter";
 
 const stubOptions = {
   commitOptions: {
@@ -14,13 +13,13 @@ const stubOptions = {
 
 describe("RedGreenRefactorFormatter", () => {
   it("should format commit", () => {
-    const stateMachine = new RedGreenRefactorStateMachineFactoryImpl().create();
-    stateMachine.setType("type");
-    stateMachine.setMessage("message");
     const formattedCommit = RedGreenRefactorFormatter.format(
-      stateMachine,
+      {
+        type: "GREEN",
+        message: "message",
+      },
       stubOptions
     );
-    expect(formattedCommit).toBe("type: message");
+    expect(formattedCommit).toBe("GREEN: message");
   });
 });

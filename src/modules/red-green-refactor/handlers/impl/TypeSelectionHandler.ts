@@ -1,6 +1,4 @@
-import { Configuration } from "../../../../core/config";
-import { Config, Type } from "../../../../core/config/types";
-import { promptSelect } from "../../../../libs/prompt";
+import { Type } from "../../../../core/config/types";
 import {
   RedGreenRefactorState,
   RedGreenRefactorStateMachine,
@@ -15,13 +13,6 @@ import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
  * @returns {RedGreenRefactorState | null}
  */
 export class TypeSelectionHandler extends BaseRedGreenRefactorHandler {
-  private configuration: Config;
-
-  constructor() {
-    super();
-    this.configuration = Configuration.getConfig();
-  }
-
   public async handle(
     stateMachine: RedGreenRefactorStateMachine
   ): Promise<RedGreenRefactorState | null> {
@@ -39,7 +30,7 @@ export class TypeSelectionHandler extends BaseRedGreenRefactorHandler {
   }
 
   private async selectCommitType(): Promise<string> {
-    const commitType = await promptSelect<Type[], string>({
+    const commitType = await this.promptManager.select<Type[], string>({
       message: "Select commit type:",
       options: this.configuration["red-green-refactor"].cliOptions.types,
       abortMessage: "Commit type selection aborted!",

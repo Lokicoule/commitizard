@@ -1,4 +1,3 @@
-import { promptConfirm, promptOutro } from "../../../../libs/prompt";
 import { BaseWizardCommitHandler } from "./BaseWizardCommitHandler";
 import { yellow, green } from "picocolors";
 import {
@@ -10,7 +9,7 @@ export class ReviewCommitHandler extends BaseWizardCommitHandler {
   public async handle(
     wizard: WizardCommitStateMachine
   ): Promise<WizardCommitState | null> {
-    const confirmCommit = await promptConfirm({
+    const confirmCommit = await this.promptManager.confirm({
       defaultValue: true,
       message: `Commit message: \n\n${green(
         wizard.getMessage()
@@ -19,7 +18,10 @@ export class ReviewCommitHandler extends BaseWizardCommitHandler {
     });
 
     if (!confirmCommit) {
-      promptOutro(`${yellow("✖")} Commit creation aborted!`);
+      this.promptManager.log({
+        message: `${yellow("✖")} Commit creation aborted!`,
+        level: "warn",
+      });
       return null;
     }
 

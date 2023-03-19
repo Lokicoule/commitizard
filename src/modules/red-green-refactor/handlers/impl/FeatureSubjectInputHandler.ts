@@ -1,10 +1,9 @@
-import { promptText } from "../../../../libs/prompt";
+import { yellow } from "picocolors";
 import {
   RedGreenRefactorState,
   RedGreenRefactorStateMachine,
 } from "../../state-machine/RedGreenRefactorStateMachine";
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
-import { yellow } from "picocolors";
 
 /**
  * @class FeatureSubjectInputHandler
@@ -44,7 +43,7 @@ export class FeatureSubjectInputHandler extends BaseRedGreenRefactorHandler {
     let commitMessage;
 
     while (!commitMessage) {
-      commitMessage = await promptText({
+      commitMessage = await this.promptManager.text({
         message: "Enter feature name:",
         abortMessage: `${yellow("Aborting commit")}`,
       });

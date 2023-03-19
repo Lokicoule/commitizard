@@ -1,9 +1,7 @@
-import { Configuration } from "../../../../core/config";
-import { Config, Type } from "../../../../core/config/types";
-import { promptSelect } from "../../../../libs/prompt";
+import { Type } from "../../../../core/config/types";
 import {
-  RedGreenRefactorStateMachine,
   RedGreenRefactorState,
+  RedGreenRefactorStateMachine,
 } from "../../state-machine/RedGreenRefactorStateMachine";
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
@@ -14,13 +12,6 @@ import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
  * It is responsible for handling the state of the pattern group selection.
  */
 export class PatternGroupSelectionHandler extends BaseRedGreenRefactorHandler {
-  private configuration: Config;
-
-  constructor() {
-    super();
-    this.configuration = Configuration.getConfig();
-  }
-
   public async handle(
     stateMachine: RedGreenRefactorStateMachine
   ): Promise<RedGreenRefactorState | null> {
@@ -35,7 +26,7 @@ export class PatternGroupSelectionHandler extends BaseRedGreenRefactorHandler {
     );
 
     for (const patternOption of patternOptions) {
-      const selectedOption = await promptSelect<Type[], string>({
+      const selectedOption = await this.promptManager.select<Type[], string>({
         message: "Which option would you like to use?",
         options: patternOption.options,
         abortMessage: "Option selection aborted!",

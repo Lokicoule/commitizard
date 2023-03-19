@@ -1,3 +1,5 @@
+import { Config } from "../../../../core/config";
+import { PromptManager } from "../../../../libs/prompt";
 import { CustomSubjectInputHandler } from "../../handlers/impl/CustomSubjectInputHandler";
 import { FeatureSubjectInputHandler } from "../../handlers/impl/FeatureSubjectInputHandler";
 import { PatternGroupSelectionHandler } from "../../handlers/impl/PatternGroupSelectionHandler";
@@ -46,7 +48,11 @@ export class RedGreenRefactorStateMachineImpl
   private context: Context;
   private handlers: Record<RedGreenRefactorState, RedGreenRefactorHandler>;
 
-  constructor(initialState: RedGreenRefactorState) {
+  constructor(
+    initialState: RedGreenRefactorState,
+    configuration: Config,
+    promptManager: PromptManager
+  ) {
     this.context = {
       state: initialState,
       store: {
@@ -55,15 +61,18 @@ export class RedGreenRefactorStateMachineImpl
       },
     };
     this.handlers = {
-      [RedGreenRefactorState.TYPE_SELECTION]: new TypeSelectionHandler(),
+      [RedGreenRefactorState.TYPE_SELECTION]: new TypeSelectionHandler(
+        promptManager,
+        configuration
+      ),
       [RedGreenRefactorState.PATTERN_SUBJECT_SELECTION]:
-        new PatternSubjectSelectionHandler(),
+        new PatternSubjectSelectionHandler(promptManager, configuration),
       [RedGreenRefactorState.FEATURE_SUBJECT_INPUT]:
-        new FeatureSubjectInputHandler(),
+        new FeatureSubjectInputHandler(promptManager, configuration),
       [RedGreenRefactorState.CUSTOM_SUBJECT_INPUT]:
-        new CustomSubjectInputHandler(),
+        new CustomSubjectInputHandler(promptManager, configuration),
       [RedGreenRefactorState.PATTERN_GROUP_SELECTION]:
-        new PatternGroupSelectionHandler(),
+        new PatternGroupSelectionHandler(promptManager, configuration),
     };
   }
 
@@ -77,6 +86,10 @@ export class RedGreenRefactorStateMachineImpl
         this.transitionTo(nextState);
       }
     }
+  }
+
+  public getStore(): Readonly<Store> {
+    return this.context.store;
   }
 
   public setMessage(message: string): void {

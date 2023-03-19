@@ -9,6 +9,8 @@ import {
   WizardCommitState,
   WizardCommitStateMachine,
 } from "../WizardCommitStateMachine";
+import { Config } from "../../../../core/config";
+import { PromptManager } from "../../../../libs/prompt";
 
 export type Store = {
   message: string;
@@ -43,7 +45,11 @@ export class WizardCommitStateMachineImpl implements WizardCommitStateMachine {
   private context: Context;
   private handlers: Record<WizardCommitState, WizardCommitHandler>;
 
-  constructor(initialState: WizardCommitState) {
+  constructor(
+    initialState: WizardCommitState,
+    configuration: Config,
+    promptManager: PromptManager
+  ) {
     this.context = {
       state: initialState,
       store: {
@@ -51,16 +57,24 @@ export class WizardCommitStateMachineImpl implements WizardCommitStateMachine {
       },
     };
     this.handlers = {
-      [WizardCommitState.ADD_FILES_TO_COMMIT]: new AddFilesToCommitHandler(),
-      [WizardCommitState.SELECT_COMMIT_CONVENTION]:
-        new SelectConventionHandler(),
+      [WizardCommitState.ADD_FILES_TO_COMMIT]: new AddFilesToCommitHandler(
+        promptManager,
+        configuration
+      ),
+      [WizardCommitState.SELECT_COMMIT_CONVENTION]: new SelectConventionHandler(
+        promptManager,
+        configuration
+      ),
       [WizardCommitState.USE_CONVENTIONAL_COMMIT_CONVENTION]:
-        new UseConventionalCommitHandler(),
+        new UseConventionalCommitHandler(promptManager, configuration),
       [WizardCommitState.USE_RED_GREEN_REFACTOR_COMMIT_CONVENTION]:
-        new UseRedGreenRefactorHandler(),
-      [WizardCommitState.REVIEW_COMMIT_MESSAGE]: new ReviewCommitHandler(),
+        new UseRedGreenRefactorHandler(promptManager, configuration),
+      [WizardCommitState.REVIEW_COMMIT_MESSAGE]: new ReviewCommitHandler(
+        promptManager,
+        configuration
+      ),
       [WizardCommitState.RUN_GIT_COMMIT_PROCESS]:
-        new RunGitCommitProcessHandler(),
+        new RunGitCommitProcessHandler(promptManager, configuration),
     };
   }
 

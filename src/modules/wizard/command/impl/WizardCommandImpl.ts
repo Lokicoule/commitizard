@@ -1,28 +1,27 @@
 import { Command } from "commander";
 import { Configuration } from "../../../../core/config/Configuration";
-import {
-  WizardCommitStateMachine,
-  WizardCommitState,
-} from "../../state-machine/WizardCommitStateMachine";
-import { WizardCommitStateMachineImpl } from "../../state-machine/impl/WizardCommitStateMachineImpl";
-import { WizardCommand } from "../WizardCommand";
-import { promptIntro } from "../../../../libs/prompt";
+import { PromptManagerImpl } from "../../../../libs/prompt/impl/PromptManagerImpl";
 import { WizardCommitStateMachineFactory } from "../../factory/WizardCommitStateMachineFactory";
-import { WizardCommitStateMachineFactoryImpl } from "../../factory/impl/WizardCommitStateMachineFactoryImpl";
+import { WizardCommand } from "../WizardCommand";
 
 export class WizardCommandImpl extends Command implements WizardCommand {
-  private stateMachineFactory: WizardCommitStateMachineFactory;
   constructor() {
     super();
-    this.stateMachineFactory = new WizardCommitStateMachineFactoryImpl();
   }
 
   async run(configPath?: string): Promise<void> {
-    promptIntro("GitHub Commit Message Wizard");
+    const promptManager = new PromptManagerImpl();
 
-    Configuration.initialize(configPath);
+    promptManager.intro({
+      message: "Welcome to the commit wizard!",
+    });
 
-    const stateMachine = this.stateMachineFactory.create();
+    const config = Configuration.initialize(configPath);
+
+    const stateMachine = WizardCommitStateMachineFactory.create(
+      config,
+      promptManager
+    );
     stateMachine.handleCommit();
   }
 }

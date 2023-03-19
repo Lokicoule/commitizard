@@ -1,3 +1,5 @@
+import { Config } from "../../../../core/config";
+import { PromptManager } from "../../../../libs/prompt";
 import {
   RedGreenRefactorState,
   RedGreenRefactorStateMachine,
@@ -18,7 +20,13 @@ export abstract class BaseRedGreenRefactorHandler
   implements RedGreenRefactorHandler
 {
   private nextHandler: RedGreenRefactorHandler | null = null;
+  protected promptManager: PromptManager;
+  protected configuration: Config;
 
+  constructor(promptManager: PromptManager, configuration: Config) {
+    this.promptManager = promptManager;
+    this.configuration = configuration;
+  }
   /**
    * @name setNext
    * @description

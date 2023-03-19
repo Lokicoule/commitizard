@@ -1,5 +1,5 @@
 import { yellow } from "picocolors";
-import { promptConfirm, promptText } from "../../../../libs/prompt";
+import { PromptManager } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
 import { CommitBody } from "../../types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
@@ -14,14 +14,14 @@ export class ConventionalBodyHandler extends BaseConventionalHandler {
 
   private async selectCommitBody(): Promise<CommitBody> {
     const bodyLines: string[] = [];
-    let hasBody = await promptConfirm({
+    let hasBody = await this.promptManager.confirm({
       defaultValue: false,
       message: "Does this commit have a body?",
       abortMessage: ABORT_MESSAGE,
     });
 
     while (hasBody) {
-      const bodyLine = await promptText({
+      const bodyLine = await this.promptManager.text({
         message: "Please enter a body line:",
         abortMessage: ABORT_MESSAGE,
       });
@@ -30,7 +30,7 @@ export class ConventionalBodyHandler extends BaseConventionalHandler {
         bodyLines.push(bodyLine);
       }
 
-      hasBody = await promptConfirm({
+      hasBody = await this.promptManager.confirm({
         defaultValue: false,
         message: "Do you need another body line?",
         abortMessage: ABORT_MESSAGE,

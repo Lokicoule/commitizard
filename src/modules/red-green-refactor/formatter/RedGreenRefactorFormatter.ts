@@ -1,4 +1,5 @@
 import { RedGreenOptions } from "../../../core/config/types";
+import { Store } from "../state-machine/impl/RedGreenRefactorStateMachineImpl";
 import { RedGreenRefactorStateMachine } from "../state-machine/RedGreenRefactorStateMachine";
 
 /**
@@ -20,10 +21,7 @@ export class RedGreenRefactorFormatter {
    * @returns {string}
    * @memberof RedGreenRefactorFormatter
    */
-  public static format(
-    stateMachine: RedGreenRefactorStateMachine,
-    options: RedGreenOptions
-  ): string {
+  public static format(store: Store, options: RedGreenOptions): string {
     const template = options.commitOptions.template;
     const templateOrder = options.commitOptions.templateOrder;
 
@@ -31,12 +29,9 @@ export class RedGreenRefactorFormatter {
       .map((templateKey) => {
         switch (templateKey) {
           case "type":
-            return template.type.replace("{{type}}", stateMachine.getType());
+            return template.type.replace("{{type}}", store.type);
           case "subject":
-            return template.subject.replace(
-              "{{subject}}",
-              stateMachine.getMessage()
-            );
+            return template.subject.replace("{{subject}}", store.message);
           default:
             return "";
         }

@@ -1,5 +1,4 @@
 import { Type } from "../../../../core/config/types";
-import { promptSelect } from "../../../../libs/prompt";
 import {
   WizardCommitStateMachine,
   WizardCommitState,
@@ -10,7 +9,6 @@ export class SelectConventionHandler extends BaseWizardCommitHandler {
   public async handle(
     _wizard: WizardCommitStateMachine
   ): Promise<WizardCommitState | null> {
-    console.log("Selecting convention...");
     const convention = await this.selectConvention();
 
     if (convention === "conventional") {
@@ -21,7 +19,7 @@ export class SelectConventionHandler extends BaseWizardCommitHandler {
   }
 
   private async selectConvention(): Promise<string> {
-    const convention = await promptSelect<Type[], string>({
+    const convention = await this.promptManager.select<Type[], string>({
       message: "Which convention would you like to use?",
       options: [
         {

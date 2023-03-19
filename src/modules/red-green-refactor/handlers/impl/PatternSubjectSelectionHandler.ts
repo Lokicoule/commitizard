@@ -1,10 +1,4 @@
-import { Configuration } from "../../../../core/config";
-import {
-  Config,
-  RedGreenCliOptions,
-  Type,
-} from "../../../../core/config/types";
-import { promptSelect } from "../../../../libs/prompt";
+import { RedGreenCliOptions, Type } from "../../../../core/config/types";
 import {
   RedGreenRefactorState,
   RedGreenRefactorStateMachine,
@@ -18,12 +12,6 @@ import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
  * It is responsible for handling the state of the pattern subject selection.
  */
 export class PatternSubjectSelectionHandler extends BaseRedGreenRefactorHandler {
-  private configuration: Config;
-
-  constructor() {
-    super();
-    this.configuration = Configuration.getConfig();
-  }
   public async handle(
     stateMachine: RedGreenRefactorStateMachine
   ): Promise<RedGreenRefactorState | null> {
@@ -68,7 +56,7 @@ export class PatternSubjectSelectionHandler extends BaseRedGreenRefactorHandler 
       label: option,
     }));
 
-    const convention = await promptSelect<Type[], string>({
+    const convention = await this.promptManager.select<Type[], string>({
       message: "Which convention would you like to use?",
       options: [
         {

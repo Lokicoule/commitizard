@@ -1,3 +1,5 @@
+import { Config } from "../../../../core/config";
+import { PromptManager } from "../../../../libs/prompt";
 import { ConventionalHandler } from "../../handlers/ConventionalHandler";
 import { ConventionalBodyHandler } from "../../handlers/impl/ConventionalBodyHandler";
 import { ConventionalBreakingChangesHandler } from "../../handlers/impl/ConventionalBreakingChangesHandler";
@@ -11,31 +13,51 @@ import { ConventionalHandlerFactory } from "../ConventionalHandlerFactory";
 export class ConventionalHandlerFactoryImpl
   implements ConventionalHandlerFactory
 {
+  private configuration: Config;
+  private promptManager: PromptManager;
+
+  constructor(promptManager: PromptManager, configuration: Config) {
+    this.configuration = configuration;
+    this.promptManager = promptManager;
+  }
+
   public createTypeHandler(): ConventionalHandler {
-    return new ConventionalTypeHandler();
+    return new ConventionalTypeHandler(this.promptManager, this.configuration);
   }
 
   public createScopeHandler(): ConventionalHandler {
-    return new ConventionalScopeHandler();
+    return new ConventionalScopeHandler(this.promptManager, this.configuration);
   }
 
   public createSubjectHandler(): ConventionalHandler {
-    return new ConventionalSubjectHandler();
+    return new ConventionalSubjectHandler(
+      this.promptManager,
+      this.configuration
+    );
   }
 
   public createBreakingChangesHandler(): ConventionalHandler {
-    return new ConventionalBreakingChangesHandler();
+    return new ConventionalBreakingChangesHandler(
+      this.promptManager,
+      this.configuration
+    );
   }
 
   public createReferencesHandler(): ConventionalHandler {
-    return new ConventionalReferencesHandler();
+    return new ConventionalReferencesHandler(
+      this.promptManager,
+      this.configuration
+    );
   }
 
   public createBodyHandler(): ConventionalHandler {
-    return new ConventionalBodyHandler();
+    return new ConventionalBodyHandler(this.promptManager, this.configuration);
   }
 
   public createFooterHandler(): ConventionalHandler {
-    return new ConventionalFooterHandler();
+    return new ConventionalFooterHandler(
+      this.promptManager,
+      this.configuration
+    );
   }
 }

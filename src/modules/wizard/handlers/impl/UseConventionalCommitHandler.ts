@@ -14,7 +14,10 @@ export class UseConventionalCommitHandler extends BaseWizardCommitHandler {
     wizard: WizardCommitStateMachine
   ): Promise<WizardCommitState | null> {
     const commitBuilder = CommitBuilderFactoryImpl.create();
-    const commitHandlerFactory = new ConventionalHandlerFactoryImpl();
+    const commitHandlerFactory = new ConventionalHandlerFactoryImpl(
+      this.promptManager,
+      this.configuration
+    );
     const commitHandlerChainFactory = new ConventionalPipelineFactoryImpl(
       commitHandlerFactory
     );

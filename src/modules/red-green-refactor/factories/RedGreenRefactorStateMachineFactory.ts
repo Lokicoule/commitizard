@@ -1,3 +1,5 @@
+import { Config } from "../../../core/config";
+import { PromptManager } from "../../../libs/prompt";
 import { RedGreenRefactorStateMachine } from "../state-machine/RedGreenRefactorStateMachine";
 
 /**
@@ -8,6 +10,8 @@ import { RedGreenRefactorStateMachine } from "../state-machine/RedGreenRefactorS
 export interface RedGreenRefactorStateMachineFactory {
   /**
    * @method create
+   * @param {PromptManager} promptManager
+   * @param {Config} configuration
    * @description
    * It is responsible for creating a RedGreenRefactorStateMachine.
    * @returns {RedGreenRefactorStateMachine}
@@ -15,5 +19,8 @@ export interface RedGreenRefactorStateMachineFactory {
    * @see RedGreenRefactorStateMachine
    * @see RedGreenRefactorStateMachineFactoryImpl
    */
-  create(): RedGreenRefactorStateMachine;
+  create(
+    promptManager: PromptManager,
+    configuration: Config
+  ): RedGreenRefactorStateMachine;
 }

@@ -1,5 +1,5 @@
 import { yellow } from "picocolors";
-import { promptConfirm, promptText } from "../../../../libs/prompt";
+import { PromptManager } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
 import { CommitBreakingChanges } from "../../types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
@@ -15,15 +15,15 @@ export class ConventionalBreakingChangesHandler extends BaseConventionalHandler 
   private async selectCommitBreakingChanges(): Promise<CommitBreakingChanges> {
     const commitBreakingChanges: string[] = [];
 
-    let isBreakingChange = await promptConfirm({
+    let isBreakingChange = await this.promptManager.confirm({
       defaultValue: false,
-      message: "Is this a breaking change?",
+      message: "Does this commit have a breaking change?",
       abortMessage: ABORT_MESSAGE,
     });
 
     while (isBreakingChange) {
-      const breakingChange = await promptText({
-        message: "Please enter a description for the breaking change:",
+      const breakingChange = await this.promptManager.text({
+        message: "Please enter a breaking change:",
         abortMessage: ABORT_MESSAGE,
       });
 
@@ -31,9 +31,9 @@ export class ConventionalBreakingChangesHandler extends BaseConventionalHandler 
         commitBreakingChanges.push(breakingChange);
       }
 
-      isBreakingChange = await promptConfirm({
+      isBreakingChange = await this.promptManager.confirm({
         defaultValue: false,
-        message: "Is this an other breaking change?",
+        message: "Do you need another breaking change?",
         abortMessage: ABORT_MESSAGE,
       });
     }

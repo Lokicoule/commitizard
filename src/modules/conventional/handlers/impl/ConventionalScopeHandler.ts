@@ -1,7 +1,5 @@
 import { yellow } from "picocolors";
-import { Configuration } from "../../../../core/config/Configuration";
 import { Scope } from "../../../../core/config/types";
-import { promptSelect, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
 import { CommitScope } from "../../types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
@@ -9,22 +7,15 @@ import { BaseConventionalHandler } from "./BaseConventionalHandler";
 const ABORT_MESSAGE = yellow("✖") + " Commit scope selection aborted!";
 
 export class ConventionalScopeHandler extends BaseConventionalHandler {
-  private commitScopes: Scope[] = [];
-
-  constructor() {
-    super();
-    this.commitScopes =
-      Configuration.getConfig().conventional.cliOptions.scopes ?? [];
-  }
-
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
-    const commitScope = await this.selectCommitScope();
+    const scopes = this.configuration.conventional.cliOptions.scopes || [];
+    const commitScope = await this.selectCommitScope(scopes);
     commitBuilder.withScope(commitScope);
   }
 
-  private async selectCommitScope(): Promise<CommitScope> {
-    if (this.commitScopes?.length > 0) {
-      const result = await this.promptSelectCommitScope();
+  private async selectCommitScope(scopes: Scope[]): Promise<CommitScope> {
+    if (scopes.length > 0) {
+      const result = await this.promptSelectCommitScope(scopes);
 
       if (result.message.length > 0) {
         return result;
@@ -35,7 +26,7 @@ export class ConventionalScopeHandler extends BaseConventionalHandler {
   }
 
   private async promptTextCommitScope(): Promise<CommitScope> {
-    const commitScope = await promptText({
+    const commitScope = await this.promptManager.text({
       message: "Enter commit scope (optional):",
       abortMessage: ABORT_MESSAGE,
     });
@@ -45,10 +36,10 @@ export class ConventionalScopeHandler extends BaseConventionalHandler {
     };
   }
 
-  private async promptSelectCommitScope(): Promise<CommitScope> {
-    const commitType = await promptSelect<Scope[], string>({
+  private async promptSelectCommitScope(scopes: Scope[]): Promise<CommitScope> {
+    const commitType = await this.promptManager.select<Scope[], string>({
       message: "Select commit scope:",
-      options: this.commitScopes,
+      options: scopes,
       abortMessage: ABORT_MESSAGE,
     });
 

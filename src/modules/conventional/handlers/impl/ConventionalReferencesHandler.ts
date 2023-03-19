@@ -1,5 +1,4 @@
 import { yellow } from "picocolors";
-import { promptConfirm, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
 import { CommitReferences } from "../../types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
@@ -20,14 +19,14 @@ export class ConventionalReferencesHandler extends BaseConventionalHandler {
   private async promptCommitReferences(): Promise<CommitReferences> {
     const commitReferences: string[] = [];
 
-    let isIssueAffected = await promptConfirm({
+    let isIssueAffected = await this.promptManager.confirm({
       defaultValue: false,
       message: "Does this commit reference any open issues?",
       abortMessage: ABORT_MESSAGE,
     });
 
     while (isIssueAffected) {
-      const issueNumber = await promptText({
+      const issueNumber = await this.promptManager.text({
         message: "Please enter a reference number:",
         placeholder: "e.g., #123 or 123",
         abortMessage: ABORT_MESSAGE,
@@ -39,7 +38,7 @@ export class ConventionalReferencesHandler extends BaseConventionalHandler {
         );
       }
 
-      isIssueAffected = await promptConfirm({
+      isIssueAffected = await this.promptManager.confirm({
         defaultValue: false,
         message: "Does this commit affect any other open issues?",
         abortMessage: ABORT_MESSAGE,

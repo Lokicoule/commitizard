@@ -1,6 +1,5 @@
 import { bgGreen, green, red } from "picocolors";
 import { ProcessBuilderFactory } from "../../../../core/process/factory/ProcessBuilderFactory";
-import { promptOutro } from "../../../../libs/prompt";
 import {
   WizardCommitState,
   WizardCommitStateMachine,
@@ -27,7 +26,9 @@ export class RunGitCommitProcessHandler extends BaseWizardCommitHandler {
         `\n${error.message}`
       )}`;
     } finally {
-      promptOutro(outroMessage);
+      this.promptManager.outro({
+        message: outroMessage,
+      });
       return null;
     }
   }

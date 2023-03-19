@@ -1,4 +1,3 @@
-import { promptText } from "../../../../libs/prompt";
 import {
   RedGreenRefactorState,
   RedGreenRefactorStateMachine,
@@ -26,7 +25,7 @@ export class CustomSubjectInputHandler extends BaseRedGreenRefactorHandler {
     let commitMessage;
 
     while (!commitMessage) {
-      commitMessage = await promptText({
+      commitMessage = await this.promptManager.text({
         message: "Enter commit subject:",
         abortMessage: "Commit subject selection aborted!",
       });

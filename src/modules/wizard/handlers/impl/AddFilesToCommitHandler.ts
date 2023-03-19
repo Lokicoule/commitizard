@@ -1,6 +1,5 @@
 import { ProcessBuilderFactory } from "../../../../core/process/factory/ProcessBuilderFactory";
 import { getStagedFiles, getUpdatedFiles } from "../../../../libs/git";
-import { logMessage, promptMultiselect } from "../../../../libs/prompt";
 import {
   WizardCommitState,
   WizardCommitStateMachine,
@@ -14,17 +13,31 @@ export class AddFilesToCommitHandler extends BaseWizardCommitHandler {
     const stagedFiles = await getStagedFiles();
 
     if (stagedFiles.length > 0) {
-      logMessage("Staged files:");
-      stagedFiles.forEach((file) => logMessage(`- ${file}`));
+      this.promptManager.log({
+        message: "Staged files:",
+        level: "info",
+      });
+      stagedFiles.forEach((file) =>
+        this.promptManager.log({
+          message: file,
+          level: "info",
+        })
+      );
     } else {
       const updatedFiles = await getUpdatedFiles();
 
       if (updatedFiles.length === 0) {
-        logMessage("No files to add to commit.");
+        this.promptManager.log({
+          message: "No files to add to commit!",
+          level: "info",
+        });
         return null;
       }
 
-      const commitUpdatedFiles = await promptMultiselect<any, string>({
+      const commitUpdatedFiles = await this.promptManager.multiSelect<
+        any,
+        string
+      >({
         message:
           "Select updated files (optional, press space to select, enter to confirm):",
         options: updatedFiles.map((file) => ({ value: file, label: file })),

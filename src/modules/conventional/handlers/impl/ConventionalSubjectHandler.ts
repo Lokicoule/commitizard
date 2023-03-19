@@ -1,4 +1,3 @@
-import { promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
 import { CommitSubject } from "../../types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
@@ -18,7 +17,7 @@ export class ConventionalSubjectHandler extends BaseConventionalHandler {
     let commitMessage;
 
     while (!commitMessage) {
-      commitMessage = await promptText({
+      commitMessage = await this.promptManager.text({
         message: "Enter commit subject:",
         abortMessage: "Commit subject selection aborted!",
       });

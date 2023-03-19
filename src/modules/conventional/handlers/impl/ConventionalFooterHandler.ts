@@ -1,5 +1,4 @@
 import { yellow } from "picocolors";
-import { promptConfirm, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
 import { CommitFooter } from "../../types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
@@ -15,14 +14,14 @@ export class ConventionalFooterHandler extends BaseConventionalHandler {
   private async selectCommitFooter(): Promise<CommitFooter> {
     const footerLines: string[] = [];
 
-    let hasFooter = await promptConfirm({
+    let hasFooter = await this.promptManager.confirm({
       defaultValue: false,
       message: "Does this commit have a footer?",
       abortMessage: ABORT_MESSAGE,
     });
 
     while (hasFooter) {
-      const bodyLine = await promptText({
+      const bodyLine = await this.promptManager.text({
         message: "Please enter a footer line:",
         abortMessage: ABORT_MESSAGE,
       });
@@ -31,9 +30,9 @@ export class ConventionalFooterHandler extends BaseConventionalHandler {
         footerLines.push(bodyLine);
       }
 
-      hasFooter = await promptConfirm({
+      hasFooter = await this.promptManager.confirm({
         defaultValue: false,
-        message: "Do you need an other footer line?",
+        message: "Do you need another footer line?",
         abortMessage: ABORT_MESSAGE,
       });
     }

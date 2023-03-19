@@ -15,9 +15,10 @@ export class Configuration {
     return Configuration.instance;
   }
 
-  public static initialize(userConfigPath?: string): void {
+  public static initialize(userConfigPath?: string): Config {
     const config = loadConfig(userConfigPath);
     Configuration.setConfig(config);
+    return config;
   }
 
   public static getConfig(): Config {
