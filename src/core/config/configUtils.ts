@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { defaultConfig } from "./defaultConfig";
 import { Config } from "./types";
 
-export const DEFAULT_CONFIG_PATH = ".commitcraftrc";
+export const DEFAULT_CONFIG_PATH = ".commitcraft.json";
 
 export function loadConfig(userConfigPath?: string): Config {
   const userConfig = readUserConfig(userConfigPath);
