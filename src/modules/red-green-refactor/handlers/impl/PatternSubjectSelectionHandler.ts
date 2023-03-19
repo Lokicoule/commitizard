@@ -1,8 +1,6 @@
 import { RedGreenCliOptions, Type } from "../../../../core/config/types";
-import {
-  RedGreenRefactorState,
-  RedGreenRefactorStateMachine,
-} from "../../state-machine/RedGreenRefactorStateMachine";
+import { RedGreenRefactorStateMachine } from "../../state-machine/RedGreenRefactorStateMachine";
+import { RedGreenRefactorState } from "../../types";
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
 /**

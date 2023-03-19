@@ -1,5 +1,5 @@
 import { Configuration } from "../../../../core/config";
-import { RedGreenRefactorStateMachineFactoryImpl } from "../../../red-green-refactor/factories/impl/RedGreenRefactorStateMachineFactoryImpl";
+import { RedGreenRefactorStateMachineFactory } from "../../../red-green-refactor/factory/RedGreenRefactorStateMachineFactory";
 import { RedGreenRefactorFormatter } from "../../../red-green-refactor/formatter/RedGreenRefactorFormatter";
 import {
   WizardCommitState,
@@ -11,7 +11,7 @@ export class UseRedGreenRefactorHandler extends BaseWizardCommitHandler {
   public async handle(
     wizard: WizardCommitStateMachine
   ): Promise<WizardCommitState | null> {
-    const stateMachine = new RedGreenRefactorStateMachineFactoryImpl().create(
+    const stateMachine = RedGreenRefactorStateMachineFactory.create(
       this.promptManager,
       this.configuration
     );

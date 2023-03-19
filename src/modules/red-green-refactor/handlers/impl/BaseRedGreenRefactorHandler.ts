@@ -1,9 +1,7 @@
 import { Config } from "../../../../core/config";
 import { PromptManager } from "../../../../libs/prompt";
-import {
-  RedGreenRefactorState,
-  RedGreenRefactorStateMachine,
-} from "../../state-machine/RedGreenRefactorStateMachine";
+import { RedGreenRefactorStateMachine } from "../../state-machine/RedGreenRefactorStateMachine";
+import { RedGreenRefactorState } from "../../types";
 import { RedGreenRefactorHandler } from "../RedGreenRefactorHandler";
 
 /**

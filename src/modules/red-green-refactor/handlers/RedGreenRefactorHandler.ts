@@ -1,7 +1,5 @@
-import {
-  RedGreenRefactorState,
-  RedGreenRefactorStateMachine,
-} from "../state-machine/RedGreenRefactorStateMachine";
+import { RedGreenRefactorStateMachine } from "../state-machine/RedGreenRefactorStateMachine";
+import { RedGreenRefactorState } from "../types";
 
 /**
  * @interface RedGreenRefactorHandler

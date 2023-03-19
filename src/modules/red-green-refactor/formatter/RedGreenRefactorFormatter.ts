@@ -1,6 +1,5 @@
 import { RedGreenOptions } from "../../../core/config/types";
-import { Store } from "../state-machine/impl/RedGreenRefactorStateMachineImpl";
-import { RedGreenRefactorStateMachine } from "../state-machine/RedGreenRefactorStateMachine";
+import { RedGreenStore } from "../types";
 
 /**
  * @class RedGreenRefactorFormatter
@@ -17,11 +16,12 @@ export class RedGreenRefactorFormatter {
    * @method format
    * @description
    * It is responsible for formatting the commit message.
-   * @param {RedGreenRefactorStateMachine} stateMachine
+   * @param {RedGreenStore} store
+   * @param {RedGreenOptions} options
    * @returns {string}
    * @memberof RedGreenRefactorFormatter
    */
-  public static format(store: Store, options: RedGreenOptions): string {
+  public static format(store: RedGreenStore, options: RedGreenOptions): string {
     const template = options.commitOptions.template;
     const templateOrder = options.commitOptions.templateOrder;
 

@@ -1,53 +1,4 @@
-import { Store } from "./impl/RedGreenRefactorStateMachineImpl";
-
-/**
- * @enum RedGreenRefactorState
- * @description
- * It is responsible for defining the states of the state machine.
- */
-export enum RedGreenRefactorState {
-  CUSTOM_SUBJECT_INPUT = "custom_subject_input",
-  PATTERN_GROUP_SELECTION = "pattern_group_selection",
-  PATTERN_SUBJECT_SELECTION = "pattern_subject_selection",
-  FEATURE_SUBJECT_INPUT = "feature_subject_input",
-  TYPE_SELECTION = "type_selection",
-}
-
-/**
- * @type RedGreenRefactorTypeLowercase
- * @description
- * It is responsible for defining the type of the refactor.
- * It is a union of the lowercase types.
- */
-export type RedGreenRefactorTypeLowercase =
-  | "red"
-  | "green"
-  | "refactor"
-  | "initial";
-
-/**
- * @type RedGreenRefactorTypeUppercase
- * @description
- * It is responsible for defining the type of the refactor.
- * It is a union of the uppercase types.
- */
-export type RedGreenRefactorTypeUppercase =
-  | "RED"
-  | "GREEN"
-  | "REFACTOR"
-  | "INITIAL";
-
-/**
- * @type RedGreenRefactorType
- * @description
- * It is responsible for defining the type of the refactor.
- * It is a union of the lowercase and uppercase types.
- * @see RedGreenRefactorTypeLowercase
- * @see RedGreenRefactorTypeUppercase
- */
-export type RedGreenRefactorType =
-  | RedGreenRefactorTypeLowercase
-  | RedGreenRefactorTypeUppercase;
+import { RedGreenRefactorType, RedGreenStore } from "../types";
 
 /**
  * @name RedGreenRefactorStateMachine
@@ -74,11 +25,11 @@ export interface RedGreenRefactorStateMachine {
    * @method getStore
    * @description
    * It is responsible for getting the store.
-   * @returns {Readonly<Store>}
+   * @returns {Readonly<RedGreenStore>}
    * @memberof RedGreenRefactorStateMachine
-   * @see Store
+   * @see RedGreenStore
    */
-  getStore(): Readonly<Store>;
+  getStore(): Readonly<RedGreenStore>;
 
   /**
    * @method setMessage

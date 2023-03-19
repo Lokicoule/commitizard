@@ -8,19 +8,11 @@ import { TypeSelectionHandler } from "../../handlers/impl/TypeSelectionHandler";
 import { RedGreenRefactorHandler } from "../../handlers/RedGreenRefactorHandler";
 import {
   RedGreenRefactorState,
-  RedGreenRefactorStateMachine,
+  RedGreenContext,
+  RedGreenStore,
   RedGreenRefactorType,
-} from "../RedGreenRefactorStateMachine";
-
-export type Store = {
-  message: string;
-  type: RedGreenRefactorType;
-};
-
-export interface Context {
-  state: RedGreenRefactorState;
-  store: Store;
-}
+} from "../../types";
+import { RedGreenRefactorStateMachine } from "../RedGreenRefactorStateMachine";
 
 /**
  * The transitions of the state machine.
@@ -45,7 +37,7 @@ const transitions: Record<RedGreenRefactorState, RedGreenRefactorState[]> = {
 export class RedGreenRefactorStateMachineImpl
   implements RedGreenRefactorStateMachine
 {
-  private context: Context;
+  private context: RedGreenContext;
   private handlers: Record<RedGreenRefactorState, RedGreenRefactorHandler>;
 
   constructor(
@@ -88,7 +80,7 @@ export class RedGreenRefactorStateMachineImpl
     }
   }
 
-  public getStore(): Readonly<Store> {
+  public getStore(): Readonly<RedGreenStore> {
     return this.context.store;
   }
 
