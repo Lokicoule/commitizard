@@ -16,7 +16,7 @@ const MAX_FILES_TO_SHOW = 5;
  */
 async function logFiles(files: string[], promptManager: any): Promise<void> {
   promptManager.log({
-    message: `Found ${files.length} staged files:`,
+    message: `Found ${files.length} staged files:\nDisplaying up to ${MAX_FILES_TO_SHOW} files...`,
     level: "info",
   });
 
@@ -48,10 +48,9 @@ export class AddFilesToCommitHandler extends BaseWizardCommitHandler {
 
     // Get list of staged files
     const stagedFiles = await getStagedFiles();
-    const filesToLog = stagedFiles.slice(0, MAX_FILES_TO_SHOW);
 
     // If there are staged files, log them to the console
-    await logFiles(filesToLog, promptManager);
+    await logFiles(stagedFiles, promptManager);
 
     if (stagedFiles.length <= MAX_FILES_TO_SHOW) {
       // Otherwise, prompt user to select updated files to add to the commit
