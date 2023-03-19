@@ -1,6 +1,6 @@
-import { CommitHandler } from "../../../commit/handlers/CommitHandler";
-import { RedGreenCommitSubjectHandlerImpl } from "../../handlers/impl/RedGreenCommitSubjectHandlerImpl";
-import { RedGreenCommitTypeHandlerImpl } from "../../handlers/impl/RedGreenCommitTypeHandlerImpl";
+/* import { CommitHandler } from "../../../commit/handlers/CommitHandler";
+import { RedGreenCommitSubjectHandlerImpl } from "../../handlers/impl/CustomSubjectInputHandler";
+import { RedGreenCommitTypeHandlerImpl } from "../../handlers/impl/TypeSelectionHandler";
 import { RedGreenCommitHandlerFactory } from "../RedGreenCommitHandlerFactory";
 
 export class RedGreenCommitHandlerFactoryImpl
@@ -14,3 +14,4 @@ export class RedGreenCommitHandlerFactoryImpl
     return new RedGreenCommitSubjectHandlerImpl();
   }
 }
+ */

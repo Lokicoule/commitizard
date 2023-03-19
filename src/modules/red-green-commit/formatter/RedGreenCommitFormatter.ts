@@ -1,27 +1,24 @@
-import { CommitTemplate, RedGreenOptions } from "../../../core/config/types";
-import {
-  RedGreenCommit,
-  RedGreenCommitSubject,
-} from "../builder/impl/RedGreenCommitBuilderImpl";
+import { Configuration } from "../../../core/config";
+import { RedGreenCommitSubject } from "../builder/impl/RedGreenCommitBuilderImpl";
+import { RedGreenCommitStateMachine } from "../state-machine/RedGreenCommitStateMachine";
 
 export class RedGreenCommitFormatter {
-  constructor(private readonly options: RedGreenOptions) {}
-
-  public format(commit: RedGreenCommit): string {
-    const { type, subject } = commit;
-
-    const template = this.options.commitOptions.template;
-    const templateOrder = this.options.commitOptions.templateOrder;
+  public static format(stateMachine: RedGreenCommitStateMachine): string {
+    const template =
+      Configuration.getConfig()["red-green-refactor"].commitOptions.template;
+    const templateOrder =
+      Configuration.getConfig()["red-green-refactor"].commitOptions
+        .templateOrder;
 
     const formattedCommit = templateOrder
       .map((templateKey) => {
         switch (templateKey) {
           case "type":
-            return template.type.replace("{{type}}", type.data);
+            return template.type.replace("{{type}}", stateMachine.getType());
           case "subject":
             return template.subject.replace(
               "{{subject}}",
-              this.formatSubject(subject)
+              stateMachine.getMessage()
             );
           default:
             return "";
@@ -30,17 +27,5 @@ export class RedGreenCommitFormatter {
       .join("");
 
     return formattedCommit.replace(/\\n/g, "\n");
-  }
-
-  private formatSubject(subject: RedGreenCommitSubject): string {
-    const { pattern, options, feature } = subject;
-
-    const formattedSubject = options
-      .map((option) => {
-        return pattern.replace(`{{${option.key}}}`, option.value);
-      })
-      .join("");
-
-    return formattedSubject.replace("{{feature}}", feature.data);
   }
 }

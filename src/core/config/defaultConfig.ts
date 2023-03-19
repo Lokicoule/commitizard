@@ -59,7 +59,7 @@ export const defaultConfig = {
   "red-green-refactor": {
     commitOptions: {
       template: {
-        type: "{{type}}",
+        type: "[{{type}}]: ",
         subject: "{{subject}}",
       },
       templateOrder: ["type", "subject"],
@@ -111,7 +111,7 @@ export const defaultConfig = {
       ],
       refactorOptions: [
         {
-          value: "performance/maintainability/readability/usability",
+          value: "{{performance/maintainability/readability/usability}}",
           options: [
             {
               value: "performance",
@@ -124,7 +124,7 @@ export const defaultConfig = {
           ],
         },
         {
-          value: "simplify/consolidate/clarify",
+          value: "{{simplify/consolidate/clarify}}",
           options: [
             {
               value: "simplify",
@@ -141,7 +141,7 @@ export const defaultConfig = {
           ],
         },
         {
-          value: "streamline/improve",
+          value: "{{streamline/improve}}",
           options: [
             {
               value: "streamline",
@@ -154,7 +154,7 @@ export const defaultConfig = {
           ],
         },
         {
-          value: "removing unnecessary code/logic",
+          value: "{{removing unnecessary code/logic}}",
           options: [
             {
               value: "removing unnecessary code",
@@ -167,7 +167,7 @@ export const defaultConfig = {
           ],
         },
         {
-          value: "reducing complexity/improving efficiency",
+          value: "{{reducing complexity/improving efficiency}}",
           options: [
             {
               value: "reducing complexity",
@@ -180,7 +180,7 @@ export const defaultConfig = {
           ],
         },
         {
-          value: "cleaning up/rewriting",
+          value: "{{cleaning up/rewriting}}",
           options: [
             {
               value: "cleaning up",
@@ -193,7 +193,7 @@ export const defaultConfig = {
           ],
         },
         {
-          value: "clarity/consistency",
+          value: "{{clarity/consistency}}",
           options: [
             {
               value: "clarity",

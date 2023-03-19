@@ -1,4 +1,4 @@
-import { HandlerPipeline } from "../../../../core/handler/impl/HandlerPipeline";
+/* import { HandlerPipeline } from "../../../../core/handler/impl/HandlerPipeline";
 import { CommitHandler } from "../../../commit/handlers/CommitHandler";
 import { RedGreenCommitHandlerChainFactory } from "../RedGreenCommitHandlerChainFactory";
 import { RedGreenCommitHandlerFactory } from "../RedGreenCommitHandlerFactory";
@@ -27,3 +27,4 @@ export class RedGreenCommitHandlerChainFactoryImpl
     return new HandlerPipeline(commitHandlers);
   }
 }
+ */

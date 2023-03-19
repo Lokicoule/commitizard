@@ -1,7 +1,7 @@
 import { CommitBuilderFactoryImpl } from "../../../commit/factory/impl/CommitBuilderFactoryImpl";
 import { ConventionalCommitFormatter } from "../../../conventional-commit/formatter/ConventionalCommitFormatter";
-import { RedGreenCommitHandlerChainFactoryImpl } from "../../../red-green-commit/factories/impl/RedGreenCommitHandlerChainFactoryImpl";
-import { RedGreenCommitHandlerFactoryImpl } from "../../../red-green-commit/factories/impl/RedGreenCommitHandlerFactoryImpl";
+import { RedGreenCommitStateMachineFactoryImpl } from "../../../red-green-commit/factories/impl/RedGreenCommitStateMachineFactoryImpl";
+import { RedGreenCommitFormatter } from "../../../red-green-commit/formatter/RedGreenCommitFormatter";
 import {
   WizardCommitState,
   WizardCommitStateMachine,
@@ -12,19 +12,12 @@ export class UseRedGreenCommitHandler extends BaseWizardCommitHandler {
   public async handle(
     wizard: WizardCommitStateMachine
   ): Promise<WizardCommitState | null> {
-    const commitBuilder = CommitBuilderFactoryImpl.create();
-    const redGreenCommitHandlerFactory = new RedGreenCommitHandlerFactoryImpl();
-    const redGreenCommitHandlerChainFactory =
-      new RedGreenCommitHandlerChainFactoryImpl(redGreenCommitHandlerFactory);
-    const redGreenCommitHandlerChain =
-      redGreenCommitHandlerChainFactory.createRedGreenCommitHandlerChain();
+    const stateMachine = new RedGreenCommitStateMachineFactoryImpl().create();
 
-    await redGreenCommitHandlerChain.handle(commitBuilder);
-    // TODO : use the red-green commit formatter
-    const message = ConventionalCommitFormatter.format(commitBuilder.build());
+    await stateMachine.handleCommit();
 
-    wizard.setMessage(message);
+    wizard.setMessage(RedGreenCommitFormatter.format(stateMachine));
 
-    return WizardCommitState.USE_CONVENTIONAL_COMMIT_CONVENTION;
+    return WizardCommitState.REVIEW_COMMIT_MESSAGE;
   }
 }
