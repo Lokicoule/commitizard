@@ -1,7 +1,7 @@
-import { CommitBuilderFactoryImpl } from "../../../conventional-commit/factories/impl/CommitBuilderFactoryImpl";
-import { ConventionalCommitHandlerChainFactoryImpl } from "../../../conventional-commit/factories/impl/ConventionalCommitHandlerChainFactoryImpl";
-import { ConventionalCommitHandlerFactoryImpl } from "../../../conventional-commit/factories/impl/ConventionalCommitHandlerFactoryImpl";
-import { ConventionalCommitFormatter } from "../../../conventional-commit/formatter/ConventionalCommitFormatter";
+import { CommitBuilderFactoryImpl } from "../../../conventional/factories/impl/CommitBuilderFactoryImpl";
+import { ConventionalPipelineFactoryImpl } from "../../../conventional/factories/impl/ConventionalPipelineFactoryImpl";
+import { ConventionalHandlerFactoryImpl } from "../../../conventional/factories/impl/ConventionalCommitHandlerFactoryImpl";
+import { ConventionalCommitFormatter } from "../../../conventional/formatter/ConventionalCommitFormatter";
 import {
   WizardCommitStateMachine,
   WizardCommitState,
@@ -13,11 +13,11 @@ export class UseConventionalCommitHandler extends BaseWizardCommitHandler {
     wizard: WizardCommitStateMachine
   ): Promise<WizardCommitState | null> {
     const commitBuilder = CommitBuilderFactoryImpl.create();
-    const commitHandlerFactory = new ConventionalCommitHandlerFactoryImpl();
-    const commitHandlerChainFactory =
-      new ConventionalCommitHandlerChainFactoryImpl(commitHandlerFactory);
-    const commitHandlerChain =
-      commitHandlerChainFactory.createConventionalCommitHandlerChain();
+    const commitHandlerFactory = new ConventionalHandlerFactoryImpl();
+    const commitHandlerChainFactory = new ConventionalPipelineFactoryImpl(
+      commitHandlerFactory
+    );
+    const commitHandlerChain = commitHandlerChainFactory.createPipeline();
 
     await commitHandlerChain.handle(commitBuilder);
 

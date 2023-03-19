@@ -1,16 +1,12 @@
 import { yellow } from "picocolors";
 import { promptConfirm, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
-import { AbstractCommitHandler } from "./AbstractCommitHandler";
-import { CommitHandler } from "../CommitHandler";
 import { CommitBody } from "../../types";
+import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit body aborted!";
 
-export class ConventionalCommitBodyHandlerImpl
-  extends AbstractCommitHandler
-  implements CommitHandler
-{
+export class ConventionalBodyHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commitBody = await this.selectCommitBody();
     commitBuilder.withBody(commitBody);
@@ -44,7 +40,7 @@ export class ConventionalCommitBodyHandlerImpl
     }
 
     return {
-      data: bodyLines.join("\n"),
+      message: bodyLines.join("\n"),
     };
   }
 }

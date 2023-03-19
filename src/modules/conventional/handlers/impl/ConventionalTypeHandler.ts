@@ -2,14 +2,10 @@ import { Configuration } from "../../../../core/config/Configuration";
 import { Type } from "../../../../core/config/types";
 import { promptSelect } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
-import { AbstractCommitHandler } from "./AbstractCommitHandler";
-import { CommitHandler } from "../CommitHandler";
 import { CommitType } from "../../types";
+import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
-export class ConventionalCommitTypeHandlerImpl
-  extends AbstractCommitHandler
-  implements CommitHandler
-{
+export class ConventionalTypeHandler extends BaseConventionalHandler {
   private commitTypes: Type[];
 
   constructor() {
@@ -40,7 +36,7 @@ export class ConventionalCommitTypeHandlerImpl
     });
 
     return {
-      data: commitType,
+      message: commitType,
     };
   }
 }

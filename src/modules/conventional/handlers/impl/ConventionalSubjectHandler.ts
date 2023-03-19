@@ -1,13 +1,9 @@
 import { promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
-import { AbstractCommitHandler } from "./AbstractCommitHandler";
-import { CommitHandler } from "../CommitHandler";
 import { CommitSubject } from "../../types";
+import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
-export class ConventionalCommitSubjectHandlerImpl
-  extends AbstractCommitHandler
-  implements CommitHandler
-{
+export class ConventionalSubjectHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commitSubject = await this.selectCommitSubject();
     commitBuilder.withSubject(commitSubject);
@@ -29,7 +25,7 @@ export class ConventionalCommitSubjectHandlerImpl
     }
 
     return {
-      data: commitMessage,
+      message: commitMessage,
     };
   }
 }

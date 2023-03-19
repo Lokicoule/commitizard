@@ -1,16 +1,12 @@
 import { yellow } from "picocolors";
 import { promptConfirm, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
-import { AbstractCommitHandler } from "./AbstractCommitHandler";
-import { CommitHandler } from "../CommitHandler";
 import { CommitFooter } from "../../types";
+import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit footer aborted!";
 
-export class ConventionalCommitFooterHandlerImpl
-  extends AbstractCommitHandler
-  implements CommitHandler
-{
+export class ConventionalFooterHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commitFooter = await this.selectCommitFooter();
     commitBuilder.withFooter(commitFooter);
@@ -44,7 +40,7 @@ export class ConventionalCommitFooterHandlerImpl
     }
 
     return {
-      data: footerLines.join("\n"),
+      message: footerLines.join("\n"),
     };
   }
 }

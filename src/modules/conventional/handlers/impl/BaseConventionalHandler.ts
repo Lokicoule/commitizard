@@ -1,10 +1,10 @@
 import { AbstractHandler } from "../../../../core/handler/impl/AbstractHandler";
 import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitHandler } from "../CommitHandler";
+import { ConventionalHandler } from "../ConventionalHandler";
 
-export abstract class AbstractCommitHandler
+export abstract class BaseConventionalHandler
   extends AbstractHandler<CommitBuilder>
-  implements CommitHandler
+  implements ConventionalHandler
 {
   protected abstract processInput(commitBuilder: CommitBuilder): Promise<void>;
 }

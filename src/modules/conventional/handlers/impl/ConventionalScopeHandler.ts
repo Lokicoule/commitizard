@@ -3,16 +3,12 @@ import { Configuration } from "../../../../core/config/Configuration";
 import { Scope } from "../../../../core/config/types";
 import { promptSelect, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
-import { AbstractCommitHandler } from "./AbstractCommitHandler";
-import { CommitHandler } from "../CommitHandler";
 import { CommitScope } from "../../types";
+import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit scope selection aborted!";
 
-export class ConventionalCommitScopeHandlerImpl
-  extends AbstractCommitHandler
-  implements CommitHandler
-{
+export class ConventionalScopeHandler extends BaseConventionalHandler {
   private commitScopes: Scope[] = [];
 
   constructor() {
@@ -41,7 +37,7 @@ export class ConventionalCommitScopeHandlerImpl
     });
 
     return {
-      data: commitScope,
+      message: commitScope,
     };
   }
 
@@ -53,7 +49,7 @@ export class ConventionalCommitScopeHandlerImpl
     });
 
     return {
-      data: commitType,
+      message: commitType,
     };
   }
 }

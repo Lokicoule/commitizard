@@ -15,28 +15,31 @@ export class ConventionalCommitFormatter {
       .map((templateKey) => {
         switch (templateKey) {
           case "type":
-            return template.type.replace("{{type}}", type.data);
+            return template.type.replace("{{type}}", type.message);
           case "scope":
-            return scope?.data
-              ? template.scope?.replace("{{scope}}", scope.data)
+            return scope?.message
+              ? template.scope?.replace("{{scope}}", scope.message)
               : "";
           case "subject":
-            return template.subject.replace("{{subject}}", subject.data);
+            return template.subject.replace("{{subject}}", subject.message);
           case "body":
-            return body?.data
-              ? template.body?.replace("{{body}}", body.data)
+            return body?.message
+              ? template.body?.replace("{{body}}", body.message)
               : "";
           case "footer":
             return footer
-              ? template.footer?.replace("{{footer}}", footer.data)
+              ? template.footer?.replace("{{footer}}", footer.message)
               : "";
           case "breaking":
-            return breakingChanges?.data
-              ? template.breaking?.replace("{{breaking}}", breakingChanges.data)
+            return breakingChanges?.message
+              ? template.breaking?.replace(
+                  "{{breaking}}",
+                  breakingChanges.message
+                )
               : "";
           case "refs":
-            return references?.data
-              ? template.refs?.replace("{{refs}}", references.data)
+            return references?.message
+              ? template.refs?.replace("{{refs}}", references.message)
               : "";
           default:
             return "";

@@ -1,16 +1,12 @@
 import { yellow } from "picocolors";
 import { promptConfirm, promptText } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
-import { AbstractCommitHandler } from "./AbstractCommitHandler";
-import { CommitHandler } from "../CommitHandler";
 import { CommitReferences } from "../../types";
+import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit issue numbers aborted!";
 
-export class ConventionalCommitReferencesHandlerImpl
-  extends AbstractCommitHandler
-  implements CommitHandler
-{
+export class ConventionalReferencesHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commitReferences = await this.selectCommitReferences();
     commitBuilder.withReferences(commitReferences);
@@ -25,7 +21,7 @@ export class ConventionalCommitReferencesHandlerImpl
     let commitReferences: string[] = [];
     let isIssueAffected = await promptConfirm({
       defaultValue: false,
-      message: "Does this commit affect any open issues?",
+      message: "Does this commit reference any open issues?",
       abortMessage: ABORT_MESSAGE,
     });
 
@@ -48,6 +44,6 @@ export class ConventionalCommitReferencesHandlerImpl
       });
     }
 
-    return { data: commitReferences.join(", ") };
+    return { message: commitReferences.join(", ") };
   }
 }

@@ -1,29 +1,29 @@
 export interface CommitType {
-  data: string;
+  message: string;
 }
 
 export interface CommitScope {
-  data: string;
+  message: string;
 }
 
 export interface CommitSubject {
-  data: string;
+  message: string;
 }
 
 export interface CommitBreakingChanges {
-  data: string;
+  message: string;
 }
 
 export interface CommitReferences {
-  data: string;
+  message: string;
 }
 
 export interface CommitBody {
-  data: string;
+  message: string;
 }
 
 export interface CommitFooter {
-  data: string;
+  message: string;
 }
 
 export interface Commit {
