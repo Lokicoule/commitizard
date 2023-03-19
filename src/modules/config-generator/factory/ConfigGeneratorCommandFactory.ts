@@ -16,9 +16,25 @@ const defaultOptions: Required<ConfigGeneratorCommandFactoryOptions> = {
   userConfigPath: DEFAULT_CONFIG_PATH,
 };
 
+/**
+ * @class ConfigGeneratorCommandFactory
+ * @description
+ * It is responsible for creating a ConfigGeneratorCommand.
+ * @see ConfigGeneratorCommand
+ */
 export class ConfigGeneratorCommandFactory {
   private constructor() {}
 
+  /**
+   * @static
+   * @method create
+   * @description
+   * It is responsible for creating a ConfigGeneratorCommand.
+   * @param {ConfigGeneratorCommandFactoryOptions} [options]
+   * @returns {ConfigGeneratorCommand}
+   * @memberof ConfigGeneratorCommandFactory
+   * @see ConfigGeneratorCommand
+   */
   public static create(
     options?: ConfigGeneratorCommandFactoryOptions & { userConfigPath?: string }
   ): ConfigGeneratorCommand {
