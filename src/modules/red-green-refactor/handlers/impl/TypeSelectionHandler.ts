@@ -17,7 +17,7 @@ export class TypeSelectionHandler extends BaseRedGreenRefactorHandler {
     if (
       this.configuration["red-green-refactor"].cliOptions.types.length === 0
     ) {
-      throw new Error("No commit types available!");
+      throw new Error("No types configured!");
     }
 
     const commitType = await this.selectCommitType();

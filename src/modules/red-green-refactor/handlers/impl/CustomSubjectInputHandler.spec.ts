@@ -22,6 +22,15 @@ describe("CustomSubjectInputHandler", () => {
     handler = new CustomSubjectInputHandler(promptManager, {} as Config);
   });
 
+  it("should return the correct ending state aka null", async () => {
+    const subject = "Test commit message";
+    jest.spyOn(promptManager, "text").mockResolvedValue(subject);
+
+    const result = await handler.handle(stateMachine);
+
+    expect(result).toBeNull();
+  });
+
   it("should prompt the user for a commit subject and set it as the message in the state machine", async () => {
     const subject = "Test commit message";
     jest.spyOn(promptManager, "text").mockResolvedValue(subject);

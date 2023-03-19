@@ -3,6 +3,8 @@ import { RedGreenRefactorStateMachine } from "../../state-machine/RedGreenRefact
 import { RedGreenRefactorState } from "../../types";
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
+export const CUSTOM_VALUE = "custom";
+
 /**
  * @class PatternSubjectSelectionHandler
  * @extends BaseRedGreenRefactorHandler
@@ -19,8 +21,8 @@ export class PatternSubjectSelectionHandler extends BaseRedGreenRefactorHandler 
     );
 
     const subjectPattern = await this.selectSubjectPattern(subjectPatterns);
-
-    if (subjectPattern === "custom") {
+    console.log("subjectPattern: ", subjectPattern);
+    if (subjectPattern === CUSTOM_VALUE) {
       return RedGreenRefactorState.CUSTOM_SUBJECT_INPUT;
     }
 
@@ -58,7 +60,7 @@ export class PatternSubjectSelectionHandler extends BaseRedGreenRefactorHandler 
       message: "Which convention would you like to use?",
       options: [
         {
-          value: "custom",
+          value: CUSTOM_VALUE,
           label: "Custom",
         },
         ...patternOptions,
