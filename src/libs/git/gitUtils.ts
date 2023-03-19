@@ -58,11 +58,7 @@ export const getStagedFiles = async () => {
     .split("\n")
     .filter(Boolean);
 
-  if (!files.length) {
-    return null;
-  }
-
-  return files;
+  return files || [];
 };
 
 export const getStagedDiff = async (file?: string) => {
