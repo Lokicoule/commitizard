@@ -1,15 +1,15 @@
 import { promptText } from "../../../../libs/prompt";
 import {
-  RedGreenCommitState,
-  RedGreenCommitStateMachine,
-} from "../../state-machine/RedGreenCommitStateMachine";
-import { BaseRedGreenCommitHandler } from "./BaseRedGreenCommitHandler";
+  RedGreenRefactorState,
+  RedGreenRefactorStateMachine,
+} from "../../state-machine/RedGreenRefactorStateMachine";
+import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 import { yellow } from "picocolors";
 
-export class FeatureSubjectInputHandler extends BaseRedGreenCommitHandler {
+export class FeatureSubjectInputHandler extends BaseRedGreenRefactorHandler {
   public async handle(
-    stateMachine: RedGreenCommitStateMachine
-  ): Promise<RedGreenCommitState | null> {
+    stateMachine: RedGreenRefactorStateMachine
+  ): Promise<RedGreenRefactorState | null> {
     const feature = await this.promptSubjectFeature();
 
     stateMachine.setMessage(
@@ -19,7 +19,7 @@ export class FeatureSubjectInputHandler extends BaseRedGreenCommitHandler {
     return this.redirectFlow(stateMachine);
   }
 
-  private redirectFlow(stateMachine: RedGreenCommitStateMachine) {
+  private redirectFlow(stateMachine: RedGreenRefactorStateMachine) {
     switch (stateMachine.getType()) {
       case "green":
       case "GREEN":
@@ -28,7 +28,7 @@ export class FeatureSubjectInputHandler extends BaseRedGreenCommitHandler {
         return null;
       case "refactor":
       case "REFACTOR":
-        return RedGreenCommitState.PATTERN_GROUP_SELECTION;
+        return RedGreenRefactorState.PATTERN_GROUP_SELECTION;
       default:
         throw new Error("Invalid type");
     }

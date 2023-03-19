@@ -1,4 +1,4 @@
-export enum RedGreenCommitState {
+export enum RedGreenRefactorState {
   CUSTOM_SUBJECT_INPUT = "custom_subject_input",
   PATTERN_GROUP_SELECTION = "pattern_group_selection",
   PATTERN_SUBJECT_SELECTION = "pattern_subject_selection",
@@ -6,24 +6,24 @@ export enum RedGreenCommitState {
   TYPE_SELECTION = "type_selection",
 }
 
-export type RedGreenCommitTypeLowercase =
+export type RedGreenRefactorTypeLowercase =
   | "red"
   | "green"
   | "refactor"
   | "initial";
-export type RedGreenCommitTypeUppercase =
+export type RedGreenRefactorTypeUppercase =
   | "RED"
   | "GREEN"
   | "REFACTOR"
   | "INITIAL";
-export type RedGreenCommitType =
-  | RedGreenCommitTypeLowercase
-  | RedGreenCommitTypeUppercase;
+export type RedGreenRefactorType =
+  | RedGreenRefactorTypeLowercase
+  | RedGreenRefactorTypeUppercase;
 
-export interface RedGreenCommitStateMachine {
+export interface RedGreenRefactorStateMachine {
   handleCommit(): Promise<void>;
   setMessage(message: string): void;
   getMessage(): string;
-  setType(type: Omit<RedGreenCommitType, "INITIAL" | "initial">): void;
-  getType(): RedGreenCommitType;
+  setType(type: Omit<RedGreenRefactorType, "INITIAL" | "initial">): void;
+  getType(): RedGreenRefactorType;
 }

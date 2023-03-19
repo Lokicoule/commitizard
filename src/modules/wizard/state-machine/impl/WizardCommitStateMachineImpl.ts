@@ -4,7 +4,7 @@ import { RunGitCommitProcessHandler } from "../../handlers/impl/RunGitCommitProc
 import { ReviewCommitHandler } from "../../handlers/impl/ReviewCommitHandler";
 import { SelectConventionHandler } from "../../handlers/impl/SelectConventionHandler";
 import { UseConventionalCommitHandler } from "../../handlers/impl/UseConventionalCommitHandler";
-import { UseRedGreenCommitHandler } from "../../handlers/impl/UseRedGreenCommitHandler";
+import { UseRedGreenRefactorHandler } from "../../handlers/impl/UseRedGreenRefactorHandler";
 import {
   WizardCommitState,
   WizardCommitStateMachine,
@@ -57,7 +57,7 @@ export class WizardCommitStateMachineImpl implements WizardCommitStateMachine {
       [WizardCommitState.USE_CONVENTIONAL_COMMIT_CONVENTION]:
         new UseConventionalCommitHandler(),
       [WizardCommitState.USE_RED_GREEN_REFACTOR_COMMIT_CONVENTION]:
-        new UseRedGreenCommitHandler(),
+        new UseRedGreenRefactorHandler(),
       [WizardCommitState.REVIEW_COMMIT_MESSAGE]: new ReviewCommitHandler(),
       [WizardCommitState.RUN_GIT_COMMIT_PROCESS]:
         new RunGitCommitProcessHandler(),

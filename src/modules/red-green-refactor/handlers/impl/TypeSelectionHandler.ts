@@ -2,12 +2,12 @@ import { Configuration } from "../../../../core/config";
 import { Config, Type } from "../../../../core/config/types";
 import { promptSelect } from "../../../../libs/prompt";
 import {
-  RedGreenCommitState,
-  RedGreenCommitStateMachine,
-} from "../../state-machine/RedGreenCommitStateMachine";
-import { BaseRedGreenCommitHandler } from "./BaseRedGreenCommitHandler";
+  RedGreenRefactorState,
+  RedGreenRefactorStateMachine,
+} from "../../state-machine/RedGreenRefactorStateMachine";
+import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
-export class TypeSelectionHandler extends BaseRedGreenCommitHandler {
+export class TypeSelectionHandler extends BaseRedGreenRefactorHandler {
   private configuration: Config;
 
   constructor() {
@@ -16,8 +16,8 @@ export class TypeSelectionHandler extends BaseRedGreenCommitHandler {
   }
 
   public async handle(
-    stateMachine: RedGreenCommitStateMachine
-  ): Promise<RedGreenCommitState | null> {
+    stateMachine: RedGreenRefactorStateMachine
+  ): Promise<RedGreenRefactorState | null> {
     if (
       this.configuration["red-green-refactor"].cliOptions.types.length === 0
     ) {
@@ -28,7 +28,7 @@ export class TypeSelectionHandler extends BaseRedGreenCommitHandler {
 
     stateMachine.setType(commitType);
 
-    return RedGreenCommitState.PATTERN_SUBJECT_SELECTION;
+    return RedGreenRefactorState.PATTERN_SUBJECT_SELECTION;
   }
 
   private async selectCommitType(): Promise<string> {

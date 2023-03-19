@@ -6,12 +6,12 @@ import {
 } from "../../../../core/config/types";
 import { promptSelect } from "../../../../libs/prompt";
 import {
-  RedGreenCommitState,
-  RedGreenCommitStateMachine,
-} from "../../state-machine/RedGreenCommitStateMachine";
-import { BaseRedGreenCommitHandler } from "./BaseRedGreenCommitHandler";
+  RedGreenRefactorState,
+  RedGreenRefactorStateMachine,
+} from "../../state-machine/RedGreenRefactorStateMachine";
+import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
-export class PatternSubjectSelectionHandler extends BaseRedGreenCommitHandler {
+export class PatternSubjectSelectionHandler extends BaseRedGreenRefactorHandler {
   private configuration: Config;
 
   constructor() {
@@ -19,8 +19,8 @@ export class PatternSubjectSelectionHandler extends BaseRedGreenCommitHandler {
     this.configuration = Configuration.getConfig();
   }
   public async handle(
-    stateMachine: RedGreenCommitStateMachine
-  ): Promise<RedGreenCommitState | null> {
+    stateMachine: RedGreenRefactorStateMachine
+  ): Promise<RedGreenRefactorState | null> {
     const subjectPatterns = this.getSubjectPatternsFromType(
       this.configuration["red-green-refactor"].cliOptions,
       stateMachine.getType()
@@ -29,12 +29,12 @@ export class PatternSubjectSelectionHandler extends BaseRedGreenCommitHandler {
     const subjectPattern = await this.selectSubjectPattern(subjectPatterns);
 
     if (subjectPattern === "custom") {
-      return RedGreenCommitState.CUSTOM_SUBJECT_INPUT;
+      return RedGreenRefactorState.CUSTOM_SUBJECT_INPUT;
     }
 
     stateMachine.setMessage(subjectPattern);
 
-    return RedGreenCommitState.FEATURE_SUBJECT_INPUT;
+    return RedGreenRefactorState.FEATURE_SUBJECT_INPUT;
   }
 
   private getSubjectPatternsFromType(

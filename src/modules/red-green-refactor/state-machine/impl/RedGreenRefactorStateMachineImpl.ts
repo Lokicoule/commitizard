@@ -3,45 +3,45 @@ import { FeatureSubjectInputHandler } from "../../handlers/impl/FeatureSubjectIn
 import { PatternGroupSelectionHandler } from "../../handlers/impl/PatternGroupSelectionHandler";
 import { PatternSubjectSelectionHandler } from "../../handlers/impl/PatternSubjectSelectionHandler";
 import { TypeSelectionHandler } from "../../handlers/impl/TypeSelectionHandler";
-import { RedGreenCommitHandler } from "../../handlers/RedGreenCommitHandler";
+import { RedGreenRefactorHandler } from "../../handlers/RedGreenRefactorHandler";
 import {
-  RedGreenCommitState,
-  RedGreenCommitStateMachine,
-  RedGreenCommitType,
-} from "../RedGreenCommitStateMachine";
+  RedGreenRefactorState,
+  RedGreenRefactorStateMachine,
+  RedGreenRefactorType,
+} from "../RedGreenRefactorStateMachine";
 
 export type Store = {
   message: string;
-  type: RedGreenCommitType;
+  type: RedGreenRefactorType;
 };
 
 export interface Context {
-  state: RedGreenCommitState;
+  state: RedGreenRefactorState;
   store: Store;
 }
 
-const transitions: Record<RedGreenCommitState, RedGreenCommitState[]> = {
-  [RedGreenCommitState.TYPE_SELECTION]: [
-    RedGreenCommitState.PATTERN_SUBJECT_SELECTION,
+const transitions: Record<RedGreenRefactorState, RedGreenRefactorState[]> = {
+  [RedGreenRefactorState.TYPE_SELECTION]: [
+    RedGreenRefactorState.PATTERN_SUBJECT_SELECTION,
   ],
-  [RedGreenCommitState.PATTERN_SUBJECT_SELECTION]: [
-    RedGreenCommitState.CUSTOM_SUBJECT_INPUT,
-    RedGreenCommitState.FEATURE_SUBJECT_INPUT,
+  [RedGreenRefactorState.PATTERN_SUBJECT_SELECTION]: [
+    RedGreenRefactorState.CUSTOM_SUBJECT_INPUT,
+    RedGreenRefactorState.FEATURE_SUBJECT_INPUT,
   ],
-  [RedGreenCommitState.FEATURE_SUBJECT_INPUT]: [
-    RedGreenCommitState.PATTERN_GROUP_SELECTION,
+  [RedGreenRefactorState.FEATURE_SUBJECT_INPUT]: [
+    RedGreenRefactorState.PATTERN_GROUP_SELECTION,
   ],
-  [RedGreenCommitState.CUSTOM_SUBJECT_INPUT]: [],
-  [RedGreenCommitState.PATTERN_GROUP_SELECTION]: [],
+  [RedGreenRefactorState.CUSTOM_SUBJECT_INPUT]: [],
+  [RedGreenRefactorState.PATTERN_GROUP_SELECTION]: [],
 };
 
-export class RedGreenCommitStateMachineImpl
-  implements RedGreenCommitStateMachine
+export class RedGreenRefactorStateMachineImpl
+  implements RedGreenRefactorStateMachine
 {
   private context: Context;
-  private handlers: Record<RedGreenCommitState, RedGreenCommitHandler>;
+  private handlers: Record<RedGreenRefactorState, RedGreenRefactorHandler>;
 
-  constructor(initialState: RedGreenCommitState) {
+  constructor(initialState: RedGreenRefactorState) {
     this.context = {
       state: initialState,
       store: {
@@ -50,14 +50,14 @@ export class RedGreenCommitStateMachineImpl
       },
     };
     this.handlers = {
-      [RedGreenCommitState.TYPE_SELECTION]: new TypeSelectionHandler(),
-      [RedGreenCommitState.PATTERN_SUBJECT_SELECTION]:
+      [RedGreenRefactorState.TYPE_SELECTION]: new TypeSelectionHandler(),
+      [RedGreenRefactorState.PATTERN_SUBJECT_SELECTION]:
         new PatternSubjectSelectionHandler(),
-      [RedGreenCommitState.FEATURE_SUBJECT_INPUT]:
+      [RedGreenRefactorState.FEATURE_SUBJECT_INPUT]:
         new FeatureSubjectInputHandler(),
-      [RedGreenCommitState.CUSTOM_SUBJECT_INPUT]:
+      [RedGreenRefactorState.CUSTOM_SUBJECT_INPUT]:
         new CustomSubjectInputHandler(),
-      [RedGreenCommitState.PATTERN_GROUP_SELECTION]:
+      [RedGreenRefactorState.PATTERN_GROUP_SELECTION]:
         new PatternGroupSelectionHandler(),
     };
   }
@@ -82,19 +82,19 @@ export class RedGreenCommitStateMachineImpl
     return this.context.store.message;
   }
 
-  public setType(type: RedGreenCommitType): void {
+  public setType(type: RedGreenRefactorType): void {
     this.context.store.type = type;
   }
 
-  public getType(): RedGreenCommitType {
+  public getType(): RedGreenRefactorType {
     return this.context.store.type;
   }
 
-  private canTransitionTo(state: RedGreenCommitState): boolean {
+  private canTransitionTo(state: RedGreenRefactorState): boolean {
     return transitions[this.context.state].includes(state);
   }
 
-  private transitionTo(state: RedGreenCommitState): void {
+  private transitionTo(state: RedGreenRefactorState): void {
     if (this.canTransitionTo(state)) {
       this.context.state = state;
     }

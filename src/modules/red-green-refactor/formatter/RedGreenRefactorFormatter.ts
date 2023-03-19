@@ -1,8 +1,8 @@
 import { Configuration } from "../../../core/config";
-import { RedGreenCommitStateMachine } from "../state-machine/RedGreenCommitStateMachine";
+import { RedGreenRefactorStateMachine } from "../state-machine/RedGreenRefactorStateMachine";
 
-export class RedGreenCommitFormatter {
-  public static format(stateMachine: RedGreenCommitStateMachine): string {
+export class RedGreenRefactorFormatter {
+  public static format(stateMachine: RedGreenRefactorStateMachine): string {
     const template =
       Configuration.getConfig()["red-green-refactor"].commitOptions.template;
     const templateOrder =

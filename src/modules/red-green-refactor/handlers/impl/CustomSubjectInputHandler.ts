@@ -1,14 +1,14 @@
 import { promptText } from "../../../../libs/prompt";
 import {
-  RedGreenCommitState,
-  RedGreenCommitStateMachine,
-} from "../../state-machine/RedGreenCommitStateMachine";
-import { BaseRedGreenCommitHandler } from "./BaseRedGreenCommitHandler";
+  RedGreenRefactorState,
+  RedGreenRefactorStateMachine,
+} from "../../state-machine/RedGreenRefactorStateMachine";
+import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
-export class CustomSubjectInputHandler extends BaseRedGreenCommitHandler {
+export class CustomSubjectInputHandler extends BaseRedGreenRefactorHandler {
   public async handle(
-    stateMachine: RedGreenCommitStateMachine
-  ): Promise<RedGreenCommitState | null> {
+    stateMachine: RedGreenRefactorStateMachine
+  ): Promise<RedGreenRefactorState | null> {
     const subject = await this.promptCommitSubject();
 
     stateMachine.setMessage(subject);
