@@ -1,5 +1,4 @@
 import { DEFAULT_CONFIG_PATH } from "../../../core/config/configUtils";
-import { ConfigGeneratorCommandImpl } from "../command/impl/ConfigGeneratorCommandImpl";
 import { ConfigGeneratorCommand } from "../command/ConfigGeneratorCommand";
 
 export type ConfigGeneratorCommandFactoryOptions = {
@@ -41,7 +40,7 @@ export class ConfigGeneratorCommandFactory {
     const { name, version, description, userConfigPath } =
       options || defaultOptions;
 
-    const command = new ConfigGeneratorCommandImpl();
+    const command = new ConfigGeneratorCommand();
     command
       .name(name || defaultOptions.name)
       .version(version || defaultOptions.version)

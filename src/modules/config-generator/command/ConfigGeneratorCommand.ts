@@ -1,11 +1,12 @@
 import { Command } from "commander";
+import { loadConfig, writeUserConfig } from "../../../core/config";
 
 /**
  * @class ConfigGeneratorCommand
  * @description Command to generate a config file
  * @extends Command
  */
-export interface ConfigGeneratorCommand extends Command {
+export class ConfigGeneratorCommand extends Command {
   /**
    * @method run
    * @description
@@ -14,5 +15,8 @@ export interface ConfigGeneratorCommand extends Command {
    * @returns {Promise<void>}
    * @memberof ConfigGeneratorCommand
    */
-  run(configPath?: string): Promise<void>;
+  public async run(configPath?: string): Promise<void> {
+    const { ...safeConfig } = loadConfig();
+    writeUserConfig(safeConfig, configPath);
+  }
 }

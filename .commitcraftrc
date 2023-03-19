@@ -21,56 +21,6 @@
       ]
     },
     "cliOptions": {
-      "scopes": [
-        {
-          "value": "",
-          "label": ""
-        },
-        {
-          "value": "config-generator",
-          "label": "config-generator"
-        },
-        {
-          "value": "conventional",
-          "label": "conventional"
-        },
-        {
-          "value": "red-green-refactor",
-          "label": "red-green-refactor"
-        },
-        {
-          "value": "wizard",
-          "label": "wizard"
-        },
-        {
-          "value": "core",
-          "label": "core"
-        },
-        {
-          "value": "core/config",
-          "label": "core/config"
-        },
-        {
-          "value": "core/handler",
-          "label": "core/handler"
-        },
-        {
-          "value": "core/logger",
-          "label": "core/logger"
-        },
-        {
-          "value": "core/process",
-          "label": "core/process"
-        },
-        {
-          "value": "libs/git",
-          "label": "libs/git"
-        },
-        {
-          "value": "libs/prompt",
-          "label": "libs/prompt"
-        }
-      ],
       "types": [
         {
           "value": "feat",
