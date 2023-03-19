@@ -25,6 +25,7 @@ export class ConventionalScopeHandler extends BaseConventionalHandler {
   private async selectCommitScope(): Promise<CommitScope> {
     if (this.commitScopes?.length > 0) {
       const result = await this.promptSelectCommitScope();
+
       if (result.message.length > 0) {
         return result;
       }

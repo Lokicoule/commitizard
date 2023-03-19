@@ -13,12 +13,8 @@ export class ConventionalFooterHandler extends BaseConventionalHandler {
   }
 
   private async selectCommitFooter(): Promise<CommitFooter> {
-    const commitFooter = await this.promptCommitFooter();
-    return commitFooter;
-  }
+    const footerLines: string[] = [];
 
-  private async promptCommitFooter(): Promise<CommitFooter> {
-    let footerLines: string[] = [];
     let hasFooter = await promptConfirm({
       defaultValue: false,
       message: "Does this commit have a footer?",
@@ -30,7 +26,10 @@ export class ConventionalFooterHandler extends BaseConventionalHandler {
         message: "Please enter a footer line:",
         abortMessage: ABORT_MESSAGE,
       });
-      Boolean(bodyLine) && footerLines.push(bodyLine);
+
+      if (bodyLine) {
+        footerLines.push(bodyLine);
+      }
 
       hasFooter = await promptConfirm({
         defaultValue: false,

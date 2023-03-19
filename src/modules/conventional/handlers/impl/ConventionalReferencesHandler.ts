@@ -18,7 +18,8 @@ export class ConventionalReferencesHandler extends BaseConventionalHandler {
   }
 
   private async promptCommitReferences(): Promise<CommitReferences> {
-    let commitReferences: string[] = [];
+    const commitReferences: string[] = [];
+
     let isIssueAffected = await promptConfirm({
       defaultValue: false,
       message: "Does this commit reference any open issues?",
@@ -32,10 +33,11 @@ export class ConventionalReferencesHandler extends BaseConventionalHandler {
         abortMessage: ABORT_MESSAGE,
       });
 
-      issueNumber &&
+      if (issueNumber) {
         commitReferences.push(
           issueNumber.startsWith("#") ? issueNumber : `#${issueNumber}`
         );
+      }
 
       isIssueAffected = await promptConfirm({
         defaultValue: false,

@@ -4,7 +4,7 @@ import { CommitBuilder } from "../../builder/CommitBuilder";
 import { CommitBody } from "../../types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
-const ABORT_MESSAGE = yellow("✖") + " Commit body aborted!";
+const ABORT_MESSAGE = `${yellow("✖")} Commit body aborted!`;
 
 export class ConventionalBodyHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
@@ -13,12 +13,7 @@ export class ConventionalBodyHandler extends BaseConventionalHandler {
   }
 
   private async selectCommitBody(): Promise<CommitBody> {
-    const commitBody = await this.promptCommitBody();
-    return commitBody;
-  }
-
-  private async promptCommitBody(): Promise<CommitBody> {
-    let bodyLines: string[] = [];
+    const bodyLines: string[] = [];
     let hasBody = await promptConfirm({
       defaultValue: false,
       message: "Does this commit have a body?",
@@ -30,11 +25,14 @@ export class ConventionalBodyHandler extends BaseConventionalHandler {
         message: "Please enter a body line:",
         abortMessage: ABORT_MESSAGE,
       });
-      Boolean(bodyLine) && bodyLines.push(bodyLine);
+
+      if (bodyLine) {
+        bodyLines.push(bodyLine);
+      }
 
       hasBody = await promptConfirm({
         defaultValue: false,
-        message: "Do you need an other body line?",
+        message: "Do you need another body line?",
         abortMessage: ABORT_MESSAGE,
       });
     }

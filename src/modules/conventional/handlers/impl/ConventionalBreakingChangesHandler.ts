@@ -13,12 +13,8 @@ export class ConventionalBreakingChangesHandler extends BaseConventionalHandler 
   }
 
   private async selectCommitBreakingChanges(): Promise<CommitBreakingChanges> {
-    const commitBreakingChanges = await this.promptCommitBreakingChanges();
-    return commitBreakingChanges;
-  }
+    const commitBreakingChanges: string[] = [];
 
-  private async promptCommitBreakingChanges(): Promise<CommitBreakingChanges> {
-    let commitBreakingChanges: string[] = [];
     let isBreakingChange = await promptConfirm({
       defaultValue: false,
       message: "Is this a breaking change?",
@@ -30,7 +26,10 @@ export class ConventionalBreakingChangesHandler extends BaseConventionalHandler 
         message: "Please enter a description for the breaking change:",
         abortMessage: ABORT_MESSAGE,
       });
-      Boolean(breakingChange) && commitBreakingChanges.push(breakingChange);
+
+      if (breakingChange) {
+        commitBreakingChanges.push(breakingChange);
+      }
 
       isBreakingChange = await promptConfirm({
         defaultValue: false,
