@@ -21,7 +21,7 @@ export type RedGreenCommitType =
   | RedGreenCommitTypeUppercase;
 
 export interface RedGreenCommitStateMachine {
-  handleCommit(): void;
+  handleCommit(): Promise<void>;
   setMessage(message: string): void;
   getMessage(): string;
   setType(type: Omit<RedGreenCommitType, "INITIAL" | "initial">): void;

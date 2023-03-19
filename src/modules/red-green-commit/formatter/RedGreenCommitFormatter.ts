@@ -1,5 +1,4 @@
 import { Configuration } from "../../../core/config";
-import { RedGreenCommitSubject } from "../builder/impl/RedGreenCommitBuilderImpl";
 import { RedGreenCommitStateMachine } from "../state-machine/RedGreenCommitStateMachine";
 
 export class RedGreenCommitFormatter {
