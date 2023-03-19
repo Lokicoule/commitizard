@@ -14,7 +14,7 @@ export class PatternGroupSelectionHandler extends BaseRedGreenRefactorHandler {
     stateMachine: RedGreenRefactorStateMachine
   ): Promise<RedGreenRefactorState | null> {
     const refactorOptions =
-      this.configuration["red-green-refactor"].cliOptions.refactorOptions;
+      this.configuration.redGreenRefactor.cliOptions.refactorOptions;
 
     const patternOptions = refactorOptions.filter((option) =>
       stateMachine

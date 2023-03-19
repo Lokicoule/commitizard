@@ -14,7 +14,7 @@ describe("PatternSubjectSelectionHandler", () => {
 
   beforeEach(() => {
     config = {
-      "red-green-refactor": {
+      redGreenRefactor: {
         cliOptions: {
           redPatterns: [
             "Add failing test for {{feature}}",

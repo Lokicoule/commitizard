@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { Configuration } from "../../../../core/config/Configuration";
+import { loadConfig } from "../../../../core/config";
 import { PromptManagerImpl } from "../../../../libs/prompt/impl/PromptManagerImpl";
 import { WizardCommitStateMachineFactory } from "../../factory/WizardCommitStateMachineFactory";
 import { WizardCommand } from "../WizardCommand";
@@ -16,7 +16,7 @@ export class WizardCommandImpl extends Command implements WizardCommand {
       message: "Welcome to the commit wizard!",
     });
 
-    const config = Configuration.initialize(configPath);
+    const config = loadConfig(configPath);
 
     const stateMachine = WizardCommitStateMachineFactory.create(
       config,

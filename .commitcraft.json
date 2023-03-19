@@ -61,16 +61,13 @@
       ]
     }
   },
-  "red-green-refactor": {
+  "redGreenRefactor": {
     "commitOptions": {
       "template": {
         "type": "[{{type}}]: ",
         "subject": "{{subject}}"
       },
-      "templateOrder": [
-        "type",
-        "subject"
-      ]
+      "templateOrder": ["type", "subject"]
     },
     "cliOptions": {
       "types": [

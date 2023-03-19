@@ -58,5 +58,5 @@ export type WizardOptions = {
 export type Config = {
   wizard: WizardOptions;
   conventional: ConventionalOptions;
-  "red-green-refactor": RedGreenOptions;
+  redGreenRefactor: RedGreenOptions;
 };

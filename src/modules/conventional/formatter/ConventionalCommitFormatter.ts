@@ -1,4 +1,3 @@
-import { Configuration } from "../../../core/config/Configuration";
 import { ConventionalOptions } from "../../../core/config/types";
 import { Commit } from "../types";
 

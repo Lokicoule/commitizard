@@ -1,4 +1,3 @@
-import { Configuration } from "../../../../core/config";
 import { RedGreenRefactorStateMachineFactory } from "../../../red-green-refactor/factory/RedGreenRefactorStateMachineFactory";
 import { RedGreenRefactorFormatter } from "../../../red-green-refactor/formatter/RedGreenRefactorFormatter";
 import {
@@ -21,7 +20,7 @@ export class UseRedGreenRefactorHandler extends BaseWizardCommitHandler {
     wizard.setMessage(
       RedGreenRefactorFormatter.format(
         stateMachine.getStore(),
-        Configuration.getConfig()["red-green-refactor"]
+        this.configuration.redGreenRefactor
       )
     );
 

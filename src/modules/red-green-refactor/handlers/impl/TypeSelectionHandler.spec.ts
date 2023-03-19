@@ -14,7 +14,7 @@ describe("TypeSelectionHandler", () => {
 
   beforeEach(() => {
     config = {
-      "red-green-refactor": {
+      redGreenRefactor: {
         cliOptions: {
           types: [
             {
@@ -58,7 +58,7 @@ describe("TypeSelectionHandler", () => {
 
   it("should throw an error if no types configured", async () => {
     handler = new TypeSelectionHandler(promptManager, {
-      "red-green-refactor": {
+      redGreenRefactor: {
         cliOptions: {
           types: [],
         },

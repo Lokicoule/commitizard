@@ -59,7 +59,7 @@ export const defaultConfig = {
       ],
     },
   },
-  "red-green-refactor": {
+  redGreenRefactor: {
     commitOptions: {
       template: {
         type: "[{{type}}]: ",

@@ -16,7 +16,7 @@ export class PatternSubjectSelectionHandler extends BaseRedGreenRefactorHandler 
     stateMachine: RedGreenRefactorStateMachine
   ): Promise<RedGreenRefactorState | null> {
     const subjectPatterns = this.getSubjectPatternsFromType(
-      this.configuration["red-green-refactor"].cliOptions,
+      this.configuration.redGreenRefactor.cliOptions,
       stateMachine.getType()
     );
 

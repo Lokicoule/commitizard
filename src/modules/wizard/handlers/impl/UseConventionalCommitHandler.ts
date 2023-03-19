@@ -1,24 +1,23 @@
-import { CommitBuilderFactoryImpl } from "../../../conventional/factories/impl/CommitBuilderFactoryImpl";
-import { ConventionalPipelineFactoryImpl } from "../../../conventional/factories/impl/ConventionalPipelineFactoryImpl";
-import { ConventionalHandlerFactoryImpl } from "../../../conventional/factories/impl/ConventionalCommitHandlerFactoryImpl";
+import { CommitBuilderFactory } from "../../../../modules/conventional/factories/CommitBuilderFactory";
+import { ConventionalHandlerFactory } from "../../../../modules/conventional/factories/ConventionalHandlerFactory";
+import { ConventionalPipelineFactory } from "../../../../modules/conventional/factories/ConventionalPipelineFactory";
 import { ConventionalCommitFormatter } from "../../../conventional/formatter/ConventionalCommitFormatter";
 import {
   WizardCommitStateMachine,
   WizardCommitState,
 } from "../../state-machine/WizardCommitStateMachine";
 import { BaseWizardCommitHandler } from "./BaseWizardCommitHandler";
-import { Configuration } from "../../../../core/config";
 
 export class UseConventionalCommitHandler extends BaseWizardCommitHandler {
   public async handle(
     wizard: WizardCommitStateMachine
   ): Promise<WizardCommitState | null> {
-    const commitBuilder = CommitBuilderFactoryImpl.create();
-    const commitHandlerFactory = new ConventionalHandlerFactoryImpl(
+    const commitBuilder = CommitBuilderFactory.create();
+    const commitHandlerFactory = new ConventionalHandlerFactory(
       this.promptManager,
       this.configuration
     );
-    const commitHandlerChainFactory = new ConventionalPipelineFactoryImpl(
+    const commitHandlerChainFactory = new ConventionalPipelineFactory(
       commitHandlerFactory
     );
     const commitHandlerChain = commitHandlerChainFactory.createPipeline();
@@ -27,7 +26,7 @@ export class UseConventionalCommitHandler extends BaseWizardCommitHandler {
 
     const message = ConventionalCommitFormatter.format(
       commitBuilder.build(),
-      Configuration.getConfig().conventional
+      this.configuration.conventional
     );
 
     wizard.setMessage(message);

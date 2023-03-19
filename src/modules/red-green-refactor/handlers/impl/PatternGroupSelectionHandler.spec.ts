@@ -15,7 +15,7 @@ describe("PatternGroupSelectionHandler", () => {
   beforeEach(() => {
     promptManager = new PromptManagerImpl();
     config = {
-      "red-green-refactor": {
+      redGreenRefactor: {
         cliOptions: {
           refactorOptions: [
             {
