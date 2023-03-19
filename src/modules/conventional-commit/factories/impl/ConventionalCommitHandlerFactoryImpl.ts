@@ -1,4 +1,4 @@
-import { CommitHandler } from "../../../commit/handlers/CommitHandler";
+import { CommitHandler } from "../../handlers/CommitHandler";
 import { ConventionalCommitBodyHandlerImpl } from "../../handlers/impl/ConventionalCommitBodyHandlerImpl";
 import { ConventionalCommitBreakingChangesHandlerImpl } from "../../handlers/impl/ConventionalCommitBreakingChangesHandlerImpl";
 import { ConventionalCommitFooterHandlerImpl } from "../../handlers/impl/ConventionalCommitFooterHandlerImpl";

@@ -1,5 +1,5 @@
 import { HandlerPipeline } from "../../../../core/handler/impl/HandlerPipeline";
-import { CommitHandler } from "../../../commit/handlers/CommitHandler";
+import { CommitHandler } from "../../handlers/CommitHandler";
 import { ConventionalCommitHandlerChainFactory } from "../ConventionalCommitHandlerChainFactory";
 import { ConventionalCommitHandlerFactory } from "../ConventionalCommitHandlerFactory";
 

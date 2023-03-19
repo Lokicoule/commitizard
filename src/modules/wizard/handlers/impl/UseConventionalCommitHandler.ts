@@ -1,4 +1,4 @@
-import { CommitBuilderFactoryImpl } from "../../../commit/factory/impl/CommitBuilderFactoryImpl";
+import { CommitBuilderFactoryImpl } from "../../../conventional-commit/factories/impl/CommitBuilderFactoryImpl";
 import { ConventionalCommitHandlerChainFactoryImpl } from "../../../conventional-commit/factories/impl/ConventionalCommitHandlerChainFactoryImpl";
 import { ConventionalCommitHandlerFactoryImpl } from "../../../conventional-commit/factories/impl/ConventionalCommitHandlerFactoryImpl";
 import { ConventionalCommitFormatter } from "../../../conventional-commit/formatter/ConventionalCommitFormatter";

@@ -1,5 +1,5 @@
 import { Configuration } from "../../../core/config/Configuration";
-import { Commit } from "../../commit/types";
+import { Commit } from "../types";
 
 export class ConventionalCommitFormatter {
   public static format(commit: Commit): string {

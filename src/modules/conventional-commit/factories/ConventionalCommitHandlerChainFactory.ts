@@ -1,4 +1,4 @@
-import { CommitHandler } from "../../commit/handlers/CommitHandler";
+import { CommitHandler } from "../handlers/CommitHandler";
 
 export interface ConventionalCommitHandlerChainFactory {
   createConventionalCommitHandlerChain(): CommitHandler;

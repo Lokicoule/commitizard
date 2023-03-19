@@ -1,10 +1,10 @@
 import { Configuration } from "../../../../core/config/Configuration";
 import { Type } from "../../../../core/config/types";
 import { promptSelect } from "../../../../libs/prompt";
-import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { AbstractCommitHandler } from "../../../commit/handlers/impl/AbstractCommitHandler";
-import { CommitHandler } from "../../../commit/handlers/CommitHandler";
-import { CommitType } from "../../../commit/types";
+import { CommitBuilder } from "../../builder/CommitBuilder";
+import { AbstractCommitHandler } from "./AbstractCommitHandler";
+import { CommitHandler } from "../CommitHandler";
+import { CommitType } from "../../types";
 
 export class ConventionalCommitTypeHandlerImpl
   extends AbstractCommitHandler

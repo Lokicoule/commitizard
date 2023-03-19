@@ -2,10 +2,10 @@ import { yellow } from "picocolors";
 import { Configuration } from "../../../../core/config/Configuration";
 import { Scope } from "../../../../core/config/types";
 import { promptSelect, promptText } from "../../../../libs/prompt";
-import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { AbstractCommitHandler } from "../../../commit/handlers/impl/AbstractCommitHandler";
-import { CommitHandler } from "../../../commit/handlers/CommitHandler";
-import { CommitScope } from "../../../commit/types";
+import { CommitBuilder } from "../../builder/CommitBuilder";
+import { AbstractCommitHandler } from "./AbstractCommitHandler";
+import { CommitHandler } from "../CommitHandler";
+import { CommitScope } from "../../types";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit scope selection aborted!";
 
