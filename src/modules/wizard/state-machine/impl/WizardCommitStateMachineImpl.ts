@@ -64,10 +64,6 @@ export class WizardCommitStateMachineImpl implements WizardCommitStateMachine {
     };
   }
 
-  public getState(): WizardCommitState {
-    return this.context.state;
-  }
-
   public async handleCommit(): Promise<void> {
     let nextState = await this.handlers[this.context.state].handle(this);
 

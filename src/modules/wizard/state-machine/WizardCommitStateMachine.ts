@@ -8,7 +8,6 @@ export enum WizardCommitState {
 }
 
 export interface WizardCommitStateMachine {
-  getState(): WizardCommitState;
   handleCommit(): void;
   setMessage(message: string): void;
   getMessage(): string;
