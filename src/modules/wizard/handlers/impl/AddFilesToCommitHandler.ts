@@ -5,6 +5,7 @@ import {
   WizardCommitStateMachine,
 } from "../../state-machine/WizardCommitStateMachine";
 import { BaseWizardCommitHandler } from "./BaseWizardCommitHandler";
+import { PromptManager } from "../../../../libs/prompt/PromptManager";
 
 // Maximum number of files to show in output
 const MAX_FILES_TO_SHOW = 5;
@@ -14,14 +15,18 @@ const MAX_FILES_TO_SHOW = 5;
  * @param files - Array of file names.
  * @param promptManager - Prompt manager instance.
  */
-async function logFiles(files: string[], promptManager: any): Promise<void> {
+async function logFiles(
+  files: string[],
+  promptManager: PromptManager,
+  maxViewFilesToShow: number = MAX_FILES_TO_SHOW
+): Promise<void> {
   promptManager.log({
-    message: `Found ${files.length} staged files:\nDisplaying up to ${MAX_FILES_TO_SHOW} files...`,
+    message: `Found ${files.length} staged files:\n`,
     level: "info",
   });
 
   // Only show up to MAX_FILES_TO_SHOW files in output
-  for (let file of files.slice(0, MAX_FILES_TO_SHOW)) {
+  for (let file of files.slice(0, maxViewFilesToShow)) {
     promptManager.log({
       message: file,
       level: "info",
@@ -29,9 +34,9 @@ async function logFiles(files: string[], promptManager: any): Promise<void> {
   }
 
   // If there are more files, show a summary message
-  if (files.length > MAX_FILES_TO_SHOW) {
+  if (files.length > maxViewFilesToShow) {
     promptManager.log({
-      message: `(${files.length - MAX_FILES_TO_SHOW} more files)`,
+      message: `(${files.length - maxViewFilesToShow} more files)`,
       level: "info",
     });
   }
@@ -45,14 +50,16 @@ export class AddFilesToCommitHandler extends BaseWizardCommitHandler {
     _wizard: WizardCommitStateMachine
   ): Promise<WizardCommitState | null> {
     const { promptManager } = this;
+    const maxViewFiles =
+      this.configuration.wizard.maxViewFilesToShow || MAX_FILES_TO_SHOW;
 
     // Get list of staged files
     const stagedFiles = await getStagedFiles();
 
     // If there are staged files, log them to the console
-    await logFiles(stagedFiles, promptManager);
+    await logFiles(stagedFiles, promptManager, maxViewFiles);
 
-    if (stagedFiles.length <= MAX_FILES_TO_SHOW) {
+    if (stagedFiles.length <= maxViewFiles) {
       // Otherwise, prompt user to select updated files to add to the commit
       const updatedFiles = await getFiles();
 

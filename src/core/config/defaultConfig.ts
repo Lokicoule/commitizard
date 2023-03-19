@@ -1,6 +1,9 @@
 import { Config } from "./types";
 
 export const defaultConfig = {
+  wizard: {
+    maxViewFilesToShow: 5,
+  },
   conventional: {
     commitOptions: {
       template: {

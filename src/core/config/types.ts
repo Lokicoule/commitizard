@@ -51,7 +51,12 @@ export type RedGreenOptions = {
   cliOptions: RedGreenCliOptions;
 };
 
+export type WizardOptions = {
+  maxViewFilesToShow: number;
+};
+
 export type Config = {
+  wizard: WizardOptions;
   conventional: ConventionalOptions;
   "red-green-refactor": RedGreenOptions;
 };
