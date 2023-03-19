@@ -7,7 +7,7 @@ import {
 } from "../../state-machine/WizardCommitStateMachine";
 import { BaseWizardCommitHandler } from "./BaseWizardCommitHandler";
 
-export class CommitCompleteHandler extends BaseWizardCommitHandler {
+export class RunGitCommitProcessHandler extends BaseWizardCommitHandler {
   public async handle(
     wizard: WizardCommitStateMachine
   ): Promise<WizardCommitState | null> {

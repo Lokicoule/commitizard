@@ -24,6 +24,6 @@ export class UseConventionalCommitHandler extends BaseWizardCommitHandler {
     const message = ConventionalCommitFormatter.format(commitBuilder.build());
 
     wizard.setMessage(message);
-    return WizardCommitState.ReviewCommit;
+    return WizardCommitState.REVIEW_COMMIT_MESSAGE;
   }
 }

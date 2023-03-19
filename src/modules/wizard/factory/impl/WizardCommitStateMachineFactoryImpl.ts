@@ -9,6 +9,8 @@ export class WizardCommitStateMachineFactoryImpl
   implements WizardCommitStateMachineFactory
 {
   create(): WizardCommitStateMachine {
-    return new WizardCommitStateMachineImpl(WizardCommitState.AddFilesToCommit);
+    return new WizardCommitStateMachineImpl(
+      WizardCommitState.ADD_FILES_TO_COMMIT
+    );
   }
 }

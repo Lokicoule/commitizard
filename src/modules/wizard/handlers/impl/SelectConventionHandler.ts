@@ -10,13 +10,14 @@ export class SelectConventionHandler extends BaseWizardCommitHandler {
   public async handle(
     _wizard: WizardCommitStateMachine
   ): Promise<WizardCommitState | null> {
+    console.log("Selecting convention...");
     const convention = await this.selectConvention();
 
     if (convention === "conventional") {
-      return WizardCommitState.UseConventionalCommit;
+      return WizardCommitState.USE_CONVENTIONAL_COMMIT_CONVENTION;
     }
 
-    return WizardCommitState.UseRedGreenCommit;
+    return WizardCommitState.USE_RED_GREEN_REFACTOR_COMMIT_CONVENTION;
   }
 
   private async selectConvention(): Promise<string> {

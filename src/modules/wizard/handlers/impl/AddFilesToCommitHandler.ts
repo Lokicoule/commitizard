@@ -15,7 +15,7 @@ export class AddFilesToCommitHandler extends BaseWizardCommitHandler {
 
     if (updatedFiles.length === 0) {
       logMessage("No files to add to commit.");
-      return WizardCommitState.SelectConvention;
+      return WizardCommitState.SELECT_COMMIT_CONVENTION;
     }
 
     const commitUpdatedFiles = await promptMultiselect<any, string>({
@@ -27,6 +27,6 @@ export class AddFilesToCommitHandler extends BaseWizardCommitHandler {
     const processBuilder = ProcessBuilderFactory.create();
 
     processBuilder.addArgs(["add", ...commitUpdatedFiles]).spawn("git");
-    return WizardCommitState.SelectConvention;
+    return WizardCommitState.SELECT_COMMIT_CONVENTION;
   }
 }

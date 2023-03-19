@@ -25,6 +25,6 @@ export class UseRedGreenCommitHandler extends BaseWizardCommitHandler {
 
     wizard.setMessage(message);
 
-    return WizardCommitState.ReviewCommit;
+    return WizardCommitState.USE_CONVENTIONAL_COMMIT_CONVENTION;
   }
 }

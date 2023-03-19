@@ -22,6 +22,6 @@ export class ReviewCommitHandler extends BaseWizardCommitHandler {
       return null;
     }
 
-    return WizardCommitState.CommitComplete;
+    return WizardCommitState.RUN_GIT_COMMIT_PROCESS;
   }
 }
