@@ -1,6 +1,7 @@
 import { Config } from "./types";
 
 export const defaultConfig = {
+  version: "0.0.1",
   wizard: {
     maxViewFilesToShow: 5,
   },
@@ -112,7 +113,24 @@ export const defaultConfig = {
         "Optimize {{feature}} by {{reducing complexity/improving efficiency}}",
         "Improve {{feature}} by {{cleaning up/rewriting}} code for {{clarity/consistency}}",
       ],
-      refactorOptions: [
+      groupOptions: [
+        {
+          value: "{{fixing/adding/removing}}",
+          options: [
+            {
+              value: "fixing",
+              label: "fixing",
+            },
+            {
+              value: "adding",
+              label: "adding",
+            },
+            {
+              value: "removing",
+              label: "removing",
+            },
+          ],
+        },
         {
           value: "{{performance/maintainability/readability/usability}}",
           options: [

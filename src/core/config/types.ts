@@ -38,7 +38,7 @@ export type RedGreenCliOptions = {
   redPatterns: string[];
   greenPatterns: string[];
   refactorPatterns: string[];
-  refactorOptions: RedGreenRefactorOptions[];
+  groupOptions: RedGreenRefactorOptions[];
 };
 
 export type ConventionalOptions = {
@@ -56,6 +56,7 @@ export type WizardOptions = {
 };
 
 export type Config = {
+  version: string;
   wizard: WizardOptions;
   conventional: ConventionalOptions;
   redGreenRefactor: RedGreenOptions;
