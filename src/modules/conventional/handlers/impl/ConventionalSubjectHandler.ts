@@ -9,12 +9,7 @@ export class ConventionalSubjectHandler extends BaseConventionalHandler {
   }
 
   private async selectCommitSubject(): Promise<CommitSubject> {
-    const commitSubject = await this.promptCommitSubject();
-    return commitSubject;
-  }
-
-  private async promptCommitSubject(): Promise<CommitSubject> {
-    let commitMessage;
+    let commitMessage: string | undefined = undefined;
 
     while (!commitMessage) {
       commitMessage = await this.promptManager.text({

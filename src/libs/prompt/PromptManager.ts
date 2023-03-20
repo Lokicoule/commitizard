@@ -3,6 +3,7 @@ import {
   Intro,
   Log,
   MultiSelect,
+  MultiText,
   Outro,
   Select,
   SelectOption,
@@ -12,6 +13,7 @@ import {
 export interface PromptManager {
   confirm: (options: Confirm) => Promise<boolean>;
   text: (options: Text) => Promise<string>;
+  multiText: (options: MultiText) => Promise<string[]>;
   select: <Option extends SelectOption<T>[], T>(
     options: Select<Option, T>
   ) => Promise<T>;

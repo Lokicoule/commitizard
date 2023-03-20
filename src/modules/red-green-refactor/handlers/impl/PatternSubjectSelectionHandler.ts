@@ -3,6 +3,7 @@ import { RedGreenRefactorStateMachine } from "../../state-machine/RedGreenRefact
 import { RedGreenRefactorState } from "../../types";
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
+//TODO: do not hardcode this value and get it from the configuration
 export const CUSTOM_VALUE = "custom";
 
 /**

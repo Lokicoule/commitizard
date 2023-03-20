@@ -1,5 +1,4 @@
 import { yellow } from "picocolors";
-import { PromptManager } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../builder/CommitBuilder";
 import { CommitBreakingChanges } from "../../types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";

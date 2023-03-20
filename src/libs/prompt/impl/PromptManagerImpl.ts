@@ -15,6 +15,7 @@ import {
   Intro,
   Log,
   MultiSelect,
+  MultiText,
   Outro,
   Select,
   SelectOption,
@@ -54,6 +55,41 @@ export class PromptManagerImpl implements PromptManager {
     );
 
     return result?.trim();
+  }
+
+  public async multiText({
+    message,
+    confirmMessage = "Do you want to add another line?",
+    placeholder,
+    defaultValue,
+    abortMessage,
+  }: MultiText): Promise<string[]> {
+    let lines: Array<string> = [];
+
+    while (true) {
+      const result = await this.text({
+        message,
+        placeholder,
+        defaultValue,
+        abortMessage,
+      });
+
+      if (result) {
+        lines.push(result);
+      }
+
+      const isContinue = await this.confirm({
+        message: confirmMessage,
+        defaultValue: false,
+        abortMessage,
+      });
+
+      if (!isContinue) {
+        break;
+      }
+    }
+
+    return lines;
   }
 
   public async select<Option extends SelectOption<T>[], T>({

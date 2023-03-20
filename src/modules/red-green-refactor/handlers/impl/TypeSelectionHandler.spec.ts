@@ -57,13 +57,7 @@ describe("TypeSelectionHandler", () => {
   });
 
   it("should throw an error if no types configured", async () => {
-    handler = new TypeSelectionHandler(promptManager, {
-      redGreenRefactor: {
-        cliOptions: {
-          types: [],
-        },
-      },
-    } as unknown as Config);
+    handler = new TypeSelectionHandler(promptManager, {} as Config);
 
     jest.spyOn(promptManager, "select").mockResolvedValue("RED");
     await expect(handler.handle(stateMachine)).rejects.toThrowError(

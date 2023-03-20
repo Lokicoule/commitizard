@@ -5,7 +5,7 @@ import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
 export class ConventionalTypeHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
-    const types = this.configuration.conventional.cliOptions.types || [];
+    const types = this.configuration.conventional?.cliOptions.types || [];
     if (types.length === 0) {
       throw new Error("No commit types available!");
     }

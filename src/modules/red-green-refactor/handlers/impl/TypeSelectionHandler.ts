@@ -14,18 +14,20 @@ export class TypeSelectionHandler extends BaseRedGreenRefactorHandler {
   public async handle(
     stateMachine: RedGreenRefactorStateMachine
   ): Promise<RedGreenRefactorState | null> {
-    if (this.configuration.redGreenRefactor.cliOptions.types.length === 0) {
+    const types = this.configuration.redGreenRefactor?.cliOptions.types || [];
+
+    if (types.length === 0) {
       throw new Error("No types configured!");
     }
 
-    const commitType = await this.selectCommitType();
+    const commitType = await this.selectCommitType(types);
 
     stateMachine.setType(commitType);
 
     return RedGreenRefactorState.PATTERN_SUBJECT_SELECTION;
   }
 
-  private async selectCommitType(): Promise<string> {
+  private async selectCommitType(types: Type[]): Promise<string> {
     const commitType = await this.promptManager.select<Type[], string>({
       message: "Select commit type:",
       options: this.configuration.redGreenRefactor.cliOptions.types,

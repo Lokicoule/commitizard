@@ -12,11 +12,6 @@ export class ConventionalReferencesHandler extends BaseConventionalHandler {
   }
 
   private async selectCommitReferences(): Promise<CommitReferences> {
-    const commitReferences = await this.promptCommitReferences();
-    return commitReferences;
-  }
-
-  private async promptCommitReferences(): Promise<CommitReferences> {
     const commitReferences: string[] = [];
 
     let isIssueAffected = await this.promptManager.confirm({

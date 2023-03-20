@@ -8,7 +8,7 @@ const ABORT_MESSAGE = yellow("✖") + " Commit scope selection aborted!";
 
 export class ConventionalScopeHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
-    const scopes = this.configuration.conventional.cliOptions.scopes || [];
+    const scopes = this.configuration.conventional?.cliOptions?.scopes || [];
     const commitScope = await this.selectCommitScope(scopes);
     commitBuilder.withScope(commitScope);
   }
@@ -17,6 +17,7 @@ export class ConventionalScopeHandler extends BaseConventionalHandler {
     if (scopes.length > 0) {
       const result = await this.promptSelectCommitScope(scopes);
 
+      console.log(result);
       if (result.message.length > 0) {
         return result;
       }
@@ -27,7 +28,7 @@ export class ConventionalScopeHandler extends BaseConventionalHandler {
 
   private async promptTextCommitScope(): Promise<CommitScope> {
     const commitScope = await this.promptManager.text({
-      message: "Enter commit scope (optional):",
+      message: "Enter a scope for the commit (optional):",
       abortMessage: ABORT_MESSAGE,
     });
 
