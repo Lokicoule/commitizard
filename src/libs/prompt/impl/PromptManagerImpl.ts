@@ -57,32 +57,17 @@ export class PromptManagerImpl implements PromptManager {
     return result?.trim();
   }
 
-  public async multiText({
-    message,
-    confirmMessage = "Do you want to add another line?",
-    placeholder,
-    defaultValue,
-    abortMessage,
-  }: MultiText): Promise<string[]> {
+  public async multiText({ text, confirm }: MultiText): Promise<string[]> {
     let lines: Array<string> = [];
 
     while (true) {
-      const result = await this.text({
-        message,
-        placeholder,
-        defaultValue,
-        abortMessage,
-      });
+      const result = await this.text(text);
 
       if (result) {
         lines.push(result);
       }
 
-      const isContinue = await this.confirm({
-        message: confirmMessage,
-        defaultValue: false,
-        abortMessage,
-      });
+      const isContinue = await this.confirm(confirm);
 
       if (!isContinue) {
         break;

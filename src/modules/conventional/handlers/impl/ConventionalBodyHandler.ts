@@ -12,27 +12,24 @@ export class ConventionalBodyHandler extends BaseConventionalHandler {
   }
 
   private async selectCommitBody(): Promise<CommitBody> {
-    const bodyLines: string[] = [];
-    let hasBody = await this.promptManager.confirm({
+    let bodyLines: string[] = [];
+
+    const hasBody = await this.promptManager.confirm({
       defaultValue: false,
       message: "Does this commit have a body?",
       abortMessage: ABORT_MESSAGE,
     });
 
-    while (hasBody) {
-      const bodyLine = await this.promptManager.text({
-        message: "Please enter a body line:",
-        abortMessage: ABORT_MESSAGE,
-      });
-
-      if (bodyLine) {
-        bodyLines.push(bodyLine);
-      }
-
-      hasBody = await this.promptManager.confirm({
-        defaultValue: false,
-        message: "Do you need another body line?",
-        abortMessage: ABORT_MESSAGE,
+    if (hasBody) {
+      bodyLines = await this.promptManager.multiText({
+        text: {
+          message: "Please enter a body line:",
+          abortMessage: ABORT_MESSAGE,
+        },
+        confirm: {
+          message: "Do you need another body line?",
+          abortMessage: ABORT_MESSAGE,
+        },
       });
     }
 

@@ -65,10 +65,9 @@ export class AddFilesToCommitHandler extends BaseWizardCommitHandler {
 
       if (updatedFiles.length === 0) {
         promptManager.log({
-          message: "You have no updated files to commit!",
+          message: "You don't have any files to add to the commit.",
           level: "info",
         });
-        return null;
       }
 
       // Prompt user to select files to add to the commit

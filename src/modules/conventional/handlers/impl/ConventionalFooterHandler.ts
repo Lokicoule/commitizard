@@ -12,7 +12,7 @@ export class ConventionalFooterHandler extends BaseConventionalHandler {
   }
 
   private async selectCommitFooter(): Promise<CommitFooter> {
-    const footerLines: string[] = [];
+    let footerLines: string[] = [];
 
     let hasFooter = await this.promptManager.confirm({
       defaultValue: false,
@@ -20,20 +20,16 @@ export class ConventionalFooterHandler extends BaseConventionalHandler {
       abortMessage: ABORT_MESSAGE,
     });
 
-    while (hasFooter) {
-      const bodyLine = await this.promptManager.text({
-        message: "Please enter a footer line:",
-        abortMessage: ABORT_MESSAGE,
-      });
-
-      if (bodyLine) {
-        footerLines.push(bodyLine);
-      }
-
-      hasFooter = await this.promptManager.confirm({
-        defaultValue: false,
-        message: "Do you need another footer line?",
-        abortMessage: ABORT_MESSAGE,
+    if (hasFooter) {
+      footerLines = await this.promptManager.multiText({
+        text: {
+          message: "Please enter a footer line:",
+          abortMessage: ABORT_MESSAGE,
+        },
+        confirm: {
+          message: "Do you need another footer line?",
+          abortMessage: ABORT_MESSAGE,
+        },
       });
     }
 
