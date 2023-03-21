@@ -1,7 +1,7 @@
 import { Config } from "../../../../core/config";
 import { AbstractHandler } from "../../../../core/handler/impl/AbstractHandler";
 import { PromptManager } from "../../../../libs/prompt";
-import { CommitBuilder } from "../../builder/CommitBuilder";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
 import { ConventionalHandler } from "../ConventionalHandler";
 
 export abstract class BaseConventionalHandler

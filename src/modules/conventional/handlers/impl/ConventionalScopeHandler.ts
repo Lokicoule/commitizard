@@ -1,7 +1,7 @@
 import { yellow } from "picocolors";
 import { Scope } from "../../../../core/config/types";
-import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitScope } from "../../types";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { CommitScope } from "../../../commit/types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit scope selection aborted!";

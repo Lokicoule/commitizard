@@ -1,6 +1,6 @@
 import { Type } from "../../../../core/config/types";
-import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitType } from "../../types";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { CommitType } from "../../../commit/types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
 export class ConventionalTypeHandler extends BaseConventionalHandler {

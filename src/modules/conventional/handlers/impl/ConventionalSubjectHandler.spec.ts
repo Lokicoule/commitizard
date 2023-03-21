@@ -1,8 +1,8 @@
 import { Config } from "~/core/config";
 import { PromptManager } from "~/libs/prompt";
 import { PromptManagerImpl } from "~/libs/prompt/impl/PromptManagerImpl";
-import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitBuilderImpl } from "../../builder/impl/CommitBuilderImpl";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { CommitBuilderImpl } from "../../../commit/builder/impl/CommitBuilderImpl";
 import { ConventionalSubjectHandler } from "./ConventionalSubjectHandler";
 
 describe("ConventionalSubjectHandler", () => {

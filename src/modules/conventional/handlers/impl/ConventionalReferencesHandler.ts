@@ -1,6 +1,6 @@
 import { yellow } from "picocolors";
-import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitReferences } from "../../types";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { CommitReferences } from "../../../commit/types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit issue numbers aborted!";

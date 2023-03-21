@@ -1,6 +1,6 @@
 import { yellow } from "picocolors";
-import { CommitBuilder } from "../../builder/CommitBuilder";
-import { CommitFooter } from "../../types";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { CommitFooter } from "../../../commit/types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit footer aborted!";
