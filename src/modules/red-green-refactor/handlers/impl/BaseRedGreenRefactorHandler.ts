@@ -1,61 +1,21 @@
 import { Config } from "../../../../core/config";
+import { AbstractHandler } from "../../../../core/handler/impl/AbstractHandler";
 import { PromptManager } from "../../../../libs/prompt";
-import { RedGreenRefactorStateMachine } from "../../state-machine/RedGreenRefactorStateMachine";
-import { RedGreenRefactorState } from "../../types";
+import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
 import { RedGreenRefactorHandler } from "../RedGreenRefactorHandler";
 
-/**
- * @class BaseRedGreenRefactorHandler
- * @implements RedGreenRefactorHandler
- * @description
- * It is responsible for handling a specific state.
- * It is also responsible for delegating the handling of the next state to the next handler.
- * It is an abstract class that implements the common logic of the handlers.
- * It is not responsible for the logic of the states.
- * @returns {RedGreenRefactorState | null}
- */
 export abstract class BaseRedGreenRefactorHandler
+  extends AbstractHandler<CommitBuilder>
   implements RedGreenRefactorHandler
 {
-  private nextHandler: RedGreenRefactorHandler | null = null;
   protected promptManager: PromptManager;
   protected configuration: Config;
 
   constructor(promptManager: PromptManager, configuration: Config) {
+    super();
     this.promptManager = promptManager;
     this.configuration = configuration;
   }
-  /**
-   * @name setNext
-   * @description
-   * It is responsible for delegating the handling of the next state to the next handler.
-   * @param {RedGreenRefactorHandler} handler
-   * @returns {RedGreenRefactorHandler}
-   * @memberof BaseRedGreenRefactorHandler
-   * @see RedGreenRefactorHandler
-   */
-  public setNext(handler: RedGreenRefactorHandler): RedGreenRefactorHandler {
-    this.nextHandler = handler;
-    return handler;
-  }
 
-  /**
-   * @name handle
-   * @description
-   * It is responsible for handling a specific state.
-   * It is also responsible for delegating the handling of the next state to the next handler.
-   * @param {RedGreenRefactorStateMachine} stateMachine
-   * @returns {RedGreenRefactorState | null}
-   * @memberof BaseRedGreenRefactorHandler
-   * @see RedGreenRefactorHandler
-   * @see RedGreenRefactorStateMachine
-   */
-  public async handle(
-    stateMachine: RedGreenRefactorStateMachine
-  ): Promise<RedGreenRefactorState | null> {
-    if (this.nextHandler) {
-      return await this.nextHandler.handle(stateMachine);
-    }
-    return null;
-  }
+  protected abstract processInput(commitBuilder: CommitBuilder): Promise<void>;
 }

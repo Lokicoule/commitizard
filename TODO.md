@@ -1,14 +1,5 @@
 config:
 
-- init:
-
-  - move current .commitcraft.json to .commitcraft.json.v
-  - create new .commitcraft.json
-
-- clean:
-
-  - remove .commitcraft.json
-
 - variant of .commitcraft.json:
   - emoji
 
@@ -26,3 +17,12 @@ red-green-refactor:
 - refactor the config options
 - rewrite it without the use of state machine which won't be needed anymore
 - update tests
+
+wizard
+state machine?
+before prompting files to add selector ask if user want it
+
+replace imports by import aliases
+
+core
+refactor config to class configmanager ?

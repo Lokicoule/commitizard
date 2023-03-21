@@ -19,6 +19,10 @@ export class CommitBuilderImpl implements CommitBuilder {
   private body?: CommitBody;
   private footer?: CommitFooter;
 
+  public getType(): CommitType {
+    return this.type;
+  }
+
   public withType(type: CommitType): CommitBuilder {
     this.type = type;
     return this;

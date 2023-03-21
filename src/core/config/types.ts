@@ -23,6 +23,10 @@ export interface Type {
   label: string;
 }
 
+export interface RedGreenType extends Type {
+  patterns: string[];
+}
+
 export interface ConventionalCliOptions {
   scopes?: Scope[];
   types: Type[];
@@ -34,11 +38,7 @@ export type RedGreenRefactorOptions = {
 };
 
 export type RedGreenCliOptions = {
-  types: Type[];
-  redPatterns: string[];
-  greenPatterns: string[];
-  refactorPatterns: string[];
-  groupOptions: RedGreenRefactorOptions[];
+  types: RedGreenType[];
 };
 
 export type ConventionalOptions = {

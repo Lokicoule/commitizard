@@ -10,6 +10,7 @@ import {
 } from "../types";
 
 export interface CommitBuilder {
+  getType(): CommitType;
   withType(type: CommitType): CommitBuilder;
   withScope(scope: CommitScope): CommitBuilder;
   withSubject(subject: CommitSubject): CommitBuilder;

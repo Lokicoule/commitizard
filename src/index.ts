@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { ConfigGeneratorCommandFactory } from "./modules/config-generator/factory/ConfigGeneratorCommandFactory";
+import { ConfigCommandFactory } from "./modules/config/factory/ConfigCommandFactory";
 import { WizardCommandFactory } from "./modules/wizard/factory/WizardCommandFactory";
 
 const program = new Command();
@@ -11,6 +11,6 @@ program
   .helpOption("-h, --help", "Display help for command");
 
 program.addCommand(WizardCommandFactory.create());
-program.addCommand(ConfigGeneratorCommandFactory.create());
+program.addCommand(ConfigCommandFactory.create());
 
 program.parse(process.argv);

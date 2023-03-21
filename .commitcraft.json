@@ -69,57 +69,55 @@
     "commitOptions": {
       "template": {
         "type": "[{{type}}]: ",
-        "subject": "{{subject}}"
+        "subject": "{{subject}}",
+        "body": "\n\n{{body}}"
       },
-      "templateOrder": [
-        "type",
-        "subject"
-      ]
+      "templateOrder": ["type", "subject", "body"]
     },
     "cliOptions": {
       "types": [
         {
-          "value": "RED",
-          "label": "RED: Write a test that fails"
+          "value": "🔴",
+          "label": "RED: Write a test that fails",
+          "patterns": [
+            "Add failing test for {{feature}}",
+            "Write failing test for {{feature}}",
+            "Create failing test for {{feature}}",
+            "Implement failing test for {{feature}}",
+            "Introduce failing test for {{feature}}",
+            "Start failing test for {{feature}}",
+            "Begin failing test for {{feature}}",
+            "Initiate failing test for {{feature}}",
+            "Setup failing test for {{feature}}"
+          ]
         },
         {
-          "value": "GREEN",
-          "label": "GREEN: Make the test pass"
+          "value": "🟢",
+          "label": "GREEN: Make the test pass",
+          "patterns": [
+            "Make test pass for {{feature}}",
+            "Fix failing test for {{feature}}",
+            "Implement solution for {{feature}}",
+            "Add code to pass test for {{feature}}",
+            "Introduce passing test for {{feature}}",
+            "Start passing test for {{feature}}",
+            "Begin passing test for {{feature}}",
+            "Initiate passing test for {{feature}}",
+            "Setup passing test for {{feature}}"
+          ]
         },
         {
-          "value": "REFACTOR",
-          "label": "REFACTOR: Refactor the code without changing functionality"
+          "value": "🔵",
+          "label": "REFACTOR: Refactor the code without changing functionality",
+          "patterns": [
+            "Refactor {{feature}} to improve {{performance/maintainability/readability/usability}}",
+            "Restructure {{feature}} to {{simplify/consolidate/clarify}}",
+            "Reorganize {{feature}} to {{streamline/improve}}",
+            "Simplify {{feature}} by {{removing unnecessary code/logic}}",
+            "Optimize {{feature}} by {{reducing complexity/improving efficiency}}",
+            "Improve {{feature}} by {{cleaning up/rewriting}} code for {{clarity/consistency}}"
+          ]
         }
-      ],
-      "redPatterns": [
-        "Add failing test for {{feature}}",
-        "Write failing test for {{feature}}",
-        "Create failing test for {{feature}}",
-        "Implement failing test for {{feature}}",
-        "Introduce failing test for {{feature}}",
-        "Start failing test for {{feature}}",
-        "Begin failing test for {{feature}}",
-        "Initiate failing test for {{feature}}",
-        "Setup failing test for {{feature}}"
-      ],
-      "greenPatterns": [
-        "Make test pass for {{feature}} by {{fixing/adding/removing}} code",
-        "Fix failing test for {{feature}} by {{fixing/adding/removing}} code",
-        "Implement solution for {{feature}}",
-        "Add code to pass test for {{feature}}",
-        "Introduce passing test for {{feature}}",
-        "Start passing test for {{feature}}",
-        "Begin passing test for {{feature}}",
-        "Initiate passing test for {{feature}}",
-        "Setup passing test for {{feature}}"
-      ],
-      "refactorPatterns": [
-        "Refactor {{feature}} to improve {{performance/maintainability/readability/usability}}",
-        "Restructure {{feature}} to {{simplify/consolidate/clarify}}",
-        "Reorganize {{feature}} to {{streamline/improve}}",
-        "Simplify {{feature}} by {{removing unnecessary code/logic}}",
-        "Optimize {{feature}} by {{reducing complexity/improving efficiency}}",
-        "Improve {{feature}} by {{cleaning up/rewriting}} code for {{clarity/consistency}}"
       ],
       "groupOptions": [
         {

@@ -1,36 +1,6 @@
-import { RedGreenRefactorStateMachine } from "../state-machine/RedGreenRefactorStateMachine";
-import { RedGreenRefactorState } from "../types";
+import { Handler } from "../../../core/handler/Handler";
+import { CommitBuilder } from "../../commit/builder/CommitBuilder";
 
-/**
- * @interface RedGreenRefactorHandler
- * @description
- * It is responsible for handling a specific state.
- * It is also responsible for delegating the handling of the next state to the next handler.
- */
-export interface RedGreenRefactorHandler {
-  /**
-   * @method setNext
-   * @description
-   * It is responsible for delegating the handling of the next state to the next handler.
-   * @param {RedGreenRefactorHandler} handler
-   * @returns {RedGreenRefactorHandler}
-   * @memberof BaseRedGreenRefactorHandler
-   * @see RedGreenRefactorHandler
-   */
-  setNext(handler: RedGreenRefactorHandler): RedGreenRefactorHandler;
-
-  /**
-   * @method handle
-   * @description
-   * It is responsible for handling a specific state.
-   * It is also responsible for delegating the handling of the next state to the next handler.
-   * @param {RedGreenRefactorStateMachine} stateMachine
-   * @returns {RedGreenRefactorState | null}
-   * @memberof BaseRedGreenRefactorHandler
-   * @see RedGreenRefactorHandler
-   * @see RedGreenRefactorStateMachine
-   */
-  handle(
-    stateMachine: RedGreenRefactorStateMachine
-  ): Promise<RedGreenRefactorState | null>;
+export interface RedGreenRefactorHandler extends Handler<CommitBuilder> {
+  handle(commitBuilder: CommitBuilder): Promise<void>;
 }
