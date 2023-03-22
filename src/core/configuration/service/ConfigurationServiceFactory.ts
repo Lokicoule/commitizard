@@ -1,4 +1,4 @@
-import { FilesystemAdapter } from "~/adapters/fs";
+import { FilesystemAdapter } from "~/adapters/filesystem";
 import { ConfigurationService } from "./ConfigurationService";
 import { ConfigurationServiceImpl } from "./impl/ConfigurationServiceImpl";
 

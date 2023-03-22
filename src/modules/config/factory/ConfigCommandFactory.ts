@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { FilesystemAdapterFactory } from "~/adapters/fs";
+import { FilesystemAdapterFactory } from "~/adapters/filesystem";
 import { ConfigurationServiceFactory } from "~/core/configuration";
 import { ConfigCommand } from "../command/ConfigCommand";
 

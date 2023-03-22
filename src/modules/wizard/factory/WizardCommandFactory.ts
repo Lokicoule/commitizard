@@ -1,4 +1,4 @@
-import { FilesystemAdapterFactory } from "~/adapters/fs";
+import { FilesystemAdapterFactory } from "~/adapters/filesystem";
 import {
   ConfigurationServiceFactory,
   DEFAULT_CONFIG_PATH,
