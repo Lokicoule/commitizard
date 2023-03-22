@@ -18,10 +18,7 @@ export class ReviewCommitHandler extends BaseWizardCommitHandler {
     });
 
     if (!confirmCommit) {
-      this.promptManager.log({
-        message: `${yellow("✖")} Commit creation aborted!`,
-        level: "warn",
-      });
+      this.promptManager.log.warn(`${yellow("✖")} Commit creation aborted!`);
       return null;
     }
 

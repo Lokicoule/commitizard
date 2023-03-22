@@ -1,6 +1,6 @@
 import { ProcessBuilderFactory } from "~/core/process/factory/ProcessBuilderFactory";
 import { getFiles, getStagedFiles } from "~/libs/git";
-import { PromptManager } from "~/libs/prompt/PromptManager";
+import { PromptManager } from "~/core/prompt/manager/PromptManager";
 import {
   WizardCommitState,
   WizardCommitStateMachine,
@@ -19,25 +19,16 @@ async function logFiles(
   promptManager: PromptManager,
   maxViewFilesToShow: number
 ): Promise<void> {
-  promptManager.log({
-    message: `Found ${files.length} staged files:\n`,
-    level: "info",
-  });
+  promptManager.log.info(`Found ${files.length} staged files:\n`);
 
   // Only show up to MAX_FILES_TO_SHOW files in output
   for (let file of files.slice(0, maxViewFilesToShow)) {
-    promptManager.log({
-      message: file,
-      level: "info",
-    });
+    promptManager.log.info(file);
   }
 
   // If there are more files, show a summary message
   if (files.length > maxViewFilesToShow) {
-    promptManager.log({
-      message: `(${files.length - maxViewFilesToShow} more files)`,
-      level: "info",
-    });
+    promptManager.log.info(`(${files.length - maxViewFilesToShow} more files)`);
   }
 }
 
@@ -63,10 +54,9 @@ export class AddFilesToCommitHandler extends BaseWizardCommitHandler {
       const updatedFiles = await getFiles();
 
       if (updatedFiles.length === 0) {
-        promptManager.log({
-          message: "You don't have any files to add to the commit.",
-          level: "info",
-        });
+        promptManager.log.warn(
+          "You don't have any files to add to the commit."
+        );
       }
 
       // Prompt user to select files to add to the commit

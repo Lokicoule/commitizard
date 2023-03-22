@@ -1,9 +1,10 @@
 import { Command } from "commander";
+import { PromptAdapterFactory } from "~/adapters/prompt/PromptAdapterFactory";
 import {
   ConfigurationManagerFactory,
   ConfigurationService,
 } from "~/core/configuration";
-import { PromptManagerImpl } from "~/libs/prompt/impl/PromptManagerImpl";
+import { PromptManagerFactory } from "~/core/prompt/manager/PromptManagerFactory";
 import { WizardCommitStateMachineFactory } from "../../factory/WizardCommitStateMachineFactory";
 import { WizardCommand } from "../WizardCommand";
 
@@ -15,7 +16,9 @@ export class WizardCommandImpl extends Command implements WizardCommand {
   }
 
   async run(configPath?: string): Promise<void> {
-    const promptManager = new PromptManagerImpl();
+    const promptManager = PromptManagerFactory.create(
+      PromptAdapterFactory.createClackPromptAdapter()
+    );
 
     promptManager.intro({
       message: "Welcome to the commit wizard!",

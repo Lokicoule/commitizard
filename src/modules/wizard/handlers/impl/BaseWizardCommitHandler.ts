@@ -1,5 +1,5 @@
 import { ConfigurationManager } from "~/core/configuration";
-import { PromptManager } from "~/libs/prompt";
+import { PromptManager } from "~/core/prompt";
 import {
   WizardCommitState,
   WizardCommitStateMachine,

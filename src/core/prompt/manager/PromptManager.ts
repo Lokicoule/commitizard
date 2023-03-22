@@ -1,14 +1,12 @@
 import {
   Confirm,
-  Intro,
   Log,
   MultiSelect,
-  MultiText,
-  Outro,
   Select,
   SelectOption,
   Text,
-} from "./types";
+} from "~/adapters/prompt/types";
+import { IntroInput, LogInput, MultiText, OutroInput } from "../types";
 
 export interface PromptManager {
   confirm: (options: Confirm) => Promise<boolean>;
@@ -20,7 +18,7 @@ export interface PromptManager {
   multiSelect: <Option extends SelectOption<T>[], T>(
     options: MultiSelect<Option, T>
   ) => Promise<T[]>;
-  intro: (options: Intro) => Promise<void>;
-  outro: (options: Outro) => Promise<void>;
-  log: (options: Log) => Promise<void>;
+  intro: (options: IntroInput) => Promise<void>;
+  outro: (options: OutroInput) => Promise<void>;
+  log: Log;
 }
