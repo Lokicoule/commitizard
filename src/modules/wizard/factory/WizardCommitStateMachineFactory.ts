@@ -1,4 +1,4 @@
-import { Config } from "../../../core/config";
+import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "../../../libs/prompt";
 import { WizardCommitStateMachineImpl } from "../state-machine/impl/WizardCommitStateMachineImpl";
 import {
@@ -8,7 +8,7 @@ import {
 
 export class WizardCommitStateMachineFactory {
   static create(
-    configuration: Config,
+    configuration: ConfigurationManager,
     promptManager: PromptManager
   ): WizardCommitStateMachine {
     return new WizardCommitStateMachineImpl(

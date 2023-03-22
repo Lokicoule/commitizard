@@ -1,14 +1,13 @@
 import { ProcessBuilderFactory } from "../../../../core/process/factory/ProcessBuilderFactory";
-import { getStagedFiles, getFiles } from "../../../../libs/git";
+import { getFiles, getStagedFiles } from "../../../../libs/git";
+import { PromptManager } from "../../../../libs/prompt/PromptManager";
 import {
   WizardCommitState,
   WizardCommitStateMachine,
 } from "../../state-machine/WizardCommitStateMachine";
 import { BaseWizardCommitHandler } from "./BaseWizardCommitHandler";
-import { PromptManager } from "../../../../libs/prompt/PromptManager";
 
 // Maximum number of files to show in output
-const MAX_FILES_TO_SHOW = 5;
 
 /**
  * Logs a list of files to the console.
@@ -18,7 +17,7 @@ const MAX_FILES_TO_SHOW = 5;
 async function logFiles(
   files: string[],
   promptManager: PromptManager,
-  maxViewFilesToShow: number = MAX_FILES_TO_SHOW
+  maxViewFilesToShow: number
 ): Promise<void> {
   promptManager.log({
     message: `Found ${files.length} staged files:\n`,
@@ -51,7 +50,7 @@ export class AddFilesToCommitHandler extends BaseWizardCommitHandler {
   ): Promise<WizardCommitState | null> {
     const { promptManager } = this;
     const maxViewFiles =
-      this.configuration.wizard.maxViewFilesToShow || MAX_FILES_TO_SHOW;
+      this.configurationManager.getWizardMaxViewFilesToShow();
 
     // Get list of staged files
     const stagedFiles = await getStagedFiles();

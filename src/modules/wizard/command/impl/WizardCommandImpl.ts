@@ -1,12 +1,17 @@
 import { Command } from "commander";
-import { loadConfig } from "../../../../core/config";
+import {
+  ConfigurationManagerFactory,
+  ConfigurationService,
+} from "~/core/configuration";
 import { PromptManagerImpl } from "../../../../libs/prompt/impl/PromptManagerImpl";
 import { WizardCommitStateMachineFactory } from "../../factory/WizardCommitStateMachineFactory";
 import { WizardCommand } from "../WizardCommand";
 
 export class WizardCommandImpl extends Command implements WizardCommand {
-  constructor() {
+  private readonly configurationService: ConfigurationService;
+  constructor(configurationService: ConfigurationService) {
     super();
+    this.configurationService = configurationService;
   }
 
   async run(configPath?: string): Promise<void> {
@@ -16,10 +21,10 @@ export class WizardCommandImpl extends Command implements WizardCommand {
       message: "Welcome to the commit wizard!",
     });
 
-    const config = loadConfig(configPath);
-
+    const config = this.configurationService.load(configPath);
+    const configManager = ConfigurationManagerFactory.create(config);
     const stateMachine = WizardCommitStateMachineFactory.create(
-      config,
+      configManager,
       promptManager
     );
     stateMachine.handleCommit();

@@ -1,4 +1,4 @@
-import { Type } from "../../../../core/config/types";
+import { CliOptions } from "~/core/configuration";
 import {
   WizardCommitStateMachine,
   WizardCommitState,
@@ -19,7 +19,7 @@ export class SelectConventionHandler extends BaseWizardCommitHandler {
   }
 
   private async selectConvention(): Promise<string> {
-    const convention = await this.promptManager.select<Type[], string>({
+    const convention = await this.promptManager.select<CliOptions[], string>({
       message: "Which convention would you like to use?",
       options: [
         {

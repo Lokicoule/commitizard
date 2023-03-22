@@ -1,5 +1,5 @@
 import { yellow } from "picocolors";
-import { Scope } from "../../../../core/config/types";
+import { CliOptions } from "../../../../core/configuration/types";
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
 import { CommitScope } from "../../../commit/types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
@@ -8,12 +8,12 @@ const ABORT_MESSAGE = yellow("✖") + " Commit scope selection aborted!";
 
 export class ConventionalScopeHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
-    const scopes = this.configuration.conventional?.cliOptions?.scopes || [];
+    const scopes = this.configurationManager.getConventionalCliOptionsScopes();
     const commitScope = await this.selectCommitScope(scopes);
     commitBuilder.withScope(commitScope);
   }
 
-  private async selectCommitScope(scopes: Scope[]): Promise<CommitScope> {
+  private async selectCommitScope(scopes: CliOptions[]): Promise<CommitScope> {
     if (scopes.length > 0) {
       const result = await this.promptSelectCommitScope(scopes);
 
@@ -37,8 +37,10 @@ export class ConventionalScopeHandler extends BaseConventionalHandler {
     };
   }
 
-  private async promptSelectCommitScope(scopes: Scope[]): Promise<CommitScope> {
-    const commitType = await this.promptManager.select<Scope[], string>({
+  private async promptSelectCommitScope(
+    scopes: CliOptions[]
+  ): Promise<CommitScope> {
+    const commitType = await this.promptManager.select<CliOptions[], string>({
       message: "Select commit scope:",
       options: scopes,
       abortMessage: ABORT_MESSAGE,

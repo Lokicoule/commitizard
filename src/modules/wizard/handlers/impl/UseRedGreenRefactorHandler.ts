@@ -1,4 +1,4 @@
-import { CommitBuilderFactory } from "../../../../modules/commit/factory/CommitBuilderFactory";
+import { CommitBuilderFactory } from "../../../commit/builder/CommitBuilderFactory";
 import { CommitFormatter } from "../../../../modules/commit/formatter/CommitFormatter";
 import { RedGreenRefactorHandlerFactory } from "../../../../modules/red-green-refactor/factories/RedGreenRefactorHandlerFactory";
 import { RedGreenRefactorPipelineFactory } from "../../../../modules/red-green-refactor/factories/RedGreenRefactorPipelineFactory";
@@ -15,7 +15,7 @@ export class UseRedGreenRefactorHandler extends BaseWizardCommitHandler {
     const commitBuilder = CommitBuilderFactory.create();
     const commitHandlerFactory = new RedGreenRefactorHandlerFactory(
       this.promptManager,
-      this.configuration
+      this.configurationManager
     );
     const commitHandlerChainFactory = new RedGreenRefactorPipelineFactory(
       commitHandlerFactory
@@ -26,7 +26,8 @@ export class UseRedGreenRefactorHandler extends BaseWizardCommitHandler {
 
     const message = CommitFormatter.format(
       commitBuilder.build(),
-      this.configuration.conventional
+      this.configurationManager.getRedGreenRefactorCommitTemplate(),
+      this.configurationManager.getRedGreenRefactorCommitTemplateOrder()
     );
 
     wizard.setMessage(message);

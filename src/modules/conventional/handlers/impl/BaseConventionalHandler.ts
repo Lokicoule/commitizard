@@ -1,4 +1,4 @@
-import { Config } from "../../../../core/config";
+import { ConfigurationManager } from "../../../../core/configuration";
 import { AbstractHandler } from "../../../../core/handler/impl/AbstractHandler";
 import { PromptManager } from "../../../../libs/prompt";
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
@@ -8,13 +8,16 @@ export abstract class BaseConventionalHandler
   extends AbstractHandler<CommitBuilder>
   implements ConventionalHandler
 {
-  protected promptManager: PromptManager;
-  protected configuration: Config;
+  protected readonly promptManager: PromptManager;
+  protected readonly configurationManager: ConfigurationManager;
 
-  constructor(promptManager: PromptManager, configuration: Config) {
+  constructor(
+    promptManager: PromptManager,
+    configurationManager: ConfigurationManager
+  ) {
     super();
     this.promptManager = promptManager;
-    this.configuration = configuration;
+    this.configurationManager = configurationManager;
   }
 
   protected abstract processInput(commitBuilder: CommitBuilder): Promise<void>;

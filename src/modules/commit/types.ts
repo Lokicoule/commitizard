@@ -1,32 +1,32 @@
-export interface CommitType {
+export type CommitType = {
   message: string;
-}
+};
 
-export interface CommitScope {
+export type CommitScope = {
   message: string;
-}
+};
 
-export interface CommitSubject {
+export type CommitSubject = {
   message: string;
-}
+};
 
-export interface CommitBreakingChanges {
+export type CommitBreakingChanges = {
   message: string;
-}
+};
 
-export interface CommitReferences {
+export type CommitReferences = {
   message: string;
-}
+};
 
-export interface CommitBody {
+export type CommitBody = {
   message: string;
-}
+};
 
-export interface CommitFooter {
+export type CommitFooter = {
   message: string;
-}
+};
 
-export interface Commit {
+export type Commit = {
   type: CommitType;
   scope?: CommitScope;
   subject: CommitSubject;
@@ -34,4 +34,8 @@ export interface Commit {
   references?: CommitReferences;
   body?: CommitBody;
   footer?: CommitFooter;
-}
+};
+
+export type CommitTemplate = {
+  [key: string]: string;
+};

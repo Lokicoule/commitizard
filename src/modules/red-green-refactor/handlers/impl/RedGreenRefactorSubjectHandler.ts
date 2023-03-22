@@ -1,5 +1,5 @@
 import { blue } from "picocolors";
-import { Type } from "~/core/config/types";
+import { CliOptions } from "~/core/configuration/types";
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
 import { CommitSubject } from "../../../commit/types";
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
@@ -9,9 +9,10 @@ const DEFAULT_COMMIT_SUBJECT = "No commit subject";
 export class RedGreenRefactorSubjectHandler extends BaseRedGreenRefactorHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commitType = commitBuilder.getType().message;
-    const type = this.configuration.redGreenRefactor?.cliOptions.types.find(
-      (type) => type.value === commitType
-    );
+    const type =
+      this.configurationManager.selectorRedGreenRefactorCliOptionsTypes(
+        commitType
+      );
     if (!type) {
       throw new Error("No commit type available!");
     }
@@ -37,7 +38,7 @@ export class RedGreenRefactorSubjectHandler extends BaseRedGreenRefactorHandler 
     let commitSubject: string | undefined;
 
     while (!commitSubject) {
-      const selection = await this.promptManager.select<Type[], string>({
+      const selection = await this.promptManager.select<CliOptions[], string>({
         message: "Select commit subject:",
         options,
       });
@@ -71,7 +72,10 @@ export class RedGreenRefactorSubjectHandler extends BaseRedGreenRefactorHandler 
           value: option,
           label: option,
         }));
-        placeholderValue = await this.promptManager.select<Type[], string>({
+        placeholderValue = await this.promptManager.select<
+          CliOptions[],
+          string
+        >({
           message: `Select value for placeholder ${blue(placeholder)}:`,
           options,
         });

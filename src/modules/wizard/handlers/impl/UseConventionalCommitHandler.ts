@@ -1,4 +1,4 @@
-import { CommitBuilderFactory } from "../../../commit/factory/CommitBuilderFactory";
+import { CommitBuilderFactory } from "../../../commit/builder/CommitBuilderFactory";
 import { ConventionalHandlerFactory } from "../../../../modules/conventional/factories/ConventionalHandlerFactory";
 import { ConventionalPipelineFactory } from "../../../../modules/conventional/factories/ConventionalPipelineFactory";
 import { CommitFormatter } from "../../../commit/formatter/CommitFormatter";
@@ -15,7 +15,7 @@ export class UseConventionalCommitHandler extends BaseWizardCommitHandler {
     const commitBuilder = CommitBuilderFactory.create();
     const commitHandlerFactory = new ConventionalHandlerFactory(
       this.promptManager,
-      this.configuration
+      this.configurationManager
     );
     const commitHandlerChainFactory = new ConventionalPipelineFactory(
       commitHandlerFactory
@@ -26,7 +26,8 @@ export class UseConventionalCommitHandler extends BaseWizardCommitHandler {
 
     const message = CommitFormatter.format(
       commitBuilder.build(),
-      this.configuration.conventional
+      this.configurationManager.getConventionalCommitTemplate(),
+      this.configurationManager.getConventionalCommitTemplateOrder()
     );
 
     wizard.setMessage(message);

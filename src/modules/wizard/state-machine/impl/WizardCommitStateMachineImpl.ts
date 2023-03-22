@@ -9,8 +9,8 @@ import {
   WizardCommitState,
   WizardCommitStateMachine,
 } from "../WizardCommitStateMachine";
-import { Config } from "../../../../core/config";
 import { PromptManager } from "../../../../libs/prompt";
+import { ConfigurationManager } from "~/core/configuration";
 
 export type Store = {
   message: string;
@@ -47,7 +47,7 @@ export class WizardCommitStateMachineImpl implements WizardCommitStateMachine {
 
   constructor(
     initialState: WizardCommitState,
-    configuration: Config,
+    configuration: ConfigurationManager,
     promptManager: PromptManager
   ) {
     this.context = {

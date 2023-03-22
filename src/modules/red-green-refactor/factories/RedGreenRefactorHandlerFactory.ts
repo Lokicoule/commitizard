@@ -1,37 +1,40 @@
-import { Config } from "../../../core/config";
+import { ConfigurationManager } from "../../../core/configuration";
 import { PromptManager } from "../../../libs/prompt";
-import { RedGreenRefactorHandler } from "../handlers/RedGreenRefactorHandler";
 import { RedGreenRefactorBodyHandler } from "../handlers/impl/RedGreenRefactorBodyHandler";
 import { RedGreenRefactorSubjectHandler } from "../handlers/impl/RedGreenRefactorSubjectHandler";
 import { RedGreenRefactorTypeHandler } from "../handlers/impl/RedGreenRefactorTypeHandler";
+import { RedGreenRefactorHandler } from "../handlers/RedGreenRefactorHandler";
 
 export class RedGreenRefactorHandlerFactory {
-  private configuration: Config;
+  private readonly configurationManager: ConfigurationManager;
   private promptManager: PromptManager;
 
-  constructor(promptManager: PromptManager, configuration: Config) {
-    this.configuration = configuration;
+  constructor(
+    promptManager: PromptManager,
+    configurationManager: ConfigurationManager
+  ) {
     this.promptManager = promptManager;
+    this.configurationManager = configurationManager;
   }
 
   public createTypeHandler(): RedGreenRefactorHandler {
     return new RedGreenRefactorTypeHandler(
       this.promptManager,
-      this.configuration
+      this.configurationManager
     );
   }
 
   public createSubjectHandler(): RedGreenRefactorHandler {
     return new RedGreenRefactorSubjectHandler(
       this.promptManager,
-      this.configuration
+      this.configurationManager
     );
   }
 
   public createBodyHandler(): RedGreenRefactorHandler {
     return new RedGreenRefactorBodyHandler(
       this.promptManager,
-      this.configuration
+      this.configurationManager
     );
   }
 }

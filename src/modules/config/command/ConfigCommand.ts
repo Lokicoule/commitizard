@@ -1,14 +1,14 @@
 import { Command } from "commander";
 import {
-  backupUserConfig,
-  deleteUserConfig,
-  loadConfig,
-  writeUserConfig,
-} from "../../../core/config";
+  ConfigurationService,
+  DEFAULT_CONFIG_PATH,
+} from "~/core/configuration";
 
 export class ConfigCommand extends Command {
-  constructor() {
+  private readonly configurationService: ConfigurationService;
+  constructor(configurationService: ConfigurationService) {
     super();
+    this.configurationService = configurationService;
     this.name("config");
     this.description("Manage configuration");
     this.version("0.0.1");
@@ -42,18 +42,18 @@ export class ConfigCommand extends Command {
       );
   }
 
-  private init(configPath?: string): void {
-    const { ...safeConfig } = loadConfig();
-    writeUserConfig(safeConfig, configPath);
+  private init(configPath: string = DEFAULT_CONFIG_PATH): void {
+    const { ...safeConfig } = this.configurationService.load();
+    this.configurationService.write(safeConfig, configPath);
   }
 
-  private clean(configPath?: string): void {
-    deleteUserConfig(configPath);
+  private clean(configPath: string = DEFAULT_CONFIG_PATH): void {
+    this.configurationService.delete(configPath);
   }
 
-  private reset(configPath?: string): void {
-    const { ...safeConfig } = loadConfig();
-    backupUserConfig(configPath);
-    writeUserConfig(safeConfig, configPath);
+  private reset(configPath: string = DEFAULT_CONFIG_PATH): void {
+    const { ...safeConfig } = this.configurationService.load();
+    this.configurationService.backup(configPath);
+    this.configurationService.write(safeConfig, configPath);
   }
 }

@@ -1,50 +1,36 @@
-import { ConventionalOptions } from "../../../core/config/types";
-import { Commit } from "../types";
+import { Commit, CommitTemplate } from "../types";
+
+const keyMap: Record<string, keyof Commit> = {
+  type: "type",
+  scope: "scope",
+  subject: "subject",
+  body: "body",
+  footer: "footer",
+  breaking: "breakingChanges",
+  refs: "references",
+};
 
 export class CommitFormatter {
-  public static format(commit: Commit, options: ConventionalOptions): string {
-    const { type, scope, subject, body, footer, breakingChanges, references } =
-      commit;
-
-    const template = options.commitOptions.template;
-    const templateOrder = options.commitOptions.templateOrder;
-
-    const formattedCommit = templateOrder
+  public static format(
+    commit: Commit,
+    template: CommitTemplate,
+    templateOrder: string[]
+  ): string {
+    return templateOrder
       .map((templateKey) => {
-        switch (templateKey) {
-          case "type":
-            return template.type.replace("{{type}}", type.message);
-          case "scope":
-            return scope?.message
-              ? template.scope?.replace("{{scope}}", scope.message)
-              : "";
-          case "subject":
-            return template.subject.replace("{{subject}}", subject.message);
-          case "body":
-            return body?.message
-              ? template.body?.replace("{{body}}", body.message)
-              : "";
-          case "footer":
-            return footer
-              ? template.footer?.replace("{{footer}}", footer.message)
-              : "";
-          case "breaking":
-            return breakingChanges?.message
-              ? template.breaking?.replace(
-                  "{{breaking}}",
-                  breakingChanges.message
-                )
-              : "";
-          case "refs":
-            return references?.message
-              ? template.refs?.replace("{{refs}}", references.message)
-              : "";
-          default:
-            return "";
+        const commitKey = keyMap[templateKey];
+        const commitValue = commit[commitKey];
+        const templateValue = template[templateKey];
+        if (commitValue && Boolean(commitValue.message) && templateValue) {
+          return templateValue.replace(
+            `{{${templateKey}}}`,
+            commitValue.message
+          );
         }
-      })
-      .join("");
 
-    return formattedCommit.replace(/\\n/g, "\n");
+        return "";
+      })
+      .join("")
+      .replace(/\\n/g, "\n");
   }
 }

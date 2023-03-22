@@ -1,8 +1,8 @@
-import { Config } from "./types";
+import { Configuration } from "../types";
 
 export const defaultConfig = {
   version: "0.0.1",
-  wizard: {
+  settings: {
     maxViewFilesToShow: 5,
   },
   conventional: {
@@ -120,4 +120,4 @@ export const defaultConfig = {
       ],
     },
   },
-} satisfies Config;
+} satisfies Configuration;

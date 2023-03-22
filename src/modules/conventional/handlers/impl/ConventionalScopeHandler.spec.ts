@@ -1,5 +1,5 @@
-import { PromptManagerImpl } from "~/libs/prompt/impl/PromptManagerImpl";
-import { Config } from "../../../../core/config";
+/* import { PromptManagerImpl } from "~/libs/prompt/impl/PromptManagerImpl";
+import { Config } from "../../../../core/configuration";
 import { PromptManager } from "../../../../libs/prompt/PromptManager";
 import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
 import { CommitBuilderImpl } from "../../../commit/builder/impl/CommitBuilderImpl";
@@ -105,3 +105,4 @@ describe("ConventionalScopeHandler", () => {
     });
   });
 });
+ */

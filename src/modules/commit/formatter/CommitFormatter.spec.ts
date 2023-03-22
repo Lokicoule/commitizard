@@ -1,4 +1,3 @@
-import { ConventionalOptions } from "../../../core/config/types";
 import { CommitFormatter } from "./CommitFormatter";
 
 const stubOptions = {
@@ -22,7 +21,7 @@ const stubOptions = {
       "refs",
     ],
   },
-} as ConventionalOptions;
+};
 
 describe("CommitFormatter", () => {
   it("should format commit", () => {
@@ -50,7 +49,11 @@ describe("CommitFormatter", () => {
       },
     };
 
-    const formattedCommit = CommitFormatter.format(commit, stubOptions);
+    const formattedCommit = CommitFormatter.format(
+      commit,
+      stubOptions.commitOptions.template,
+      stubOptions.commitOptions.templateOrder
+    );
     expect(formattedCommit).toBe(
       "type(scope): subject\n\nbody\n\nBREAKING CHANGE:\n breaking\n\nfooter\n\nRefs: references"
     );
@@ -77,7 +80,11 @@ describe("CommitFormatter", () => {
         message: "references",
       },
     };
-    const formattedCommit = CommitFormatter.format(commit, stubOptions);
+    const formattedCommit = CommitFormatter.format(
+      commit,
+      stubOptions.commitOptions.template,
+      stubOptions.commitOptions.templateOrder
+    );
     expect(formattedCommit).toBe(
       "type: subject\n\nbody\n\nBREAKING CHANGE:\n breaking\n\nfooter\n\nRefs: references"
     );
@@ -104,7 +111,11 @@ describe("CommitFormatter", () => {
         message: "references",
       },
     };
-    const formattedCommit = CommitFormatter.format(commit, stubOptions);
+    const formattedCommit = CommitFormatter.format(
+      commit,
+      stubOptions.commitOptions.template,
+      stubOptions.commitOptions.templateOrder
+    );
     expect(formattedCommit).toBe(
       "type(scope): subject\n\nBREAKING CHANGE:\n breaking\n\nfooter\n\nRefs: references"
     );
@@ -131,7 +142,11 @@ describe("CommitFormatter", () => {
         message: "references",
       },
     };
-    const formattedCommit = CommitFormatter.format(commit, stubOptions);
+    const formattedCommit = CommitFormatter.format(
+      commit,
+      stubOptions.commitOptions.template,
+      stubOptions.commitOptions.templateOrder
+    );
     expect(formattedCommit).toBe(
       "type(scope): subject\n\nbody\n\nBREAKING CHANGE:\n breaking\n\nRefs: references"
     );
@@ -158,7 +173,11 @@ describe("CommitFormatter", () => {
         message: "references",
       },
     };
-    const formattedCommit = CommitFormatter.format(commit, stubOptions);
+    const formattedCommit = CommitFormatter.format(
+      commit,
+      stubOptions.commitOptions.template,
+      stubOptions.commitOptions.templateOrder
+    );
     expect(formattedCommit).toBe(
       "type(scope): subject\n\nbody\n\nfooter\n\nRefs: references"
     );
@@ -185,7 +204,11 @@ describe("CommitFormatter", () => {
         message: "breaking",
       },
     };
-    const formattedCommit = CommitFormatter.format(commit, stubOptions);
+    const formattedCommit = CommitFormatter.format(
+      commit,
+      stubOptions.commitOptions.template,
+      stubOptions.commitOptions.templateOrder
+    );
     expect(formattedCommit).toBe(
       "type(scope): subject\n\nbody\n\nBREAKING CHANGE:\n breaking\n\nfooter"
     );
@@ -209,7 +232,11 @@ describe("CommitFormatter", () => {
         message: "footer",
       },
     };
-    const formattedCommit = CommitFormatter.format(commit, stubOptions);
+    const formattedCommit = CommitFormatter.format(
+      commit,
+      stubOptions.commitOptions.template,
+      stubOptions.commitOptions.templateOrder
+    );
     expect(formattedCommit).toBe("type(scope): subject\n\nbody\n\nfooter");
   });
 
@@ -222,7 +249,31 @@ describe("CommitFormatter", () => {
         message: "subject",
       },
     };
-    const formattedCommit = CommitFormatter.format(commit, stubOptions);
+    const formattedCommit = CommitFormatter.format(
+      commit,
+      stubOptions.commitOptions.template,
+      stubOptions.commitOptions.templateOrder
+    );
     expect(formattedCommit).toBe("type: subject");
+  });
+
+  it("should format commit with type, scope and subject", () => {
+    const commit = {
+      type: {
+        message: "type",
+      },
+      scope: {
+        message: "scope",
+      },
+      subject: {
+        message: "subject",
+      },
+    };
+    const formattedCommit = CommitFormatter.format(
+      commit,
+      stubOptions.commitOptions.template,
+      stubOptions.commitOptions.templateOrder
+    );
+    expect(formattedCommit).toBe("type(scope): subject");
   });
 });

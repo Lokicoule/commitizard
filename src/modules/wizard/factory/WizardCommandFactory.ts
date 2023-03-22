@@ -1,4 +1,8 @@
-import { DEFAULT_CONFIG_PATH } from "../../../core/config";
+import { FilesystemAdapterFactory } from "~/adapters/fs";
+import {
+  ConfigurationServiceFactory,
+  DEFAULT_CONFIG_PATH,
+} from "../../../core/configuration";
 import { WizardCommandImpl } from "../command/impl/WizardCommandImpl";
 import { WizardCommand } from "../command/WizardCommand";
 
@@ -26,7 +30,11 @@ export class WizardCommandFactory {
       options
     );
 
-    const command = new WizardCommandImpl();
+    const command = new WizardCommandImpl(
+      ConfigurationServiceFactory.create(
+        FilesystemAdapterFactory.createLocalFilesystemAdapter()
+      )
+    );
 
     command
       .name(name ?? this.defaultOptions.name)

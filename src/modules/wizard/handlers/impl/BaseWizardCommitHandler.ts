@@ -1,4 +1,4 @@
-import { Config } from "../../../../core/config";
+import { ConfigurationManager } from "../../../../core/configuration";
 import { PromptManager } from "../../../../libs/prompt";
 import {
   WizardCommitState,
@@ -8,12 +8,15 @@ import { WizardCommitHandler } from "../WizardCommitHandler";
 
 export abstract class BaseWizardCommitHandler implements WizardCommitHandler {
   private nextHandler: WizardCommitHandler | null = null;
-  protected promptManager: PromptManager;
-  protected configuration: Config;
+  protected readonly promptManager: PromptManager;
+  protected readonly configurationManager: ConfigurationManager;
 
-  constructor(promptManager: PromptManager, configuration: Config) {
+  constructor(
+    promptManager: PromptManager,
+    configurationManager: ConfigurationManager
+  ) {
     this.promptManager = promptManager;
-    this.configuration = configuration;
+    this.configurationManager = configurationManager;
   }
 
   public setNext(handler: WizardCommitHandler): WizardCommitHandler {
