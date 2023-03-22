@@ -2,7 +2,7 @@ import { FilesystemAdapterFactory } from "~/adapters/fs";
 import {
   ConfigurationServiceFactory,
   DEFAULT_CONFIG_PATH,
-} from "../../../core/configuration";
+} from "~/core/configuration";
 import { WizardCommandImpl } from "../command/impl/WizardCommandImpl";
 import { WizardCommand } from "../command/WizardCommand";
 

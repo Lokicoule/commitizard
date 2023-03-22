@@ -1,5 +1,5 @@
-import { ConfigurationManager } from "../../../core/configuration";
-import { PromptManager } from "../../../libs/prompt";
+import { ConfigurationManager } from "~/core/configuration";
+import { PromptManager } from "~/libs/prompt";
 import { RedGreenRefactorBodyHandler } from "../handlers/impl/RedGreenRefactorBodyHandler";
 import { RedGreenRefactorSubjectHandler } from "../handlers/impl/RedGreenRefactorSubjectHandler";
 import { RedGreenRefactorTypeHandler } from "../handlers/impl/RedGreenRefactorTypeHandler";

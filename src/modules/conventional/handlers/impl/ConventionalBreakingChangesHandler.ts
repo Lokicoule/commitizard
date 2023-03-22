@@ -1,6 +1,6 @@
 import { yellow } from "picocolors";
-import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { CommitBreakingChanges } from "../../../commit/types";
+import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
+import { CommitBreakingChanges } from "~/modules/commit/types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
 const ABORT_MESSAGE = yellow("✖") + " Commit breaking changes aborted!";

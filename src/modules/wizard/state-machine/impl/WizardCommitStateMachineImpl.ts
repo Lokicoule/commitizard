@@ -9,7 +9,7 @@ import {
   WizardCommitState,
   WizardCommitStateMachine,
 } from "../WizardCommitStateMachine";
-import { PromptManager } from "../../../../libs/prompt";
+import { PromptManager } from "~/libs/prompt";
 import { ConfigurationManager } from "~/core/configuration";
 
 export type Store = {

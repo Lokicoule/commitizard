@@ -1,4 +1,4 @@
-import { HandlerPipeline } from "../../../core/handler/impl/HandlerPipeline";
+import { HandlerPipeline } from "~/core/handler/impl/HandlerPipeline";
 import { ConventionalHandler } from "../handlers/ConventionalHandler";
 import { ConventionalHandlerFactory } from "./ConventionalHandlerFactory";
 

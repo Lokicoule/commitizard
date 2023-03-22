@@ -1,4 +1,4 @@
-import { HandlerPipeline } from "../../../core/handler/impl/HandlerPipeline";
+import { HandlerPipeline } from "~/core/handler/impl/HandlerPipeline";
 import { RedGreenRefactorHandler } from "../handlers/RedGreenRefactorHandler";
 import { RedGreenRefactorHandlerFactory } from "./RedGreenRefactorHandlerFactory";
 

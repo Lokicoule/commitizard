@@ -1,6 +1,6 @@
 import { CliOptions } from "~/core/configuration/types";
 import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
-import { CommitType } from "../../../commit/types";
+import { CommitType } from "~/modules/commit/types";
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
 export class RedGreenRefactorTypeHandler extends BaseRedGreenRefactorHandler {

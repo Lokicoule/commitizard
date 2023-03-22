@@ -1,5 +1,5 @@
 import { bgGreen, green, red } from "picocolors";
-import { ProcessBuilderFactory } from "../../../../core/process/factory/ProcessBuilderFactory";
+import { ProcessBuilderFactory } from "~/core/process/factory/ProcessBuilderFactory";
 import {
   WizardCommitState,
   WizardCommitStateMachine,

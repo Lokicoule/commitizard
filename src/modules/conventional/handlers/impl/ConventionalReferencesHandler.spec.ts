@@ -1,8 +1,8 @@
 /* import { PromptManagerImpl } from "~/libs/prompt/impl/PromptManagerImpl";
-import { Config } from "../../../../core/configuration";
-import { PromptManager } from "../../../../libs/prompt/PromptManager";
-import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { CommitBuilderImpl } from "../../../commit/builder/impl/CommitBuilderImpl";
+import { Config } from "~/core/configuration";
+import { PromptManager } from "~/libs/prompt/PromptManager";
+import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
+import { CommitBuilderImpl } from "~/modules/commit/builder/impl/CommitBuilderImpl";
 import { ConventionalReferencesHandler } from "./ConventionalReferencesHandler";
 
 describe("ConventionalReferencesHandler", () => {

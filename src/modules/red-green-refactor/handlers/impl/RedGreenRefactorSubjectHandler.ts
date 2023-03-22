@@ -1,7 +1,7 @@
 import { blue } from "picocolors";
 import { CliOptions } from "~/core/configuration/types";
-import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { CommitSubject } from "../../../commit/types";
+import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
+import { CommitSubject } from "~/modules/commit/types";
 import { BaseRedGreenRefactorHandler } from "./BaseRedGreenRefactorHandler";
 
 const DEFAULT_COMMIT_SUBJECT = "No commit subject";

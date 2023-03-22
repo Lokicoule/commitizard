@@ -1,6 +1,6 @@
-import { CliOptions } from "../../../../core/configuration/types";
-import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { CommitType } from "../../../commit/types";
+import { CliOptions } from "~/core/configuration/types";
+import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
+import { CommitType } from "~/modules/commit/types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
 export class ConventionalTypeHandler extends BaseConventionalHandler {

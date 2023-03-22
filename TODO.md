@@ -24,5 +24,4 @@ before prompting files to add selector ask if user want it
 
 replace imports by import aliases
 
-core
-refactor config to class configmanager ?
+create a strategy for commit convention: red-green-refactor or conventional

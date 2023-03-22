@@ -1,9 +1,9 @@
-/* import { Config } from "../../../../core/configuration";
-import { PromptManager } from "../../../../libs/prompt";
-import { PromptManagerImpl } from "../../../../libs/prompt/impl/PromptManagerImpl";
-import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { CommitBuilderImpl } from "../../../commit/builder/impl/CommitBuilderImpl";
-import { CommitBody } from "../../../commit/types";
+/* import { Config } from "~/core/configuration";
+import { PromptManager } from "~/libs/prompt";
+import { PromptManagerImpl } from "~/libs/prompt/impl/PromptManagerImpl";
+import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
+import { CommitBuilderImpl } from "~/modules/commit/builder/impl/CommitBuilderImpl";
+import { CommitBody } from "~/modules/commit/types";
 import { ConventionalBodyHandler } from "./ConventionalBodyHandler";
 
 describe("ConventionalBodyHandler", () => {

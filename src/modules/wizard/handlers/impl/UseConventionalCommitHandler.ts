@@ -1,7 +1,7 @@
-import { CommitBuilderFactory } from "../../../commit/builder/CommitBuilderFactory";
-import { ConventionalHandlerFactory } from "../../../../modules/conventional/factories/ConventionalHandlerFactory";
-import { ConventionalPipelineFactory } from "../../../../modules/conventional/factories/ConventionalPipelineFactory";
-import { CommitFormatter } from "../../../commit/formatter/CommitFormatter";
+import { CommitBuilderFactory } from "~/modules/commit/builder/CommitBuilderFactory";
+import { ConventionalHandlerFactory } from "~/modules/conventional/factories/ConventionalHandlerFactory";
+import { ConventionalPipelineFactory } from "~/modules/conventional/factories/ConventionalPipelineFactory";
+import { CommitFormatter } from "~/modules/commit/formatter/CommitFormatter";
 import {
   WizardCommitStateMachine,
   WizardCommitState,

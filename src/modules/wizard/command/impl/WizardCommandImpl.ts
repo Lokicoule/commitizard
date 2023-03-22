@@ -3,7 +3,7 @@ import {
   ConfigurationManagerFactory,
   ConfigurationService,
 } from "~/core/configuration";
-import { PromptManagerImpl } from "../../../../libs/prompt/impl/PromptManagerImpl";
+import { PromptManagerImpl } from "~/libs/prompt/impl/PromptManagerImpl";
 import { WizardCommitStateMachineFactory } from "../../factory/WizardCommitStateMachineFactory";
 import { WizardCommand } from "../WizardCommand";
 

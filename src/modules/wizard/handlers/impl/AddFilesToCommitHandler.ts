@@ -1,6 +1,6 @@
-import { ProcessBuilderFactory } from "../../../../core/process/factory/ProcessBuilderFactory";
-import { getFiles, getStagedFiles } from "../../../../libs/git";
-import { PromptManager } from "../../../../libs/prompt/PromptManager";
+import { ProcessBuilderFactory } from "~/core/process/factory/ProcessBuilderFactory";
+import { getFiles, getStagedFiles } from "~/libs/git";
+import { PromptManager } from "~/libs/prompt/PromptManager";
 import {
   WizardCommitState,
   WizardCommitStateMachine,

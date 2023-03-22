@@ -1,7 +1,7 @@
-import { CommitBuilderFactory } from "../../../commit/builder/CommitBuilderFactory";
-import { CommitFormatter } from "../../../../modules/commit/formatter/CommitFormatter";
-import { RedGreenRefactorHandlerFactory } from "../../../../modules/red-green-refactor/factories/RedGreenRefactorHandlerFactory";
-import { RedGreenRefactorPipelineFactory } from "../../../../modules/red-green-refactor/factories/RedGreenRefactorPipelineFactory";
+import { CommitBuilderFactory } from "~/modules/commit/builder/CommitBuilderFactory";
+import { CommitFormatter } from "~/modules/commit/formatter/CommitFormatter";
+import { RedGreenRefactorHandlerFactory } from "~/modules/red-green-refactor/factories/RedGreenRefactorHandlerFactory";
+import { RedGreenRefactorPipelineFactory } from "~/modules/red-green-refactor/factories/RedGreenRefactorPipelineFactory";
 import {
   WizardCommitState,
   WizardCommitStateMachine,

@@ -1,4 +1,4 @@
-import { ProcessBuilderFactory } from "../../core/process/factory/ProcessBuilderFactory";
+import { ProcessBuilderFactory } from "~/core/process/factory/ProcessBuilderFactory";
 
 const excludeFromDiff: readonly string[] = [
   "package-lock.json",

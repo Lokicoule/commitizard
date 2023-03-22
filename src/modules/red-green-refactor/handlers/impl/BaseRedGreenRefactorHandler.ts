@@ -1,7 +1,7 @@
 import { ConfigurationManager } from "~/core/configuration";
-import { AbstractHandler } from "../../../../core/handler/impl/AbstractHandler";
-import { PromptManager } from "../../../../libs/prompt";
-import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
+import { AbstractHandler } from "~/core/handler/impl/AbstractHandler";
+import { PromptManager } from "~/libs/prompt";
+import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
 import { RedGreenRefactorHandler } from "../RedGreenRefactorHandler";
 
 export abstract class BaseRedGreenRefactorHandler

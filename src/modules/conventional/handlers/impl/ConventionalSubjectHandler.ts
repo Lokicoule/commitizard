@@ -1,5 +1,5 @@
-import { CommitBuilder } from "../../../commit/builder/CommitBuilder";
-import { CommitSubject } from "../../../commit/types";
+import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
+import { CommitSubject } from "~/modules/commit/types";
 import { BaseConventionalHandler } from "./BaseConventionalHandler";
 
 export class ConventionalSubjectHandler extends BaseConventionalHandler {

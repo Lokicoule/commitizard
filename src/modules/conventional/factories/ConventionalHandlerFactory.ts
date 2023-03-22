@@ -1,5 +1,5 @@
-import { ConfigurationManager } from "../../../core/configuration";
-import { PromptManager } from "../../../libs/prompt";
+import { ConfigurationManager } from "~/core/configuration";
+import { PromptManager } from "~/libs/prompt";
 import { ConventionalHandler } from "../handlers/ConventionalHandler";
 import { ConventionalBodyHandler } from "../handlers/impl/ConventionalBodyHandler";
 import { ConventionalBreakingChangesHandler } from "../handlers/impl/ConventionalBreakingChangesHandler";
