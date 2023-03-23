@@ -8,7 +8,7 @@ import {
 
 describe("ConventionalBreakingChangesHandler", () => {
   // Mocks
-  const configurationManager = {
+  const mockConfigurationManager = {
     getVersion: jest.fn(),
     getWizardMaxViewFilesToShow: jest.fn(),
     getConventionalCommitTemplate: jest.fn(),
@@ -56,57 +56,55 @@ describe("ConventionalBreakingChangesHandler", () => {
   beforeEach(() => {
     sut = new ConventionalBreakingChangesHandler(
       mockPromptManager,
-      configurationManager
+      mockConfigurationManager
     );
   });
 
-  describe("processInput", () => {
-    it("should ask for a breaking changes if the user wants one", async () => {
-      jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-      jest
-        .spyOn(mockPromptManager, "multiText")
-        .mockResolvedValueOnce(["breaking changes line"]);
+  it("should ask for a breaking changes if the user wants one", async () => {
+    jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
+    jest
+      .spyOn(mockPromptManager, "multiText")
+      .mockResolvedValueOnce(["breaking changes line"]);
 
-      await sut.handle(mockCommitBuilder);
+    await sut.handle(mockCommitBuilder);
 
-      expect(mockPromptManager.confirm).toHaveBeenCalledWith({
-        defaultValue: false,
-        message: "Does this commit have a breaking change?",
-        abortMessage: ABORT_MESSAGE,
-      });
-
-      expect(mockPromptManager.multiText).toHaveBeenCalledWith({
-        confirm: {
-          message: "Do you need another breaking change line?",
-          abortMessage: ABORT_MESSAGE,
-        },
-        text: {
-          message: "Please enter a breaking change line:",
-          abortMessage: ABORT_MESSAGE,
-        },
-      });
-
-      expect(mockCommitBuilder.withBreakingChanges).toHaveBeenCalledWith({
-        message: "breaking changes line",
-      });
+    expect(mockPromptManager.confirm).toHaveBeenCalledWith({
+      defaultValue: false,
+      message: "Does this commit have a breaking change?",
+      abortMessage: ABORT_MESSAGE,
     });
 
-    it("should not ask for a breaking changes if the user does not want one", async () => {
-      jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
-
-      await sut.handle(mockCommitBuilder);
-
-      expect(mockPromptManager.confirm).toHaveBeenCalledWith({
-        defaultValue: false,
-        message: "Does this commit have a breaking change?",
+    expect(mockPromptManager.multiText).toHaveBeenCalledWith({
+      confirm: {
+        message: "Do you need another breaking change line?",
         abortMessage: ABORT_MESSAGE,
-      });
+      },
+      text: {
+        message: "Please enter a breaking change line:",
+        abortMessage: ABORT_MESSAGE,
+      },
+    });
 
-      expect(mockPromptManager.multiText).not.toHaveBeenCalled();
+    expect(mockCommitBuilder.withBreakingChanges).toHaveBeenCalledWith({
+      message: "breaking changes line",
+    });
+  });
 
-      expect(mockCommitBuilder.withBreakingChanges).toHaveBeenCalledWith({
-        message: "",
-      });
+  it("should not ask for a breaking changes if the user does not want one", async () => {
+    jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
+
+    await sut.handle(mockCommitBuilder);
+
+    expect(mockPromptManager.confirm).toHaveBeenCalledWith({
+      defaultValue: false,
+      message: "Does this commit have a breaking change?",
+      abortMessage: ABORT_MESSAGE,
+    });
+
+    expect(mockPromptManager.multiText).not.toHaveBeenCalled();
+
+    expect(mockCommitBuilder.withBreakingChanges).toHaveBeenCalledWith({
+      message: "",
     });
   });
 

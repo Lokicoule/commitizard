@@ -8,7 +8,7 @@ import {
 
 describe("ConventionalFooterHandler", () => {
   // Mocks
-  const configurationManager = {
+  const mockConfigurationManager = {
     getVersion: jest.fn(),
     getWizardMaxViewFilesToShow: jest.fn(),
     getConventionalCommitTemplate: jest.fn(),
@@ -56,57 +56,55 @@ describe("ConventionalFooterHandler", () => {
   beforeEach(() => {
     sut = new ConventionalFooterHandler(
       mockPromptManager,
-      configurationManager
+      mockConfigurationManager
     );
   });
 
-  describe("processInput", () => {
-    it("should ask for a footer if the user wants one", async () => {
-      jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-      jest
-        .spyOn(mockPromptManager, "multiText")
-        .mockResolvedValueOnce(["footer line"]);
+  it("should ask for a footer if the user wants one", async () => {
+    jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
+    jest
+      .spyOn(mockPromptManager, "multiText")
+      .mockResolvedValueOnce(["footer line"]);
 
-      await sut.handle(mockCommitBuilder);
+    await sut.handle(mockCommitBuilder);
 
-      expect(mockPromptManager.confirm).toHaveBeenCalledWith({
-        defaultValue: false,
-        message: "Does this commit have a footer?",
-        abortMessage: ABORT_MESSAGE,
-      });
-
-      expect(mockPromptManager.multiText).toHaveBeenCalledWith({
-        text: {
-          message: "Please enter a footer line:",
-          abortMessage: ABORT_MESSAGE,
-        },
-        confirm: {
-          message: "Do you need another footer line?",
-          abortMessage: ABORT_MESSAGE,
-        },
-      });
-
-      expect(mockCommitBuilder.withFooter).toHaveBeenCalledWith({
-        message: "footer line",
-      });
+    expect(mockPromptManager.confirm).toHaveBeenCalledWith({
+      defaultValue: false,
+      message: "Does this commit have a footer?",
+      abortMessage: ABORT_MESSAGE,
     });
 
-    it("should not ask for a footer if the user does not want one", async () => {
-      jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
-
-      await sut.handle(mockCommitBuilder);
-
-      expect(mockPromptManager.confirm).toHaveBeenCalledWith({
-        defaultValue: false,
-        message: "Does this commit have a footer?",
+    expect(mockPromptManager.multiText).toHaveBeenCalledWith({
+      text: {
+        message: "Please enter a footer line:",
         abortMessage: ABORT_MESSAGE,
-      });
+      },
+      confirm: {
+        message: "Do you need another footer line?",
+        abortMessage: ABORT_MESSAGE,
+      },
+    });
 
-      expect(mockPromptManager.multiText).not.toHaveBeenCalled();
+    expect(mockCommitBuilder.withFooter).toHaveBeenCalledWith({
+      message: "footer line",
+    });
+  });
 
-      expect(mockCommitBuilder.withFooter).toHaveBeenCalledWith({
-        message: "",
-      });
+  it("should not ask for a footer if the user does not want one", async () => {
+    jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
+
+    await sut.handle(mockCommitBuilder);
+
+    expect(mockPromptManager.confirm).toHaveBeenCalledWith({
+      defaultValue: false,
+      message: "Does this commit have a footer?",
+      abortMessage: ABORT_MESSAGE,
+    });
+
+    expect(mockPromptManager.multiText).not.toHaveBeenCalled();
+
+    expect(mockCommitBuilder.withFooter).toHaveBeenCalledWith({
+      message: "",
     });
   });
 

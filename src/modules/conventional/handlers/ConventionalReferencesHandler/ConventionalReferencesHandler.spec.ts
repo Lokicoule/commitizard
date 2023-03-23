@@ -8,7 +8,7 @@ import {
 
 describe("ConventionalReferencesHandler", () => {
   // Mocks
-  const configurationManager = {
+  const mockConfigurationManager = {
     getVersion: jest.fn(),
     getWizardMaxViewFilesToShow: jest.fn(),
     getConventionalCommitTemplate: jest.fn(),
@@ -56,74 +56,70 @@ describe("ConventionalReferencesHandler", () => {
   beforeEach(() => {
     sut = new ConventionalReferencesHandler(
       mockPromptManager,
-      configurationManager
+      mockConfigurationManager
     );
   });
 
-  describe("processInput", () => {
-    it("should ask for references if the commit type is a fix", async () => {
-      const commitBuilder = mockCommitBuilder;
-      commitBuilder.getType.mockReturnValue({
-        message: "fix",
-      });
-      jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-      jest.spyOn(mockPromptManager, "text").mockResolvedValueOnce("references");
-      jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
+  it("should ask for references if the commit type is a fix", async () => {
+    const commitBuilder = mockCommitBuilder;
+    commitBuilder.getType.mockReturnValue({
+      message: "fix",
+    });
+    jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
+    jest.spyOn(mockPromptManager, "text").mockResolvedValueOnce("references");
+    jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
 
-      await sut.handle(commitBuilder);
+    await sut.handle(commitBuilder);
 
-      expect(mockPromptManager.confirm).toHaveBeenCalledWith({
-        defaultValue: false,
-        message: "Does this commit reference any open issues?",
-        abortMessage: ABORT_MESSAGE,
-      });
-
-      expect(mockPromptManager.text).toHaveBeenCalledWith({
-        message: "Please enter a reference number:",
-        placeholder: "e.g., #123 or 123",
-        abortMessage: ABORT_MESSAGE,
-      });
-
-      expect(mockPromptManager.confirm).toHaveBeenCalledWith({
-        defaultValue: false,
-        message: "Does this commit affect any other open issues?",
-        abortMessage: ABORT_MESSAGE,
-      });
-
-      expect(commitBuilder.withReferences).toHaveBeenCalledWith({
-        message: "#references",
-      });
+    expect(mockPromptManager.confirm).toHaveBeenCalledWith({
+      defaultValue: false,
+      message: "Does this commit reference any open issues?",
+      abortMessage: ABORT_MESSAGE,
     });
 
-    it("should not ask for references if the commit type is not a fix", async () => {
-      const commitBuilder = mockCommitBuilder;
-      commitBuilder.getType.mockReturnValue({
-        message: "feat",
-      });
-
-      await sut.handle(commitBuilder);
-
-      expect(mockPromptManager.confirm).not.toHaveBeenCalled();
+    expect(mockPromptManager.text).toHaveBeenCalledWith({
+      message: "Please enter a reference number:",
+      placeholder: "e.g., #123 or 123",
+      abortMessage: ABORT_MESSAGE,
     });
 
-    it("should add references to the commit if the user confirms", async () => {
-      const commitBuilder = mockCommitBuilder;
-      commitBuilder.getType.mockReturnValue({
-        message: "fix",
-      });
-      jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-      jest.spyOn(mockPromptManager, "text").mockResolvedValueOnce("references");
-      jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-      jest
-        .spyOn(mockPromptManager, "text")
-        .mockResolvedValueOnce("references2");
-      jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
+    expect(mockPromptManager.confirm).toHaveBeenCalledWith({
+      defaultValue: false,
+      message: "Does this commit affect any other open issues?",
+      abortMessage: ABORT_MESSAGE,
+    });
 
-      await sut.handle(commitBuilder);
+    expect(commitBuilder.withReferences).toHaveBeenCalledWith({
+      message: "#references",
+    });
+  });
 
-      expect(commitBuilder.withReferences).toHaveBeenCalledWith({
-        message: "#references, #references2",
-      });
+  it("should not ask for references if the commit type is not a fix", async () => {
+    const commitBuilder = mockCommitBuilder;
+    commitBuilder.getType.mockReturnValue({
+      message: "feat",
+    });
+
+    await sut.handle(commitBuilder);
+
+    expect(mockPromptManager.confirm).not.toHaveBeenCalled();
+  });
+
+  it("should add references to the commit if the user confirms", async () => {
+    const commitBuilder = mockCommitBuilder;
+    commitBuilder.getType.mockReturnValue({
+      message: "fix",
+    });
+    jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
+    jest.spyOn(mockPromptManager, "text").mockResolvedValueOnce("references");
+    jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
+    jest.spyOn(mockPromptManager, "text").mockResolvedValueOnce("references2");
+    jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
+
+    await sut.handle(commitBuilder);
+
+    expect(commitBuilder.withReferences).toHaveBeenCalledWith({
+      message: "#references, #references2",
     });
   });
 

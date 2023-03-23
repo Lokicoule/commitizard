@@ -1,12 +1,10 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
 import { CommitBuilder } from "~/modules/commit";
-import {
-  ConventionalScopeHandler,
-  ABORT_MESSAGE,
-} from "./ConventionalScopeHandler";
+import { ConventionalTypeHandler } from "./ConventionalTypeHandler";
 
-describe("ConventionalScopeHandler", () => {
+describe("ConventionalTypeHandler", () => {
+  // Mocks
   const mockConfigurationManager = {
     getVersion: jest.fn(),
     getWizardMaxViewFilesToShow: jest.fn(),
@@ -50,57 +48,32 @@ describe("ConventionalScopeHandler", () => {
   } satisfies CommitBuilder;
 
   // System under test
-  let sut: ConventionalScopeHandler;
+  let sut: ConventionalTypeHandler;
 
   beforeEach(() => {
-    sut = new ConventionalScopeHandler(
+    sut = new ConventionalTypeHandler(
       mockPromptManager,
       mockConfigurationManager
     );
   });
 
-  it("should select commit scope", async () => {
-    const scopes = [
-      {
-        value: "test",
-        label: "test",
-      },
-    ];
-    mockConfigurationManager.getConventionalCliOptionsScopes.mockReturnValue(
-      scopes
-    );
-    mockPromptManager.select.mockResolvedValueOnce("test");
-
-    await sut.handle(mockCommitBuilder);
-
-    expect(mockPromptManager.select).toHaveBeenCalledWith({
-      message: "Select commit scope:",
-      options: scopes,
-      abortMessage: ABORT_MESSAGE,
-    });
-    expect(mockCommitBuilder.withScope).toHaveBeenCalledWith({
-      message: "test",
-    });
-  });
-
-  it("should prompt commit scope", async () => {
-    mockConfigurationManager.getConventionalCliOptionsScopes.mockReturnValue(
-      []
-    );
-    mockPromptManager.text.mockResolvedValueOnce("test");
-
-    await sut.handle(mockCommitBuilder);
-
-    expect(mockPromptManager.text).toHaveBeenCalledWith({
-      message: "Enter a scope for the commit (optional):",
-      abortMessage: ABORT_MESSAGE,
-    });
-    expect(mockCommitBuilder.withScope).toHaveBeenCalledWith({
-      message: "test",
-    });
-  });
-
   afterEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
+  });
+
+  describe("handle", () => {
+    it("should return the commit with the type", async () => {
+      const types = ["feat", "fix", "chore"];
+
+      mockPromptManager.select.mockResolvedValue(types[1]);
+      mockConfigurationManager.getConventionalCliOptionsTypes.mockReturnValue(
+        types
+      );
+      await sut.handle(mockCommitBuilder);
+
+      expect(mockCommitBuilder.withType).toBeCalledWith({
+        message: types[1],
+      });
+    });
   });
 });
