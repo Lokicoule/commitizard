@@ -13,6 +13,11 @@ export type Text = Message & {
   abortMessage?: string;
 };
 
+export type MultiText = {
+  text: Text;
+  confirm: Confirm;
+};
+
 export type SelectOption<Value> = Value extends string | boolean | number
   ? {
       value: Value;

@@ -15,6 +15,7 @@ import {
   Confirm,
   Log,
   MultiSelect,
+  MultiText,
   Select,
   SelectOption,
   Text,
@@ -53,6 +54,26 @@ export class ClackPromptAdapter implements PromptAdapter {
     );
 
     return result?.trim();
+  }
+
+  public async multiText({ text, confirm }: MultiText): Promise<string[]> {
+    let lines: Array<string> = [];
+
+    while (true) {
+      const result = await this.text(text);
+
+      if (result) {
+        lines.push(result);
+      }
+
+      const isContinue = await this.confirm(confirm);
+
+      if (!isContinue) {
+        break;
+      }
+    }
+
+    return lines;
   }
 
   public async select<Option extends SelectOption<T>[], T>({

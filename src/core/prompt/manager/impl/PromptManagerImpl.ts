@@ -1,13 +1,13 @@
 import { PromptAdapter } from "~/adapters/prompt/PromptAdapter";
 import {
   Confirm,
-  Log,
   MultiSelect,
+  MultiText,
   Select,
   SelectOption,
   Text,
 } from "~/adapters/prompt/types";
-import { IntroInput, LogInput, MultiText, OutroInput } from "../../types";
+import { IntroInput, OutroInput } from "../../types";
 import { PromptManager } from "../PromptManager";
 
 export class PromptManagerImpl implements PromptManager {
@@ -43,24 +43,8 @@ export class PromptManagerImpl implements PromptManager {
     });
   }
 
-  public async multiText({ text, confirm }: MultiText): Promise<string[]> {
-    let lines: Array<string> = [];
-
-    while (true) {
-      const result = await this.adapter.text(text);
-
-      if (result) {
-        lines.push(result);
-      }
-
-      const isContinue = await this.adapter.confirm(confirm);
-
-      if (!isContinue) {
-        break;
-      }
-    }
-
-    return lines;
+  public async multiText(options: MultiText): Promise<string[]> {
+    return this.adapter.multiText(options);
   }
 
   public async select<Option extends SelectOption<T>[], T>(

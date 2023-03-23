@@ -1,10 +1,3 @@
-import { Confirm, Text } from "~/adapters/prompt/types";
-
-export type MultiText = {
-  text: Text;
-  confirm: Confirm;
-};
-
 export type IntroInput = {
   message: string;
 };
