@@ -3,7 +3,7 @@ import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
 import { CommitBody } from "~/modules/commit/types";
 import { BaseConventionalHandler } from "../BaseConventionalHandler";
 
-const ABORT_MESSAGE = `${yellow("✖")} Commit body aborted!`;
+export const ABORT_MESSAGE = `${yellow("✖")} Commit body aborted!`;
 
 export class ConventionalBodyHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
