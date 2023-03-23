@@ -4,6 +4,19 @@ export const defaultConfig = {
   version: "0.0.1",
   settings: {
     maxViewFilesToShow: 5,
+    excludePaths: [
+      "package-lock.json",
+      "yarn.lock",
+      "yarn-error.log",
+      "pnpm-lock.yaml",
+      "**/yarn.lock",
+      "**/pnpm-lock.yaml",
+      "**/package-lock.json",
+      "**/yarn-error.log",
+      "**/yarn.lock.*",
+      "**/yarn.lock/*.log",
+      "**/.yarn/cache",
+    ],
   },
   conventional: {
     commitOptions: {

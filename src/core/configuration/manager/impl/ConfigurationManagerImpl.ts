@@ -58,4 +58,8 @@ export class ConfigurationManagerImpl implements ConfigurationManager {
       (type) => type.value === selector
     );
   }
+
+  public getExcludePaths(): string[] {
+    return this.config.settings?.excludePaths ?? [];
+  }
 }

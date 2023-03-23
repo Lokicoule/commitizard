@@ -1,5 +1,3 @@
-import { ProcessBuilderFactory } from "~/core/process/factory/ProcessBuilderFactory";
-import { getFiles, getStagedFiles } from "~/libs/git";
 import { PromptManager } from "~/core/prompt/manager/PromptManager";
 import {
   WizardCommitState,
@@ -44,14 +42,14 @@ export class AddFilesToCommitHandler extends BaseWizardCommitHandler {
       this.configurationManager.getWizardMaxViewFilesToShow();
 
     // Get list of staged files
-    const stagedFiles = await getStagedFiles();
+    const stagedFiles = await this.gitManager.getStagedFiles();
 
     // If there are staged files, log them to the console
     await logFiles(stagedFiles, promptManager, maxViewFiles);
 
     if (stagedFiles.length <= maxViewFiles) {
       // Otherwise, prompt user to select updated files to add to the commit
-      const updatedFiles = await getFiles();
+      const updatedFiles = await this.gitManager.getFiles();
 
       if (updatedFiles.length === 0) {
         promptManager.log.warn(
@@ -67,8 +65,7 @@ export class AddFilesToCommitHandler extends BaseWizardCommitHandler {
       });
 
       // Add selected files to the Git index
-      const processBuilder = ProcessBuilderFactory.create();
-      processBuilder.addArgs(["add", ...commitUpdatedFiles]).spawn("git");
+      this.gitManager.addFiles(commitUpdatedFiles);
     }
 
     // Return the next state in the state machine

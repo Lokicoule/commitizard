@@ -18,4 +18,5 @@ export interface ConfigurationManager {
   selectorRedGreenRefactorCliOptionsTypes(
     selector: string
   ): RedGreenRefactorCliOptionsType | undefined;
+  getExcludePaths(): string[];
 }

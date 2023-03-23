@@ -11,6 +11,7 @@ import {
 } from "../WizardCommitStateMachine";
 import { PromptManager } from "~/core/prompt";
 import { ConfigurationManager } from "~/core/configuration";
+import { GitManager } from "~/core/git";
 
 export type Store = {
   message: string;
@@ -48,7 +49,8 @@ export class WizardCommitStateMachineImpl implements WizardCommitStateMachine {
   constructor(
     initialState: WizardCommitState,
     configuration: ConfigurationManager,
-    promptManager: PromptManager
+    promptManager: PromptManager,
+    gitManager: GitManager
   ) {
     this.context = {
       state: initialState,
@@ -59,22 +61,37 @@ export class WizardCommitStateMachineImpl implements WizardCommitStateMachine {
     this.handlers = {
       [WizardCommitState.ADD_FILES_TO_COMMIT]: new AddFilesToCommitHandler(
         promptManager,
-        configuration
+        configuration,
+        gitManager
       ),
       [WizardCommitState.SELECT_COMMIT_CONVENTION]: new SelectConventionHandler(
         promptManager,
-        configuration
+        configuration,
+        gitManager
       ),
       [WizardCommitState.USE_CONVENTIONAL_COMMIT_CONVENTION]:
-        new UseConventionalCommitHandler(promptManager, configuration),
+        new UseConventionalCommitHandler(
+          promptManager,
+          configuration,
+          gitManager
+        ),
       [WizardCommitState.USE_RED_GREEN_REFACTOR_COMMIT_CONVENTION]:
-        new UseRedGreenRefactorHandler(promptManager, configuration),
+        new UseRedGreenRefactorHandler(
+          promptManager,
+          configuration,
+          gitManager
+        ),
       [WizardCommitState.REVIEW_COMMIT_MESSAGE]: new ReviewCommitHandler(
         promptManager,
-        configuration
+        configuration,
+        gitManager
       ),
       [WizardCommitState.RUN_GIT_COMMIT_PROCESS]:
-        new RunGitCommitProcessHandler(promptManager, configuration),
+        new RunGitCommitProcessHandler(
+          promptManager,
+          configuration,
+          gitManager
+        ),
     };
   }
 

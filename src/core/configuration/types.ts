@@ -27,6 +27,7 @@ export type Configuration = {
   version: string;
   settings: {
     maxViewFilesToShow: number;
+    excludePaths: string[];
   };
   conventional: {
     commitOptions: {
