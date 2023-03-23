@@ -20,7 +20,7 @@ describe("ConventionalBreakingChangesHandler", () => {
     getRedGreenRefactorCliOptionsTypes: jest.fn(),
     selectorRedGreenRefactorCliOptionsTypes: jest.fn(),
     getExcludePaths: jest.fn(),
-  } as ConfigurationManager;
+  } satisfies ConfigurationManager;
 
   const mockPromptManager = {
     confirm: jest.fn(),
@@ -36,11 +36,19 @@ describe("ConventionalBreakingChangesHandler", () => {
       success: jest.fn(),
       warn: jest.fn(),
     },
-  } as PromptManager;
+  } satisfies PromptManager;
 
   const mockCommitBuilder = {
+    withReferences: jest.fn(),
+    withBody: jest.fn(),
+    build: jest.fn(),
+    withType: jest.fn(),
+    withScope: jest.fn(),
+    withFooter: jest.fn(),
+    withSubject: jest.fn(),
+    getType: jest.fn(),
     withBreakingChanges: jest.fn(),
-  };
+  } satisfies CommitBuilder;
 
   // System under test
   let sut: ConventionalBreakingChangesHandler;
@@ -59,7 +67,7 @@ describe("ConventionalBreakingChangesHandler", () => {
         .spyOn(mockPromptManager, "multiText")
         .mockResolvedValueOnce(["breaking changes line"]);
 
-      await sut.handle(mockCommitBuilder as unknown as CommitBuilder);
+      await sut.handle(mockCommitBuilder);
 
       expect(mockPromptManager.confirm).toHaveBeenCalledWith({
         defaultValue: false,
@@ -86,7 +94,7 @@ describe("ConventionalBreakingChangesHandler", () => {
     it("should not ask for a breaking changes if the user does not want one", async () => {
       jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
 
-      await sut.handle(mockCommitBuilder as unknown as CommitBuilder);
+      await sut.handle(mockCommitBuilder);
 
       expect(mockPromptManager.confirm).toHaveBeenCalledWith({
         defaultValue: false,

@@ -3,10 +3,14 @@ import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
 import { CommitReferences } from "~/modules/commit/types";
 import { BaseConventionalHandler } from "../BaseConventionalHandler";
 
-const ABORT_MESSAGE = yellow("✖") + " Commit issue numbers aborted!";
+export const ABORT_MESSAGE = yellow("✖") + " Commit issue numbers aborted!";
 
 export class ConventionalReferencesHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
+    if (commitBuilder.getType().message !== "fix") {
+      return;
+    }
+
     const commitReferences = await this.selectCommitReferences();
     commitBuilder.withReferences(commitReferences);
   }
