@@ -15,7 +15,7 @@ export enum CommitConventionStrategyType {
 
 export interface CommitConventionStrategyOptions {
   promptManager: PromptManager;
-  configuration: ConfigurationManager;
+  configurationManager: ConfigurationManager;
   gitManager: GitManager;
 }
 

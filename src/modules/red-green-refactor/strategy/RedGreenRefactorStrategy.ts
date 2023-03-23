@@ -15,7 +15,7 @@ export class RedGreenRefactorCommitConventionStrategy
 
   constructor(options: CommitConventionStrategyOptions) {
     this.promptManager = options.promptManager;
-    this.configurationManager = options.configuration;
+    this.configurationManager = options.configurationManager;
   }
 
   async getCommitMessage(): Promise<string> {

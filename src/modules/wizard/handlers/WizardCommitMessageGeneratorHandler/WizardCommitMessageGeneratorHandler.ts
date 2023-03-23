@@ -34,7 +34,7 @@ export class WizardCommitMessageGeneratorHandler extends BaseWizardCommitHandler
 
     const strategy = CommitConventionStrategyFactory.create(convention, {
       promptManager: this.promptManager,
-      configuration: this.configurationManager,
+      configurationManager: this.configurationManager,
       gitManager: this.gitManager,
     });
 

@@ -13,9 +13,14 @@ export class ConventionalCommitConventionStrategy
   private readonly promptManager: PromptManager;
   private readonly configurationManager: ConfigurationManager;
 
-  constructor(options: CommitConventionStrategyOptions) {
+  constructor(
+    options: Pick<
+      CommitConventionStrategyOptions,
+      "promptManager" | "configurationManager"
+    >
+  ) {
     this.promptManager = options.promptManager;
-    this.configurationManager = options.configuration;
+    this.configurationManager = options.configurationManager;
   }
 
   async getCommitMessage(): Promise<string> {
