@@ -4,7 +4,7 @@ import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
 import { CommitScope } from "~/modules/commit/types";
 import { BaseConventionalHandler } from "../BaseConventionalHandler";
 
-const ABORT_MESSAGE = yellow("✖") + " Commit scope selection aborted!";
+export const ABORT_MESSAGE = yellow("✖") + " Commit scope selection aborted!";
 
 export class ConventionalScopeHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
