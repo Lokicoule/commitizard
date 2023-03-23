@@ -1,5 +1,4 @@
 import { bgGreen, green, red } from "picocolors";
-import { ProcessBuilderFactory } from "~/core/process/factory/ProcessBuilderFactory";
 import {
   WizardCommitState,
   WizardCommitStateMachine,
@@ -14,11 +13,7 @@ export class RunGitCommitProcessHandler extends BaseWizardCommitHandler {
       " Commit created successfully!"
     )}`;
     try {
-      ProcessBuilderFactory.create()
-        .addArg("commit")
-        .addArg("-m")
-        .addArg(wizard.getMessage())
-        .spawn("git");
+      await this.gitManager.commit(wizard.getMessage());
     } catch (error: any) {
       outroMessage = `${red(
         "✖"

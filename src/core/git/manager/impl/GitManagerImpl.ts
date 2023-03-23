@@ -1,4 +1,4 @@
-import { ProcessBuilderFactory } from "~/core/process/factory/ProcessBuilderFactory";
+import { ProcessBuilderFactory } from "~/core/process/builder/ProcessBuilderFactory";
 import { GitManagerOptions } from "../../types";
 import { GitManager } from "../GitManager";
 
@@ -57,11 +57,11 @@ export class GitManagerImpl implements GitManager {
       );
     }
     const gitProcess = gitProcessBuilder.spawn("git");
-    const files = (await this.streamToString(gitProcess.stdout))
-      .split("\n")
-      .filter(Boolean);
-    console.log("files", files);
-    return files || [];
+    return (
+      (await this.streamToString(gitProcess.stdout))
+        .split("\n")
+        .filter(Boolean) ?? []
+    );
   }
 
   public async getStagedFiles(): Promise<string[]> {
@@ -87,11 +87,11 @@ export class GitManagerImpl implements GitManager {
     this.options.exclude.forEach((file) => process.addArg(`:(exclude)${file}`));
 
     const gitProcess = process.spawn("git");
-    const files = (await this.streamToString(gitProcess.stdout))
-      .split("\n")
-      .filter(Boolean);
-
-    return files || [];
+    return (
+      (await this.streamToString(gitProcess.stdout))
+        .split("\n")
+        .filter(Boolean) ?? []
+    );
   }
 
   public async addFiles(files: string[]): Promise<void> {
@@ -118,7 +118,6 @@ export class GitManagerImpl implements GitManager {
         data += chunk.toString(encoding);
       });
       stream.on("end", () => {
-        console.log("data", data);
         resolve(data);
       });
       stream.on("error", (error) => {

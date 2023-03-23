@@ -1,5 +1,5 @@
-import { ProcessBuilder } from "../builder/ProcessBuilder";
-import { ProcessBuilderImpl } from "../builder/impl/ProcessBuilderImpl";
+import { ProcessBuilder } from "./ProcessBuilder";
+import { ProcessBuilderImpl } from "./impl/ProcessBuilderImpl";
 
 export class ProcessBuilderFactory {
   static create(args: string[] = []): ProcessBuilder {
