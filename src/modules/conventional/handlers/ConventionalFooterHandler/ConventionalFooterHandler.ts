@@ -3,7 +3,7 @@ import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
 import { CommitFooter } from "~/modules/commit/types";
 import { BaseConventionalHandler } from "../BaseConventionalHandler";
 
-const ABORT_MESSAGE = yellow("✖") + " Commit footer aborted!";
+export const ABORT_MESSAGE = yellow("✖") + " Commit footer aborted!";
 
 export class ConventionalFooterHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {

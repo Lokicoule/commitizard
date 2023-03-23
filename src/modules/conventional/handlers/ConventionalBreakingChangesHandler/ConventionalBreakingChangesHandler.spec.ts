@@ -1,5 +1,6 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
+import { CommitBuilder } from "~/modules/commit";
 import {
   ConventionalBreakingChangesHandler,
   ABORT_MESSAGE,
@@ -58,7 +59,7 @@ describe("ConventionalBreakingChangesHandler", () => {
         .spyOn(mockPromptManager, "multiText")
         .mockResolvedValueOnce(["breaking changes line"]);
 
-      await sut.handle(mockCommitBuilder as any);
+      await sut.handle(mockCommitBuilder as unknown as CommitBuilder);
 
       expect(mockPromptManager.confirm).toHaveBeenCalledWith({
         defaultValue: false,
@@ -85,7 +86,7 @@ describe("ConventionalBreakingChangesHandler", () => {
     it("should not ask for a breaking changes if the user does not want one", async () => {
       jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
 
-      await sut.handle(mockCommitBuilder as any);
+      await sut.handle(mockCommitBuilder as unknown as CommitBuilder);
 
       expect(mockPromptManager.confirm).toHaveBeenCalledWith({
         defaultValue: false,
