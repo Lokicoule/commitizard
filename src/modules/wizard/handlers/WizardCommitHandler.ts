@@ -1,9 +1,5 @@
-import {
-  WizardCommitState,
-  WizardCommitStateMachine,
-} from "../state-machine/WizardCommitStateMachine";
+import { ChainHandler } from "~/core/handler/ChainHandler";
+import { WizardCommitBuilder } from "../builder/WizardCommit";
 
-export interface WizardCommitHandler {
-  setNext(handler: WizardCommitHandler): WizardCommitHandler;
-  handle(wizard: WizardCommitStateMachine): Promise<WizardCommitState | null>;
-}
+export interface WizardCommitHandler
+  extends ChainHandler<WizardCommitBuilder> {}

@@ -1,6 +1,6 @@
 import { Command } from "commander";
 import { ConfigCommandFactory } from "./modules/config/factory/ConfigCommandFactory";
-import { WizardCommandFactory } from "./modules/wizard/factory/WizardCommandFactory";
+import { WizardCommandFactory } from "./modules/wizard/command/WizardCommandFactory";
 
 const program = new Command();
 

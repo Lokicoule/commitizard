@@ -1,2 +1,2 @@
 export * from "./command/WizardCommand";
-export * from "./factory/WizardCommandFactory";
+export * from "./command/WizardCommandFactory";

@@ -6,7 +6,8 @@ import {
 } from "~/core/configuration";
 import { GitManagerFactory } from "~/core/git";
 import { PromptManagerFactory } from "~/core/prompt/manager/PromptManagerFactory";
-import { WizardCommitStateMachineFactory } from "../../factory/WizardCommitStateMachineFactory";
+import { WizardCommitBuilder } from "../../builder/WizardCommit";
+import { WizardCommitHandlerFactory } from "../../handlers/WizardCommitHandlerFactory";
 import { WizardCommand } from "../WizardCommand";
 
 export class WizardCommandImpl extends Command implements WizardCommand {
@@ -30,11 +31,19 @@ export class WizardCommandImpl extends Command implements WizardCommand {
     const gitManager = GitManagerFactory.create({
       exclude: configManager.getExcludePaths(),
     });
-    const stateMachine = WizardCommitStateMachineFactory.create(
-      configManager,
+    const wizardHandlerFactory = new WizardCommitHandlerFactory(
       promptManager,
+      configManager,
       gitManager
     );
-    stateMachine.handleCommit();
+
+    const builder = new WizardCommitBuilder();
+    const wizardHandlerChain = wizardHandlerFactory
+      .createWizardCommitStagingHandler()
+      .setNext(wizardHandlerFactory.createWizardCommitMessageGeneratorHandler())
+      .setNext(wizardHandlerFactory.createWizardCommitConfirmationHandler())
+      .setNext(wizardHandlerFactory.createWizardCommitRunnerHandler());
+
+    await wizardHandlerChain.handle(builder);
   }
 }
