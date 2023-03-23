@@ -3,7 +3,7 @@ import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
 import { CommitBreakingChanges } from "~/modules/commit/types";
 import { BaseConventionalHandler } from "../BaseConventionalHandler";
 
-const ABORT_MESSAGE = yellow("✖") + " Commit breaking changes aborted!";
+export const ABORT_MESSAGE = yellow("✖") + " Commit breaking changes aborted!";
 
 export class ConventionalBreakingChangesHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
