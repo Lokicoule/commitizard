@@ -2,7 +2,12 @@ export interface WizardCommit {
   message: string;
 }
 
-export class WizardCommitBuilder {
+export interface WizardCommitBuilder {
+  withMessage(message: string): WizardCommitBuilder;
+  build(): WizardCommit;
+}
+
+export class WizardCommitBuilderImpl implements WizardCommitBuilder {
   private message: string = "";
 
   public withMessage(message: string): WizardCommitBuilder {
@@ -14,5 +19,11 @@ export class WizardCommitBuilder {
     return {
       message: this.message,
     };
+  }
+}
+
+export class WizardCommitBuilderFactory {
+  public static create(): WizardCommitBuilder {
+    return new WizardCommitBuilderImpl();
   }
 }

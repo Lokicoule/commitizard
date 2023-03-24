@@ -5,7 +5,3 @@ export type IntroInput = {
 export type OutroInput = {
   message: string;
 };
-
-export type LogInput = {
-  message: string;
-};

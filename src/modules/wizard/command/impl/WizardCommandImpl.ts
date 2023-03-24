@@ -6,7 +6,9 @@ import {
 } from "~/core/configuration";
 import { GitManagerFactory } from "~/core/git";
 import { PromptManagerFactory } from "~/core/prompt/manager/PromptManagerFactory";
-import { WizardCommitBuilder } from "../../builder/WizardCommit";
+import { ConventionalStrategy } from "~/modules/conventional/strategy/ConventionalStrategy";
+import { RedGreenRefactorStrategy } from "~/modules/red-green-refactor/strategy/RedGreenRefactorStrategy";
+import { WizardCommitBuilderFactory } from "../../builder/WizardCommit";
 import { WizardCommitHandlerFactory } from "../../handlers/WizardCommitHandlerFactory";
 import { WizardCommand } from "../WizardCommand";
 
@@ -27,17 +29,19 @@ export class WizardCommandImpl extends Command implements WizardCommand {
     });
 
     const config = this.configurationService.load(configPath);
-    const configManager = ConfigurationManagerFactory.create(config);
+    const configurationManager = ConfigurationManagerFactory.create(config);
     const gitManager = GitManagerFactory.create({
-      exclude: configManager.getExcludePaths(),
+      exclude: configurationManager.getExcludePaths(),
     });
     const wizardHandlerFactory = new WizardCommitHandlerFactory(
       promptManager,
-      configManager,
-      gitManager
+      configurationManager,
+      gitManager,
+      new ConventionalStrategy(promptManager, configurationManager),
+      new RedGreenRefactorStrategy(promptManager, configurationManager)
     );
 
-    const builder = new WizardCommitBuilder();
+    const builder = WizardCommitBuilderFactory.create();
     const wizardHandlerChain = wizardHandlerFactory
       .createWizardCommitStagingHandler()
       .setNext(wizardHandlerFactory.createWizardCommitMessageGeneratorHandler())

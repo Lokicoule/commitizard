@@ -55,10 +55,7 @@ describe("ConventionalStrategy", () => {
   let sut: ConventionalStrategy;
 
   beforeEach(() => {
-    sut = new ConventionalStrategy({
-      promptManager: mockPromptManager,
-      configurationManager: mockConfigurationManager,
-    });
+    sut = new ConventionalStrategy(mockPromptManager, mockConfigurationManager);
   });
 
   afterEach(() => {

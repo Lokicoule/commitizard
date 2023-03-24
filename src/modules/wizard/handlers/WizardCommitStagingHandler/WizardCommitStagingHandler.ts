@@ -3,25 +3,48 @@ import { WizardCommitBuilder } from "../../builder/WizardCommit";
 import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
 
 /**
- * Logs a list of files to the console.
- * @param files - Array of file names.
- * @param promptManager - Prompt manager instance.
+ * @class StagedFileLogger
+ * @description
+ * Helper class that logs a list of files, with pagination support.
  */
-async function logFiles(
-  files: string[],
-  promptManager: PromptManager,
-  maxViewFilesToShow: number
-): Promise<void> {
-  promptManager.log.info(`Found ${files.length} staged files:\n`);
+class StagedFileLogger {
+  /**
+   * Logs the list of files with pagination support.
+   */
+  static async logFiles(
+    files: string[],
+    promptManager: PromptManager,
+    maxViewFilesToShow: number
+  ): Promise<void> {
+    const totalPages = Math.ceil(files.length / maxViewFilesToShow);
+    let currentPage = 1;
 
-  // Only show up to MAX_FILES_TO_SHOW files in output
-  for (let file of files.slice(0, maxViewFilesToShow)) {
-    promptManager.log.info(file);
-  }
+    while (currentPage <= totalPages) {
+      const startIndex = (currentPage - 1) * maxViewFilesToShow;
+      const endIndex = startIndex + maxViewFilesToShow;
+      const filesToShow = files.slice(startIndex, endIndex);
 
-  // If there are more files, show a summary message
-  if (files.length > maxViewFilesToShow) {
-    promptManager.log.info(`(${files.length - maxViewFilesToShow} more files)`);
+      promptManager.log.info(
+        `Staged files [Page ${currentPage}/${totalPages}]:`
+      );
+
+      for (let file of filesToShow) {
+        promptManager.log.info(` - ${file}`);
+      }
+
+      if (totalPages > 1 && currentPage < totalPages) {
+        const shouldShowMore = await promptManager.confirm({
+          message: "Show more?",
+          defaultValue: false,
+        });
+
+        if (!shouldShowMore) {
+          break;
+        }
+      }
+
+      currentPage++;
+    }
   }
 }
 
@@ -34,10 +57,11 @@ async function logFiles(
  */
 export class WizardCommitStagingHandler extends BaseWizardCommitHandler {
   protected async processInput(
-    commitBuilder: WizardCommitBuilder
+    _commitBuilder: WizardCommitBuilder
   ): Promise<void> {
-    console.log("WizardCommitStagingHandler.processInput()");
     const { promptManager } = this;
+    const filesToAdd = [];
+
     const maxViewFiles =
       this.configurationManager.getWizardMaxViewFilesToShow();
 
@@ -45,27 +69,40 @@ export class WizardCommitStagingHandler extends BaseWizardCommitHandler {
     const stagedFiles = await this.gitManager.getStagedFiles();
 
     // If there are staged files, log them to the console
-    await logFiles(stagedFiles, promptManager, maxViewFiles);
+    if (stagedFiles.length > 0) {
+      await StagedFileLogger.logFiles(stagedFiles, promptManager, maxViewFiles);
+    }
 
-    if (stagedFiles.length <= maxViewFiles) {
-      // Otherwise, prompt user to select updated files to add to the commit
-      const updatedFiles = await this.gitManager.getFiles();
+    // Prompt user to select updated and created files to add to the commit
+    const updatedFiles = await this.gitManager.getUpdatedFiles();
+    const createdFiles = await this.gitManager.getCreatedFiles();
 
-      if (updatedFiles.length === 0) {
-        promptManager.log.warn(
-          "You don't have any files to add to the commit."
-        );
-      }
+    if (updatedFiles.length === 0 && createdFiles.length === 0) {
+      promptManager.log.warn("You don't have any files to add to the commit.");
+      return;
+    }
 
-      // Prompt user to select files to add to the commit
+    if (updatedFiles.length > 0) {
       const commitUpdatedFiles = await promptManager.multiSelect<any, string>({
         message:
-          "Select files (optional, press space to select, enter to confirm):",
+          "Select updated files to add to the commit (optional, press space to select, enter to confirm):",
         options: updatedFiles.map((file) => ({ value: file, label: file })),
       });
+      filesToAdd.push(...commitUpdatedFiles);
+    }
 
-      // Add selected files to the Git index
-      this.gitManager.addFiles(commitUpdatedFiles);
+    if (createdFiles.length > 0) {
+      const commitCreatedFiles = await promptManager.multiSelect<any, string>({
+        message:
+          "Select created files to add to the commit (optional, press space to select, enter to confirm):",
+        options: createdFiles.map((file) => ({ value: file, label: file })),
+      });
+      filesToAdd.push(...commitCreatedFiles);
+    }
+
+    // Add selected files to the Git index
+    if (filesToAdd.length > 0) {
+      this.gitManager.stageFiles(filesToAdd);
     }
   }
 }

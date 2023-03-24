@@ -2,11 +2,12 @@ import {
   Confirm,
   Log,
   MultiSelect,
+  MultiText,
   Select,
   SelectOption,
   Text,
 } from "~/adapters/prompt/types";
-import { IntroInput, LogInput, MultiText, OutroInput } from "../types";
+import { IntroInput, OutroInput } from "../types";
 
 export interface PromptManager {
   confirm: (options: Confirm) => Promise<boolean>;

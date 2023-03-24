@@ -9,7 +9,7 @@ export class GitManagerImpl implements GitManager {
     this.options = options;
   }
 
-  public async isInsideGitRepo(): Promise<boolean> {
+  public async isGitRepository(): Promise<boolean> {
     const process = ProcessBuilderFactory.create()
       .addArg("rev-parse")
       .addArg("--is-inside-work-tree");
@@ -18,50 +18,6 @@ export class GitManagerImpl implements GitManager {
     const stdout = await this.streamToString(gitProcess.stdout);
 
     return Boolean(stdout);
-  }
-
-  public async getFiles(): Promise<string[]> {
-    const unstagedFiles = await this.getUnstagedFiles();
-    const untrackedFiles = await this.getUntrackedFiles();
-    const stagedFiles = await this.getStagedFiles();
-
-    return (
-      [...unstagedFiles, ...untrackedFiles].filter(
-        (file) => !stagedFiles.includes(file)
-      ) ?? []
-    );
-  }
-
-  public async getUnstagedFiles(): Promise<string[]> {
-    const process = ProcessBuilderFactory.create()
-      .addArg("diff")
-      .addArg("--name-only");
-    this.options.exclude.forEach((file) => process.addArg(`:(exclude)${file}`));
-
-    const gitProcess = process.spawn("git");
-    return (
-      (await this.streamToString(gitProcess.stdout))
-        .split("\n")
-        .filter(Boolean) ?? []
-    );
-  }
-
-  public async getUntrackedFiles(): Promise<string[]> {
-    const gitProcessBuilder = ProcessBuilderFactory.create()
-      .addArg("ls-files")
-      .addArg("--others");
-    if (this.options.exclude.length > 0) {
-      gitProcessBuilder.addArg("--exclude-standard");
-      this.options.exclude.forEach((file) =>
-        gitProcessBuilder.addArg(`:(exclude)${file}`)
-      );
-    }
-    const gitProcess = gitProcessBuilder.spawn("git");
-    return (
-      (await this.streamToString(gitProcess.stdout))
-        .split("\n")
-        .filter(Boolean) ?? []
-    );
   }
 
   public async getStagedFiles(): Promise<string[]> {
@@ -94,7 +50,7 @@ export class GitManagerImpl implements GitManager {
     );
   }
 
-  public async addFiles(files: string[]): Promise<void> {
+  public async stageFiles(files: string[]): Promise<void> {
     const process = ProcessBuilderFactory.create()
       .addArgs(["add", ...files])
       .spawn("git");
@@ -106,6 +62,49 @@ export class GitManagerImpl implements GitManager {
       .addArgs(["commit", "-m", message])
       .spawn("git");
     await this.streamToString(process.stdout);
+  }
+
+  public async hasStagedFiles(): Promise<boolean> {
+    const process = ProcessBuilderFactory.create()
+      .addArg("diff")
+      .addArg("--cached")
+      .addArg("--name-only");
+    this.options.exclude.forEach((file) => process.addArg(`:(exclude)${file}`));
+
+    const gitProcess = process.spawn("git");
+    const stdout = await this.streamToString(gitProcess.stdout);
+
+    return Boolean(stdout);
+  }
+
+  public async getCreatedFiles(): Promise<string[]> {
+    const process = ProcessBuilderFactory.create()
+      .addArg("diff")
+      .addArg("--name-only")
+      .addArg("--diff-filter=A");
+    this.options.exclude.forEach((file) => process.addArg(`:(exclude)${file}`));
+
+    const gitProcess = process.spawn("git");
+    return (
+      (await this.streamToString(gitProcess.stdout))
+        .split("\n")
+        .filter(Boolean) ?? []
+    );
+  }
+
+  public async getUpdatedFiles(): Promise<string[]> {
+    const process = ProcessBuilderFactory.create()
+      .addArg("diff")
+      .addArg("--name-only")
+      .addArg("--diff-filter=M");
+    this.options.exclude.forEach((file) => process.addArg(`:(exclude)${file}`));
+
+    const gitProcess = process.spawn("git");
+    return (
+      (await this.streamToString(gitProcess.stdout))
+        .split("\n")
+        .filter(Boolean) ?? []
+    );
   }
 
   private async streamToString(

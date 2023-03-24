@@ -1,9 +1,9 @@
 export interface GitManager {
-  isInsideGitRepo(): Promise<boolean>;
-  getFiles(): Promise<string[]>;
-  getUnstagedFiles(): Promise<string[]>;
-  getUntrackedFiles(): Promise<string[]>;
+  isGitRepository(): Promise<boolean>;
   getStagedFiles(): Promise<string[]>;
-  addFiles(files: string[]): Promise<void>;
+  stageFiles(files: string[]): Promise<void>;
   commit(message: string): Promise<void>;
+  hasStagedFiles(): Promise<boolean>;
+  getCreatedFiles(): Promise<string[]>;
+  getUpdatedFiles(): Promise<string[]>;
 }

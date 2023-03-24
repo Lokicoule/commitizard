@@ -1,10 +1,7 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
 import { CommitBuilderFactory, CommitFormatter } from "~/modules/commit";
-import {
-  CommitConventionStrategy,
-  CommitConventionStrategyOptions,
-} from "~/modules/commit/strategy/CommitConventionStrategy";
+import { CommitConventionStrategy } from "~/modules/commit/strategy/CommitConventionStrategy";
 import { RedGreenRefactorHandlerFactory } from "~/modules/red-green-refactor/handlers/RedGreenRefactorHandlerFactory";
 
 export class RedGreenRefactorStrategy implements CommitConventionStrategy {
@@ -12,13 +9,11 @@ export class RedGreenRefactorStrategy implements CommitConventionStrategy {
   private readonly configurationManager: ConfigurationManager;
 
   constructor(
-    options: Pick<
-      CommitConventionStrategyOptions,
-      "configurationManager" | "promptManager"
-    >
+    promptManager: PromptManager,
+    configurationManager: ConfigurationManager
   ) {
-    this.promptManager = options.promptManager;
-    this.configurationManager = options.configurationManager;
+    this.promptManager = promptManager;
+    this.configurationManager = configurationManager;
   }
 
   async getCommitMessage(): Promise<string> {

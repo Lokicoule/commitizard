@@ -45,10 +45,10 @@ describe("RedGreenRefactorStrategy", () => {
   let sut: RedGreenRefactorStrategy;
 
   beforeEach(() => {
-    sut = new RedGreenRefactorStrategy({
-      promptManager: mockPromptManager,
-      configurationManager: mockConfigurationManager,
-    });
+    sut = new RedGreenRefactorStrategy(
+      mockPromptManager,
+      mockConfigurationManager
+    );
   });
 
   afterEach(() => {

@@ -1,5 +1,8 @@
-import { CliOptions } from "~/core/configuration";
+import { CliOptions, ConfigurationManager } from "~/core/configuration";
+import { GitManager } from "~/core/git";
+import { PromptManager } from "~/core/prompt";
 import {
+  CommitConventionStrategy,
   CommitConventionStrategyFactory,
   CommitConventionStrategyType,
 } from "~/modules/commit/strategy/CommitConventionStrategy";
@@ -14,6 +17,21 @@ import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
  * This handler is responsible for generating the commit message.
  */
 export class WizardCommitMessageGeneratorHandler extends BaseWizardCommitHandler {
+  private readonly conventionalStrategy: CommitConventionStrategy;
+  private readonly redGreenRefactorStrategy: CommitConventionStrategy;
+
+  constructor(
+    promptManager: PromptManager,
+    configurationManager: ConfigurationManager,
+    gitManager: GitManager,
+    conventionalStrategy: CommitConventionStrategy,
+    redGreenRefactorStrategy: CommitConventionStrategy
+  ) {
+    super(promptManager, configurationManager, gitManager);
+    this.conventionalStrategy = conventionalStrategy;
+    this.redGreenRefactorStrategy = redGreenRefactorStrategy;
+  }
+
   protected async processInput(
     commitBuilder: WizardCommitBuilder
   ): Promise<void> {
@@ -33,9 +51,8 @@ export class WizardCommitMessageGeneratorHandler extends BaseWizardCommitHandler
     })) as CommitConventionStrategyType;
 
     const strategy = CommitConventionStrategyFactory.create(convention, {
-      promptManager: this.promptManager,
-      configurationManager: this.configurationManager,
-      gitManager: this.gitManager,
+      conventionalStrategy: this.conventionalStrategy,
+      redGreenRefactorStrategy: this.redGreenRefactorStrategy,
     });
 
     const message = await strategy.getCommitMessage();

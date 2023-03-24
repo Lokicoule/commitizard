@@ -6,21 +6,45 @@ import {
 } from "./CommitConventionStrategy";
 
 describe("CommitConventionStrategyFactory", () => {
-  test("should create a conventional commit strategy", () => {
+  it("should create a conventional strategy", () => {
     const strategy = CommitConventionStrategyFactory.create(
       CommitConventionStrategyType.CONVENTIONAL,
-      {} as any
+      {
+        conventionalStrategy: new ConventionalStrategy({} as any, {} as any),
+        redGreenRefactorStrategy: new RedGreenRefactorStrategy(
+          {} as any,
+          {} as any
+        ),
+      }
     );
 
     expect(strategy).toBeInstanceOf(ConventionalStrategy);
   });
 
-  test("should create a red-green-refactor commit strategy", () => {
+  it("should create a red-green-refactor strategy", () => {
     const strategy = CommitConventionStrategyFactory.create(
       CommitConventionStrategyType.RED_GREEN_REFACTOR,
-      {} as any
+      {
+        conventionalStrategy: new ConventionalStrategy({} as any, {} as any),
+        redGreenRefactorStrategy: new RedGreenRefactorStrategy(
+          {} as any,
+          {} as any
+        ),
+      }
     );
 
     expect(strategy).toBeInstanceOf(RedGreenRefactorStrategy);
+  });
+
+  it("should throw an error if the strategy is not implemented", () => {
+    expect(() =>
+      CommitConventionStrategyFactory.create("not_implemented" as any, {
+        conventionalStrategy: new ConventionalStrategy({} as any, {} as any),
+        redGreenRefactorStrategy: new RedGreenRefactorStrategy(
+          {} as any,
+          {} as any
+        ),
+      })
+    ).toThrowError("Strategy not_implemented not implemented");
   });
 });

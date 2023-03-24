@@ -1,6 +1,7 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { GitManager } from "~/core/git";
 import { PromptManager } from "~/core/prompt";
+import { CommitConventionStrategy } from "~/modules/commit/strategy/CommitConventionStrategy";
 import { WizardCommitConfirmationHandler } from "./WizardCommitConfirmationHandler/WizardCommitConfirmationHandler";
 import { WizardCommitHandler } from "./WizardCommitHandler";
 import { WizardCommitMessageGeneratorHandler } from "./WizardCommitMessageGeneratorHandler/WizardCommitMessageGeneratorHandler";
@@ -11,15 +12,21 @@ export class WizardCommitHandlerFactory {
   private readonly configurationManager: ConfigurationManager;
   private readonly promptManager: PromptManager;
   private readonly gitManager: GitManager;
+  private readonly conventionalStrategy: CommitConventionStrategy;
+  private readonly redGreenRefactorStrategy: CommitConventionStrategy;
 
   constructor(
     promptManager: PromptManager,
     configurationManager: ConfigurationManager,
-    gitManager: GitManager
+    gitManager: GitManager,
+    conventionalStrategy: CommitConventionStrategy,
+    redGreenRefactorStrategy: CommitConventionStrategy
   ) {
     this.promptManager = promptManager;
     this.configurationManager = configurationManager;
     this.gitManager = gitManager;
+    this.conventionalStrategy = conventionalStrategy;
+    this.redGreenRefactorStrategy = redGreenRefactorStrategy;
   }
 
   public createWizardCommitConfirmationHandler(): WizardCommitHandler {
@@ -42,7 +49,9 @@ export class WizardCommitHandlerFactory {
     return new WizardCommitMessageGeneratorHandler(
       this.promptManager,
       this.configurationManager,
-      this.gitManager
+      this.gitManager,
+      this.conventionalStrategy,
+      this.redGreenRefactorStrategy
     );
   }
 
