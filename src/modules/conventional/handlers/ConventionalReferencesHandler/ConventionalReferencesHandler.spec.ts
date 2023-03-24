@@ -66,7 +66,7 @@ describe("ConventionalReferencesHandler", () => {
       message: "fix",
     });
     jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-    jest.spyOn(mockPromptManager, "text").mockResolvedValueOnce("references");
+    mockPromptManager.text.mockResolvedValueOnce("references");
     jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
 
     await sut.handle(commitBuilder);
@@ -111,9 +111,9 @@ describe("ConventionalReferencesHandler", () => {
       message: "fix",
     });
     jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-    jest.spyOn(mockPromptManager, "text").mockResolvedValueOnce("references");
+    mockPromptManager.text.mockResolvedValueOnce("references");
     jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-    jest.spyOn(mockPromptManager, "text").mockResolvedValueOnce("references2");
+    mockPromptManager.text.mockResolvedValueOnce("references2");
     jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
 
     await sut.handle(commitBuilder);

@@ -14,7 +14,6 @@ export class RedGreenRefactorTypeHandler extends BaseRedGreenRefactorHandler {
     }
 
     const commitType = await this.selectCommitType(types);
-    console.log(commitType);
     commitBuilder.withType(commitType);
   }
 

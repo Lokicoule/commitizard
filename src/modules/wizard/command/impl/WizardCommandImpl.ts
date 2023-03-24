@@ -43,7 +43,8 @@ export class WizardCommandImpl extends Command implements WizardCommand {
 
     const builder = WizardCommitBuilderFactory.create();
     const wizardHandlerChain = wizardHandlerFactory
-      .createWizardCommitStagingHandler()
+      .creatWizardDisplayStagedFilesHandler()
+      .setNext(wizardHandlerFactory.createWizardCommitFileSelectionHandler())
       .setNext(wizardHandlerFactory.createWizardCommitMessageGeneratorHandler())
       .setNext(wizardHandlerFactory.createWizardCommitConfirmationHandler())
       .setNext(wizardHandlerFactory.createWizardCommitRunnerHandler());

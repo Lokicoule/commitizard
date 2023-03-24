@@ -3,10 +3,11 @@ import { GitManager } from "~/core/git";
 import { PromptManager } from "~/core/prompt";
 import { CommitConventionStrategy } from "~/modules/commit/strategy/CommitConventionStrategy";
 import { WizardCommitConfirmationHandler } from "./WizardCommitConfirmationHandler/WizardCommitConfirmationHandler";
+import { WizardCommitFileSelectionHandler } from "./WizardCommitFileSelectionHandler/WizardCommitFileSelectionHandler";
 import { WizardCommitHandler } from "./WizardCommitHandler";
 import { WizardCommitMessageGeneratorHandler } from "./WizardCommitMessageGeneratorHandler/WizardCommitMessageGeneratorHandler";
 import { WizardCommitRunnerHandler } from "./WizardCommitRunnerHandler/WizardCommitRunnerHandler";
-import { WizardCommitStagingHandler } from "./WizardCommitStagingHandler/WizardCommitStagingHandler";
+import { WizardDisplayStagedFilesHandler } from "./WizardDisplayStagedFilesHandler/WizardDisplayStagedFilesHandler";
 
 export class WizardCommitHandlerFactory {
   private readonly configurationManager: ConfigurationManager;
@@ -37,8 +38,8 @@ export class WizardCommitHandlerFactory {
     );
   }
 
-  public createWizardCommitStagingHandler(): WizardCommitHandler {
-    return new WizardCommitStagingHandler(
+  public createWizardCommitFileSelectionHandler(): WizardCommitHandler {
+    return new WizardCommitFileSelectionHandler(
       this.promptManager,
       this.configurationManager,
       this.gitManager
@@ -57,6 +58,14 @@ export class WizardCommitHandlerFactory {
 
   public createWizardCommitRunnerHandler(): WizardCommitHandler {
     return new WizardCommitRunnerHandler(
+      this.promptManager,
+      this.configurationManager,
+      this.gitManager
+    );
+  }
+
+  public creatWizardDisplayStagedFilesHandler(): WizardCommitHandler {
+    return new WizardDisplayStagedFilesHandler(
       this.promptManager,
       this.configurationManager,
       this.gitManager

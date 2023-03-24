@@ -17,12 +17,14 @@ export class WizardCommitRunnerHandler extends BaseWizardCommitHandler {
       const isValid = await this.validate();
 
       if (!isValid) {
-        console.log("Aborting...");
         this.processAbort();
         return;
       }
 
       const commit = commitBuilder.build();
+
+      await this.gitManager.stageFiles(commit.files);
+
       await this.gitManager.commit(commit.message);
 
       this.promptManager.outro({

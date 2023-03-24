@@ -36,7 +36,6 @@ export class ConfigCommand extends Command {
           .argument("-p, --path <path>", "Path to reset the application")
           .action((options) => {
             const path = options.path;
-            console.log(path);
             this.reset(path);
           })
       );

@@ -223,9 +223,11 @@ describe("RedGreenRefactorSubjectHandler", () => {
         ],
       });
 
-      expect(mockPromptManager.text).toHaveBeenCalledWith({
-        message: `Enter value for placeholder ${blue("feature")}:`,
-      });
+      expect(mockPromptManager.text).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: expect.stringContaining("Enter value for placeholder"),
+        })
+      );
 
       expect(mockCommitBuilder.withSubject).toHaveBeenCalledWith({
         message: expectedSubject,

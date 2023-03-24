@@ -77,7 +77,7 @@ describe("RedGreenRefactorTypeHandler", () => {
       jest
         .spyOn(mockConfigurationManager, "getRedGreenRefactorCliOptionsTypes")
         .mockReturnValue(types);
-      jest.spyOn(mockPromptManager, "select").mockResolvedValue("GREEN");
+      mockPromptManager.select.mockResolvedValue("GREEN");
 
       await sut.handle(mockCommitBuilder);
 

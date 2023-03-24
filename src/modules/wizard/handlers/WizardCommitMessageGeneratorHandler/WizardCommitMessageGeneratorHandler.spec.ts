@@ -85,6 +85,7 @@ describe("WizardCommitMessageGeneratorHandler", () => {
       const convention = CommitConventionStrategyType.CONVENTIONAL;
       const mockCommitBuilder = {
         withMessage: jest.fn(),
+        withFiles: jest.fn(),
         build: jest.fn(),
       } satisfies WizardCommitBuilder;
 
@@ -120,6 +121,7 @@ describe("WizardCommitMessageGeneratorHandler", () => {
     const convention = CommitConventionStrategyType.RED_GREEN_REFACTOR;
     const mockCommitBuilder = {
       withMessage: jest.fn(),
+      withFiles: jest.fn(),
       build: jest.fn(),
     } satisfies WizardCommitBuilder;
 

@@ -48,6 +48,7 @@ describe("WizardCommitRunnerHandler", () => {
 
   const mockWizardCommitBuilder = {
     withMessage: jest.fn(),
+    withFiles: jest.fn(),
     build: jest.fn(),
   } satisfies WizardCommitBuilder;
 

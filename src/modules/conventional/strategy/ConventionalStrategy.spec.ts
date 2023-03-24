@@ -101,7 +101,7 @@ describe("ConventionalStrategy", () => {
 
       // References
       jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-      jest.spyOn(mockPromptManager, "text").mockResolvedValueOnce("references");
+      mockPromptManager.text.mockResolvedValueOnce("references");
       jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
 
       // Footer

@@ -62,7 +62,7 @@ describe("RedGreenRefactorStrategy", () => {
     jest
       .spyOn(mockConfigurationManager, "getRedGreenRefactorCliOptionsTypes")
       .mockReturnValue(types);
-    jest.spyOn(mockPromptManager, "select").mockResolvedValueOnce("GREEN");
+    mockPromptManager.select.mockResolvedValueOnce("GREEN");
 
     // Subject
     jest
@@ -82,7 +82,7 @@ describe("RedGreenRefactorStrategy", () => {
       .spyOn(mockPromptManager, "select")
       .mockResolvedValueOnce(DEFAULT_COMMIT_SUBJECT);
 
-    jest.spyOn(mockPromptManager, "text").mockResolvedValueOnce("subject");
+    mockPromptManager.text.mockResolvedValueOnce("subject");
 
     // Body
     jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
