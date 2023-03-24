@@ -1,52 +1,7 @@
-import { PromptManager } from "~/core/prompt/manager/PromptManager";
+import { PromptManager } from "~/core/prompt";
 import { WizardCommitBuilder } from "../../builder/WizardCommit";
+import { StagedFileLogger } from "../../helper/StagedFileLogger";
 import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
-
-/**
- * @class StagedFileLogger
- * @description
- * Helper class that logs a list of files, with pagination support.
- */
-class StagedFileLogger {
-  /**
-   * Logs the list of files with pagination support.
-   */
-  static async logFiles(
-    files: string[],
-    promptManager: PromptManager,
-    maxViewFilesToShow: number
-  ): Promise<void> {
-    const totalPages = Math.ceil(files.length / maxViewFilesToShow);
-    let currentPage = 1;
-
-    while (currentPage <= totalPages) {
-      const startIndex = (currentPage - 1) * maxViewFilesToShow;
-      const endIndex = startIndex + maxViewFilesToShow;
-      const filesToShow = files.slice(startIndex, endIndex);
-
-      promptManager.log.info(
-        `Staged files [Page ${currentPage}/${totalPages}]:`
-      );
-
-      for (let file of filesToShow) {
-        promptManager.log.info(` - ${file}`);
-      }
-
-      if (totalPages > 1 && currentPage < totalPages) {
-        const shouldShowMore = await promptManager.confirm({
-          message: "Show more?",
-          defaultValue: false,
-        });
-
-        if (!shouldShowMore) {
-          break;
-        }
-      }
-
-      currentPage++;
-    }
-  }
-}
 
 /**
  * @class WizardCommitStagingHandler
@@ -60,7 +15,7 @@ export class WizardCommitStagingHandler extends BaseWizardCommitHandler {
     _commitBuilder: WizardCommitBuilder
   ): Promise<void> {
     const { promptManager } = this;
-    const filesToAdd = [];
+    const filesToAdd: string[] = [];
 
     const maxViewFiles =
       this.configurationManager.getWizardMaxViewFilesToShow();
@@ -83,21 +38,19 @@ export class WizardCommitStagingHandler extends BaseWizardCommitHandler {
     }
 
     if (updatedFiles.length > 0) {
-      const commitUpdatedFiles = await promptManager.multiSelect<any, string>({
-        message:
-          "Select updated files to add to the commit (optional, press space to select, enter to confirm):",
-        options: updatedFiles.map((file) => ({ value: file, label: file })),
-      });
-      filesToAdd.push(...commitUpdatedFiles);
+      await paginate(updatedFiles, maxViewFiles, promptManager).then(
+        (commitUpdatedFiles) => {
+          filesToAdd.push(...commitUpdatedFiles);
+        }
+      );
     }
 
     if (createdFiles.length > 0) {
-      const commitCreatedFiles = await promptManager.multiSelect<any, string>({
-        message:
-          "Select created files to add to the commit (optional, press space to select, enter to confirm):",
-        options: createdFiles.map((file) => ({ value: file, label: file })),
-      });
-      filesToAdd.push(...commitCreatedFiles);
+      await paginate(createdFiles, maxViewFiles, promptManager).then(
+        (commitCreatedFiles) => {
+          filesToAdd.push(...commitCreatedFiles);
+        }
+      );
     }
 
     // Add selected files to the Git index
@@ -105,4 +58,50 @@ export class WizardCommitStagingHandler extends BaseWizardCommitHandler {
       this.gitManager.stageFiles(filesToAdd);
     }
   }
+}
+
+async function paginate<T>(
+  items: T[],
+  pageSize: number,
+  promptManager: PromptManager
+): Promise<T[]> {
+  const totalPages = Math.ceil(items.length / pageSize);
+  let currentPage = 1;
+  let currentIndex = 0;
+  const results: T[] = [];
+
+  while (currentPage <= totalPages) {
+    const pageItems = items.slice(currentIndex, currentIndex + pageSize);
+    const options = pageItems.map((item, index) => ({
+      value: item,
+      label: `${currentIndex + index + 1}. ${item}`,
+    }));
+    const message = `Page ${currentPage}/${totalPages}\nPress space to select/deselect, enter to confirm, q to quit:`;
+
+    const selectedOptions = await promptManager.multiSelect<any, T>({
+      message,
+      options,
+    });
+
+    results.push(...selectedOptions);
+
+    if (currentIndex + pageSize >= items.length) {
+      break;
+    }
+
+    const showMore = await promptManager.confirm({
+      message: `Show ${pageSize} more items?`,
+      defaultValue: true,
+    });
+
+    if (!showMore) {
+      // Quit if the user chooses not to show more items
+      break;
+    }
+
+    currentIndex += pageSize;
+    currentPage += 1;
+  }
+
+  return results;
 }

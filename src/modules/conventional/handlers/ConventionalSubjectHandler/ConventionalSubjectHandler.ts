@@ -9,17 +9,15 @@ export class ConventionalSubjectHandler extends BaseConventionalHandler {
   }
 
   private async selectCommitSubject(): Promise<CommitSubject> {
-    let commitMessage: string | undefined = undefined;
-
-    while (!commitMessage) {
-      commitMessage = await this.promptManager.text({
-        message: "Enter commit subject:",
-        abortMessage: "Commit subject selection aborted!",
-      });
-    }
+    const commitSubject = await this.promptManager.text({
+      message: "Enter commit subject:",
+      abortMessage: "Commit subject selection aborted!",
+      validate: (value) =>
+        value.length === 0 ? `Subject is required!` : undefined,
+    });
 
     return {
-      message: commitMessage,
+      message: commitSubject,
     };
   }
 }

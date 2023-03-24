@@ -22,6 +22,13 @@ import {
 } from "../types";
 
 export class ClackPromptAdapter implements PromptAdapter {
+  public log: Log = {
+    info: (message: string) => clackLog.info(message),
+    warn: (message: string) => clackLog.warn(message),
+    error: (message: string) => clackLog.error(message),
+    success: (message: string) => clackLog.success(message),
+  };
+
   public async confirm({
     message,
     defaultValue,
@@ -42,6 +49,7 @@ export class ClackPromptAdapter implements PromptAdapter {
     placeholder,
     defaultValue,
     abortMessage,
+    validate,
   }: Text): Promise<string> {
     const result = await this.prompt<string>(
       async () =>
@@ -49,6 +57,7 @@ export class ClackPromptAdapter implements PromptAdapter {
           message,
           initialValue: defaultValue,
           placeholder,
+          validate,
         }),
       abortMessage
     );
@@ -117,13 +126,6 @@ export class ClackPromptAdapter implements PromptAdapter {
   public async outro(message: string): Promise<void> {
     return clackOutro(message);
   }
-
-  log: Log = {
-    info: (message: string) => clackLog.info(message),
-    warn: (message: string) => clackLog.warn(message),
-    error: (message: string) => clackLog.error(message),
-    success: (message: string) => clackLog.success(message),
-  };
 
   private async prompt<T>(
     prompt: () => Promise<T | Symbol>,

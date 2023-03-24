@@ -314,10 +314,11 @@ describe("RedGreenRefactorSubjectHandler", () => {
       ],
     });
 
-    expect(mockPromptManager.text).toHaveBeenCalledWith({
-      message: "Enter custom commit subject:",
-      abortMessage: "Commit subject selection aborted!",
-    });
+    expect(mockPromptManager.text).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: "Enter custom commit subject:",
+      })
+    );
 
     expect(mockCommitBuilder.withSubject).toHaveBeenCalledWith({
       message: expectedSubject,

@@ -9,102 +9,70 @@ export class GitManagerImpl implements GitManager {
     this.options = options;
   }
 
-  public async isGitRepository(): Promise<boolean> {
-    const process = ProcessBuilderFactory.create()
-      .addArg("rev-parse")
-      .addArg("--is-inside-work-tree");
-
-    const gitProcess = process.spawn("git");
-    const stdout = await this.streamToString(gitProcess.stdout);
-
-    return Boolean(stdout);
-  }
-
   public async getStagedFiles(): Promise<string[]> {
-    const process = ProcessBuilderFactory.create()
-      .addArg("diff")
-      .addArg("--cached")
-      .addArg("--name-only");
-    this.options.exclude.forEach((file) => process.addArg(`:(exclude)${file}`));
-
-    const gitProcess = process.spawn("git");
-    return (
-      (await this.streamToString(gitProcess.stdout))
-        .split("\n")
-        .filter(Boolean) ?? []
-    );
-  }
-
-  public async getStagedDiff(): Promise<string[]> {
-    const process = ProcessBuilderFactory.create()
-      .addArg("diff")
-      .addArg("--cached")
-      .addArg("--name-only");
-    this.options.exclude.forEach((file) => process.addArg(`:(exclude)${file}`));
-
-    const gitProcess = process.spawn("git");
-    return (
-      (await this.streamToString(gitProcess.stdout))
-        .split("\n")
-        .filter(Boolean) ?? []
-    );
-  }
-
-  public async stageFiles(files: string[]): Promise<void> {
-    const process = ProcessBuilderFactory.create()
-      .addArgs(["add", ...files])
-      .spawn("git");
-    await this.streamToString(process.stdout);
-  }
-
-  public async commit(message: string): Promise<void> {
-    const process = ProcessBuilderFactory.create()
-      .addArgs(["commit", "-m", message])
-      .spawn("git");
-    await this.streamToString(process.stdout);
-  }
-
-  public async hasStagedFiles(): Promise<boolean> {
-    const process = ProcessBuilderFactory.create()
-      .addArg("diff")
-      .addArg("--cached")
-      .addArg("--name-only");
-    this.options.exclude.forEach((file) => process.addArg(`:(exclude)${file}`));
-
-    const gitProcess = process.spawn("git");
-    const stdout = await this.streamToString(gitProcess.stdout);
-
-    return Boolean(stdout);
+    const stagedFiles = await this.runGitCommand([
+      "diff",
+      "--cached",
+      "--name-only",
+      ...this.options.exclude.map((file) => `:(exclude)${file}`),
+    ]);
+    return stagedFiles.split("\n").filter(Boolean) ?? [];
   }
 
   public async getCreatedFiles(): Promise<string[]> {
-    const process = ProcessBuilderFactory.create()
-      .addArg("diff")
-      .addArg("--name-only")
-      .addArg("--diff-filter=A");
-    this.options.exclude.forEach((file) => process.addArg(`:(exclude)${file}`));
+    const cmdResult = await this.runGitCommand(["status", "--porcelain"]);
+    const output = cmdResult.trim();
+    const lines = output.split(/\r?\n/);
+    const createdFiles: string[] = [];
 
-    const gitProcess = process.spawn("git");
-    return (
-      (await this.streamToString(gitProcess.stdout))
-        .split("\n")
-        .filter(Boolean) ?? []
-    );
+    for (const line of lines) {
+      if (line.startsWith("??")) {
+        createdFiles.push(line.substring(3));
+      }
+    }
+
+    return createdFiles;
   }
 
   public async getUpdatedFiles(): Promise<string[]> {
-    const process = ProcessBuilderFactory.create()
-      .addArg("diff")
-      .addArg("--name-only")
-      .addArg("--diff-filter=M");
-    this.options.exclude.forEach((file) => process.addArg(`:(exclude)${file}`));
+    const updatedFiles = await this.runGitCommand([
+      "diff",
+      "--name-only",
+      "--diff-filter=M",
+      ...this.options.exclude.map((file) => `:(exclude)${file}`),
+    ]);
 
-    const gitProcess = process.spawn("git");
-    return (
-      (await this.streamToString(gitProcess.stdout))
-        .split("\n")
-        .filter(Boolean) ?? []
-    );
+    return updatedFiles.split("\n").filter(Boolean) ?? [];
+  }
+
+  public async isGitRepository(): Promise<boolean> {
+    const result = await this.runGitCommand([
+      "rev-parse",
+      "--is-inside-work-tree",
+    ]);
+
+    return Boolean(result);
+  }
+
+  public async hasStagedFiles(): Promise<boolean> {
+    const stagedFiles = await this.getStagedFiles();
+
+    return Boolean(stagedFiles);
+  }
+
+  public async stageFiles(files: string[]): Promise<void> {
+    await this.runGitCommand(["add", ...files]);
+  }
+
+  public async commit(message: string): Promise<void> {
+    await this.runGitCommand(["commit", "-m", message]);
+  }
+
+  public async runGitCommand(command: string[]): Promise<string> {
+    const process = ProcessBuilderFactory.create()
+      .addArgs(command)
+      .spawn("git");
+    return await this.streamToString(process.stdout);
   }
 
   private async streamToString(

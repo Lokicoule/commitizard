@@ -44,6 +44,7 @@ describe("WizardCommitStagingHandler", () => {
     getUpdatedFiles: jest.fn(),
     isGitRepository: jest.fn(),
     hasStagedFiles: jest.fn(),
+    runGitCommand: jest.fn(),
   } satisfies GitManager;
 
   const mockWizardCommitBuilder = {

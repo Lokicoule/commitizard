@@ -1,3 +1,4 @@
+import { bgCyan, black } from "picocolors";
 import { PromptAdapter } from "~/adapters/prompt/PromptAdapter";
 import {
   Confirm,
@@ -34,12 +35,14 @@ export class PromptManagerImpl implements PromptManager {
     placeholder,
     defaultValue,
     abortMessage,
+    validate,
   }: Text): Promise<string> {
     return this.adapter.text({
       message,
       placeholder,
       defaultValue,
       abortMessage,
+      validate,
     });
   }
 
@@ -68,11 +71,11 @@ export class PromptManagerImpl implements PromptManager {
   }
 
   public async intro({ message }: IntroInput): Promise<void> {
-    return this.adapter.intro(message);
+    return this.adapter.intro(bgCyan(black(message)));
   }
 
   public async outro({ message }: OutroInput): Promise<void> {
-    return this.adapter.outro(message);
+    return this.adapter.outro(bgCyan(black(message)));
   }
 
   public log: {
