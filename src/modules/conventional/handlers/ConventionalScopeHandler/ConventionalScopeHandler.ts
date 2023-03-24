@@ -17,7 +17,6 @@ export class ConventionalScopeHandler extends BaseConventionalHandler {
     if (scopes.length > 0) {
       const result = await this.promptSelectCommitScope(scopes);
 
-      console.log(result);
       if (result.message.length > 0) {
         return result;
       }

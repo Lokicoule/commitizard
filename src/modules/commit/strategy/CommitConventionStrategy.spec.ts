@@ -1,5 +1,5 @@
-import { ConventionalCommitConventionStrategy } from "~/modules/conventional/strategy/ConventionalStrategy";
-import { RedGreenRefactorCommitConventionStrategy } from "~/modules/red-green-refactor/strategy/RedGreenRefactorStrategy";
+import { ConventionalStrategy } from "~/modules/conventional/strategy/ConventionalStrategy";
+import { RedGreenRefactorStrategy } from "~/modules/red-green-refactor/strategy/RedGreenRefactorStrategy";
 import {
   CommitConventionStrategyFactory,
   CommitConventionStrategyType,
@@ -12,7 +12,7 @@ describe("CommitConventionStrategyFactory", () => {
       {} as any
     );
 
-    expect(strategy).toBeInstanceOf(ConventionalCommitConventionStrategy);
+    expect(strategy).toBeInstanceOf(ConventionalStrategy);
   });
 
   test("should create a red-green-refactor commit strategy", () => {
@@ -21,6 +21,6 @@ describe("CommitConventionStrategyFactory", () => {
       {} as any
     );
 
-    expect(strategy).toBeInstanceOf(RedGreenRefactorCommitConventionStrategy);
+    expect(strategy).toBeInstanceOf(RedGreenRefactorStrategy);
   });
 });

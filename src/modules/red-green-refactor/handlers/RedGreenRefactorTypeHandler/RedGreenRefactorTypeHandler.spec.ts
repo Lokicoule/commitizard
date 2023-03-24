@@ -1,9 +1,9 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
 import { CommitBuilder } from "~/modules/commit";
-import { ConventionalTypeHandler } from "./ConventionalTypeHandler";
+import { RedGreenRefactorTypeHandler } from "./RedGreenRefactorTypeHandler";
 
-describe("ConventionalTypeHandler", () => {
+describe("RedGreenRefactorTypeHandler", () => {
   // Mocks
   const mockConfigurationManager = {
     getVersion: jest.fn(),
@@ -48,10 +48,10 @@ describe("ConventionalTypeHandler", () => {
   } satisfies CommitBuilder;
 
   // System under test
-  let sut: ConventionalTypeHandler;
+  let sut: RedGreenRefactorTypeHandler;
 
   beforeEach(() => {
-    sut = new ConventionalTypeHandler(
+    sut = new RedGreenRefactorTypeHandler(
       mockPromptManager,
       mockConfigurationManager
     );
@@ -63,25 +63,26 @@ describe("ConventionalTypeHandler", () => {
 
   describe("handle", () => {
     it("should throw an error if configuration types are not defined", async () => {
-      mockConfigurationManager.getConventionalCliOptionsTypes.mockReturnValue(
+      mockConfigurationManager.getRedGreenRefactorCliOptionsTypes.mockReturnValue(
         undefined
       );
       await expect(sut.handle(mockCommitBuilder)).rejects.toThrowError(
-        "No conventional commit types defined in configuration!"
+        "No red-green-refactor commit types defined in configuration!"
       );
     });
 
     it("should return the commit with the type", async () => {
-      const types = ["feat", "fix", "chore"];
+      const types = ["RED", "GREEN", "REFACTOR"];
 
-      mockPromptManager.select.mockResolvedValue(types[1]);
-      mockConfigurationManager.getConventionalCliOptionsTypes.mockReturnValue(
-        types
-      );
+      jest
+        .spyOn(mockConfigurationManager, "getRedGreenRefactorCliOptionsTypes")
+        .mockReturnValue(types);
+      jest.spyOn(mockPromptManager, "select").mockResolvedValue("GREEN");
+
       await sut.handle(mockCommitBuilder);
 
       expect(mockCommitBuilder.withType).toBeCalledWith({
-        message: types[1],
+        message: "GREEN",
       });
     });
   });

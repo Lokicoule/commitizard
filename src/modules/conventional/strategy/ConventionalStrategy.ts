@@ -7,9 +7,7 @@ import {
 } from "~/modules/commit/strategy/CommitConventionStrategy";
 import { ConventionalHandlerFactory } from "~/modules/conventional/handlers/ConventionalHandlerFactory";
 
-export class ConventionalCommitConventionStrategy
-  implements CommitConventionStrategy
-{
+export class ConventionalStrategy implements CommitConventionStrategy {
   private readonly promptManager: PromptManager;
   private readonly configurationManager: ConfigurationManager;
 

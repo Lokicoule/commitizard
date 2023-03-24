@@ -4,17 +4,23 @@ import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
 import { CommitSubject } from "~/modules/commit/types";
 import { BaseRedGreenRefactorHandler } from "../BaseRedGreenRefactorHandler";
 
-const DEFAULT_COMMIT_SUBJECT = "No commit subject";
+export const DEFAULT_COMMIT_SUBJECT = "No commit subject";
 
 export class RedGreenRefactorSubjectHandler extends BaseRedGreenRefactorHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
-    const commitType = commitBuilder.getType().message;
+    const commitType = commitBuilder.getType();
+    if (!commitType) {
+      throw new Error("Commit type is not set!");
+    }
+
     const type =
       this.configurationManager.selectorRedGreenRefactorCliOptionsTypes(
-        commitType
+        commitType?.message
       );
     if (!type) {
-      throw new Error("No commit type available!");
+      throw new Error(
+        "No commit type configuration found for " + blue(commitType.message)
+      );
     }
 
     const commitSubject = await this.selectCommitSubject(type.patterns);
@@ -96,7 +102,7 @@ export class RedGreenRefactorSubjectHandler extends BaseRedGreenRefactorHandler 
 
     while (!commitSubject) {
       commitSubject = await this.promptManager.text({
-        message: "Enter commit subject:",
+        message: "Enter custom commit subject:",
         abortMessage: "Commit subject selection aborted!",
       });
     }

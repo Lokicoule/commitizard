@@ -1,8 +1,8 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { GitManager } from "~/core/git";
 import { PromptManager } from "~/core/prompt";
-import { ConventionalCommitConventionStrategy } from "~/modules/conventional/strategy/ConventionalStrategy";
-import { RedGreenRefactorCommitConventionStrategy } from "~/modules/red-green-refactor/strategy/RedGreenRefactorStrategy";
+import { ConventionalStrategy } from "~/modules/conventional/strategy/ConventionalStrategy";
+import { RedGreenRefactorStrategy } from "~/modules/red-green-refactor/strategy/RedGreenRefactorStrategy";
 
 export interface CommitConventionStrategy {
   getCommitMessage(): Promise<string>;
@@ -26,9 +26,9 @@ export class CommitConventionStrategyFactory {
   ): CommitConventionStrategy {
     switch (strategy) {
       case CommitConventionStrategyType.CONVENTIONAL:
-        return new ConventionalCommitConventionStrategy(options);
+        return new ConventionalStrategy(options);
       case CommitConventionStrategyType.RED_GREEN_REFACTOR:
-        return new RedGreenRefactorCommitConventionStrategy(options);
+        return new RedGreenRefactorStrategy(options);
       default:
         throw new Error(`Strategy ${strategy} not implemented`);
     }

@@ -3,7 +3,7 @@ import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
 import { CommitBody } from "~/modules/commit/types";
 import { BaseRedGreenRefactorHandler } from "../BaseRedGreenRefactorHandler";
 
-const ABORT_MESSAGE = `${yellow("✖")} Commit body aborted!`;
+export const ABORT_MESSAGE = `${yellow("✖")} Commit body aborted!`;
 
 export class RedGreenRefactorBodyHandler extends BaseRedGreenRefactorHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
@@ -16,7 +16,7 @@ export class RedGreenRefactorBodyHandler extends BaseRedGreenRefactorHandler {
 
     const hasBody = await this.promptManager.confirm({
       defaultValue: false,
-      message: "Do you want to add a body?",
+      message: "Does this commit have a body?",
       abortMessage: ABORT_MESSAGE,
     });
 

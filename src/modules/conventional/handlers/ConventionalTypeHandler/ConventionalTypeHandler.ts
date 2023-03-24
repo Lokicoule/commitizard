@@ -6,8 +6,8 @@ import { BaseConventionalHandler } from "../BaseConventionalHandler";
 export class ConventionalTypeHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const types = this.configurationManager.getConventionalCliOptionsTypes();
-    if (types.length === 0) {
-      throw new Error("No commit types available!");
+    if (!types || types.length === 0) {
+      throw new Error("No conventional commit types defined in configuration!");
     }
 
     const commitType = await this.selectCommitType(types);

@@ -1,12 +1,8 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
-import { CommitBuilder } from "~/modules/commit";
-import { CommitConventionStrategy } from "~/modules/commit/strategy/CommitConventionStrategy";
-import { ConventionalHandlerFactory } from "../handlers/ConventionalHandlerFactory";
-import { ConventionalTypeHandler } from "../handlers/ConventionalTypeHandler/ConventionalTypeHandler";
-import { ConventionalCommitConventionStrategy } from "./ConventionalStrategy";
+import { ConventionalStrategy } from "./ConventionalStrategy";
 
-describe("ConventionalCommitConventionStrategy", () => {
+describe("ConventionalStrategy", () => {
   const mockConfigurationManager = {
     getVersion: jest.fn(),
     getWizardMaxViewFilesToShow: jest.fn(),
@@ -56,10 +52,10 @@ describe("ConventionalCommitConventionStrategy", () => {
   } satisfies PromptManager;
 
   // System under test
-  let sut: ConventionalCommitConventionStrategy;
+  let sut: ConventionalStrategy;
 
   beforeEach(() => {
-    sut = new ConventionalCommitConventionStrategy({
+    sut = new ConventionalStrategy({
       promptManager: mockPromptManager,
       configurationManager: mockConfigurationManager,
     });

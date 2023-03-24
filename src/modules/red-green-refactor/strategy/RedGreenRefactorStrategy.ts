@@ -7,13 +7,16 @@ import {
 } from "~/modules/commit/strategy/CommitConventionStrategy";
 import { RedGreenRefactorHandlerFactory } from "~/modules/red-green-refactor/handlers/RedGreenRefactorHandlerFactory";
 
-export class RedGreenRefactorCommitConventionStrategy
-  implements CommitConventionStrategy
-{
+export class RedGreenRefactorStrategy implements CommitConventionStrategy {
   private readonly promptManager: PromptManager;
   private readonly configurationManager: ConfigurationManager;
 
-  constructor(options: CommitConventionStrategyOptions) {
+  constructor(
+    options: Pick<
+      CommitConventionStrategyOptions,
+      "configurationManager" | "promptManager"
+    >
+  ) {
     this.promptManager = options.promptManager;
     this.configurationManager = options.configurationManager;
   }
@@ -27,7 +30,7 @@ export class RedGreenRefactorCommitConventionStrategy
 
     const commitHandlerChain = commitHandlerFactory
       .createTypeHandler()
-      .setNext(commitHandlerFactory.createTypeHandler())
+      .setNext(commitHandlerFactory.createSubjectHandler())
       .setNext(commitHandlerFactory.createBodyHandler());
 
     await commitHandlerChain.handle(commitBuilder);
