@@ -1,5 +1,5 @@
 import { bgGreen, green, red } from "picocolors";
-import { WizardCommitBuilder } from "../../builder/WizardCommit";
+import { WizardCommit, WizardCommitBuilder } from "../../builder/WizardCommit";
 import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
 
 /**
@@ -14,14 +14,13 @@ export class WizardCommitRunnerHandler extends BaseWizardCommitHandler {
     commitBuilder: WizardCommitBuilder
   ): Promise<void> {
     try {
-      const isValid = await this.validate();
+      const commit = commitBuilder.build();
+      const isValid = await this.validate(commit);
 
       if (!isValid) {
         this.processAbort();
         return;
       }
-
-      const commit = commitBuilder.build();
 
       if (commit.files.length > 0) {
         await this.gitManager.stageFiles(commit.files);
@@ -43,7 +42,7 @@ export class WizardCommitRunnerHandler extends BaseWizardCommitHandler {
     }
   }
 
-  private async validate(): Promise<boolean> {
+  private async validate(commit: WizardCommit): Promise<boolean> {
     const isGitRepository = await this.gitManager.isGitRepository();
     const hasStagedFiles = await this.gitManager.hasStagedFiles();
 
@@ -56,7 +55,7 @@ export class WizardCommitRunnerHandler extends BaseWizardCommitHandler {
       return false;
     }
 
-    if (!hasStagedFiles) {
+    if (!hasStagedFiles && commit.files.length === 0) {
       this.promptManager.log.error(
         `${red(
           "✖"

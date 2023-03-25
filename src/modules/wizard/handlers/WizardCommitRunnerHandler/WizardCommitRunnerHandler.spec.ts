@@ -84,6 +84,10 @@ describe("WizardCommitRunnerHandler", () => {
     it("should display an error message if there are no staged files", async () => {
       mockGitManager.isGitRepository.mockResolvedValue(true);
       mockGitManager.hasStagedFiles.mockResolvedValue(false);
+      mockWizardCommitBuilder.build.mockReturnValue({
+        message: "",
+        files: [],
+      });
 
       await sut.handle(mockWizardCommitBuilder);
 
@@ -95,16 +99,36 @@ describe("WizardCommitRunnerHandler", () => {
       });
     });
 
-    it("should display a success message if commit is created successfully", async () => {
+    it("should display a success message when git manager has staged files is true", async () => {
       const commitMessage = "Test commit";
       mockGitManager.isGitRepository.mockResolvedValue(true);
       mockGitManager.hasStagedFiles.mockResolvedValue(true);
       mockWizardCommitBuilder.build.mockReturnValue({
         message: commitMessage,
+        files: [],
       });
 
       await sut.handle(mockWizardCommitBuilder);
 
+      expect(mockGitManager.commit).toHaveBeenCalledWith(commitMessage);
+      expect(mockPromptManager.outro).toHaveBeenCalledWith({
+        message: expect.stringContaining("Commit created successfully!"),
+      });
+    });
+
+    it("should display a success message when builder contains files", async () => {
+      const commitMessage = "Test commit";
+      const files = ["file1", "file2"];
+      mockGitManager.isGitRepository.mockResolvedValue(true);
+      mockGitManager.hasStagedFiles.mockResolvedValue(false);
+      mockWizardCommitBuilder.build.mockReturnValue({
+        message: commitMessage,
+        files,
+      });
+
+      await sut.handle(mockWizardCommitBuilder);
+
+      expect(mockGitManager.stageFiles).toHaveBeenCalledWith(files);
       expect(mockGitManager.commit).toHaveBeenCalledWith(commitMessage);
       expect(mockPromptManager.outro).toHaveBeenCalledWith({
         message: expect.stringContaining("Commit created successfully!"),
