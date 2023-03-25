@@ -7,7 +7,7 @@ import {
   SelectOption,
   Text,
 } from "~/adapters/prompt/types";
-import { IntroInput, OutroInput } from "../types";
+import { IntroInput, IPaginateOptions, OutroInput } from "../types";
 
 export interface PromptManager {
   confirm: (options: Confirm) => Promise<boolean>;
@@ -22,4 +22,7 @@ export interface PromptManager {
   intro: (options: IntroInput) => Promise<void>;
   outro: (options: OutroInput) => Promise<void>;
   log: Log;
+  multiSelectPaginate: <Option extends SelectOption<T>[], T>(
+    options: MultiSelect<Option, T> & IPaginateOptions
+  ) => Promise<T[]>;
 }

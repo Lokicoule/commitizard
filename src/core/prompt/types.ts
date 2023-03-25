@@ -5,3 +5,8 @@ export type IntroInput = {
 export type OutroInput = {
   message: string;
 };
+
+export interface IPaginateOptions {
+  pageSize: number;
+  confirmMessage: string;
+}

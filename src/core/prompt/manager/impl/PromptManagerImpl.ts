@@ -1,4 +1,4 @@
-import { bgCyan, black } from "picocolors";
+import { bgBlue, bgCyan, black } from "picocolors";
 import { PromptAdapter } from "~/adapters/prompt/PromptAdapter";
 import {
   Confirm,
@@ -8,7 +8,8 @@ import {
   SelectOption,
   Text,
 } from "~/adapters/prompt/types";
-import { IntroInput, OutroInput } from "../../types";
+import { chunk } from "~/core/utils/chunk";
+import { IntroInput, IPaginateOptions, OutroInput } from "../../types";
 import { PromptManager } from "../PromptManager";
 
 export class PromptManagerImpl implements PromptManager {
@@ -63,7 +64,7 @@ export class PromptManagerImpl implements PromptManager {
     abortMessage,
   }: MultiSelect<Option, T>): Promise<T[]> {
     return this.adapter.multiSelect({
-      message,
+      message: `${message} (Press <space> to select, <enter> to continue / skip, <arrow keys> to navigate)`,
       options,
       required,
       abortMessage,
@@ -89,4 +90,50 @@ export class PromptManagerImpl implements PromptManager {
     warn: (message) => this.adapter.log.warn(message),
     success: (message) => this.adapter.log.success(message),
   };
+
+  public async multiSelectPaginate<Option extends SelectOption<T>[], T>(
+    options: MultiSelect<Option, T> & IPaginateOptions
+  ): Promise<T[]> {
+    const { pageSize, message, confirmMessage } = options;
+    const itemChunks = chunk(options.options, pageSize);
+    const totalPages = itemChunks.length;
+    const results: T[] = [];
+
+    for (let i = 0; i < itemChunks.length; i++) {
+      const itemsToShow = itemChunks[i];
+      const currentPage = i + 1;
+      const remainingItems =
+        options.options.length - (i * pageSize + itemsToShow.length);
+
+      const paginateMessage = `Page ${currentPage}/${totalPages}\n${bgBlue(
+        message
+      )} `;
+
+      const selectedOptions = await this.multiSelect<any, T>({
+        message: paginateMessage,
+        options: itemsToShow,
+      });
+
+      results.push(...selectedOptions);
+
+      const shouldShowMore =
+        remainingItems > 0
+          ? await this.confirm({
+              message: `Show ${Math.min(
+                remainingItems,
+                pageSize
+              )} more ${confirmMessage}? (Page ${
+                currentPage + 1
+              }/${totalPages})`,
+              defaultValue: true,
+            })
+          : false;
+
+      if (!shouldShowMore) {
+        break;
+      }
+    }
+
+    return results;
+  }
 }
