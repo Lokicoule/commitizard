@@ -7,6 +7,8 @@ module.exports = {
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
+    library: "commit-craft",
+    libraryTarget: "umd",
   },
   resolve: {
     extensions: [".ts", ".js"],

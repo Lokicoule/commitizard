@@ -63,12 +63,6 @@ describe("RedGreenRefactorSubjectHandler", () => {
     jest.clearAllMocks();
   });
 
-  it("should throw an error if the commit type is undefined", async () => {
-    await expect(sut.handle(mockCommitBuilder)).rejects.toThrowError(
-      "Commit type is not set!"
-    );
-  });
-
   it("should throw an error if the commit type does not match the cli options", async () => {
     jest.spyOn(mockCommitBuilder, "getType").mockReturnValue({
       message: "GREEN",
@@ -87,7 +81,7 @@ describe("RedGreenRefactorSubjectHandler", () => {
   });
 
   it("should replace placeholders in the subject with user input", async () => {
-    const expectedSubject = "Make test pass for myfeature";
+    const expectedSubject = "Make test pass for bingo";
     jest.spyOn(mockCommitBuilder, "getType").mockReturnValue({
       message: "GREEN",
     });
@@ -116,7 +110,7 @@ describe("RedGreenRefactorSubjectHandler", () => {
       .spyOn(mockPromptManager, "select")
       .mockResolvedValue("Make test pass for {{feature}}");
 
-    jest.spyOn(mockPromptManager, "text").mockResolvedValue("myfeature");
+    jest.spyOn(mockPromptManager, "text").mockResolvedValue("bingo");
 
     await sut.handle(mockCommitBuilder);
 

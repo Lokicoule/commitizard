@@ -66,19 +66,20 @@ export class ClackPromptAdapter implements PromptAdapter {
   }
 
   public async multiText({ text, confirm }: MultiText): Promise<string[]> {
-    let lines: Array<string> = [];
+    const lines: Array<string> = [];
+    let keepGoing = true;
 
-    while (true) {
+    while (keepGoing) {
       const result = await this.text(text);
 
-      if (result) {
+      if (result !== "") {
         lines.push(result);
       }
 
       const isContinue = await this.confirm(confirm);
 
       if (!isContinue) {
-        break;
+        keepGoing = false;
       }
     }
 
@@ -128,13 +129,13 @@ export class ClackPromptAdapter implements PromptAdapter {
   }
 
   private async prompt<T>(
-    prompt: () => Promise<T | Symbol>,
+    prompt: () => Promise<T | symbol>,
     abortMessage?: string
   ): Promise<T> {
     const result = await prompt();
 
     if (clackIsCancel(result)) {
-      if (abortMessage) {
+      if (abortMessage !== null) {
         clackCancel(abortMessage);
       }
       process.exit(0);

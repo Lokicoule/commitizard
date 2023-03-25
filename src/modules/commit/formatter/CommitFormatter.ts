@@ -21,7 +21,11 @@ export class CommitFormatter {
         const commitKey = keyMap[templateKey];
         const commitValue = commit[commitKey];
         const templateValue = template[templateKey];
-        if (commitValue && Boolean(commitValue.message) && templateValue) {
+        if (
+          commitValue &&
+          Boolean(commitValue.message) &&
+          templateValue !== ""
+        ) {
           return templateValue.replace(
             `{{${templateKey}}}`,
             commitValue.message

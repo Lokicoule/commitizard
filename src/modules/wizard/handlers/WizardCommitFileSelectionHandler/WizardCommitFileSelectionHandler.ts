@@ -27,40 +27,42 @@ export class WizardCommitFileSelectionHandler extends BaseWizardCommitHandler {
     }
 
     if (updatedFiles.length > 0) {
+      const updatedFilesOptions = updatedFiles.map((file) => ({
+        label: file,
+        value: file,
+      }));
       const commitUpdatedFiles = await promptManager.multiSelectPaginate<
-        any,
+        typeof updatedFilesOptions,
         string
       >({
         pageSize: maxViewFiles,
         message: "Updated files to add to the commit:",
         confirmMessage: "files",
-        options: updatedFiles.map((file) => ({
-          label: file,
-          value: file,
-        })),
+        options: updatedFilesOptions,
       });
 
       filesToAdd.push(...commitUpdatedFiles);
     }
 
     if (createdFiles.length > 0) {
+      const createdFilesOptions = createdFiles.map((file) => ({
+        label: file,
+        value: file,
+      }));
+
       const commitCreatedFiles = await promptManager.multiSelectPaginate<
-        any,
+        typeof createdFilesOptions,
         string
       >({
         pageSize: maxViewFiles,
         message: "Created files to add to the commit:",
         confirmMessage: "files",
-        options: createdFiles.map((file) => ({
-          label: file,
-          value: file,
-        })),
+        options: createdFilesOptions,
       });
 
       filesToAdd.push(...commitCreatedFiles);
     }
 
-    // Add selected files to the Git index
     if (filesToAdd.length > 0) {
       commitBuilder.withFiles(filesToAdd);
     }

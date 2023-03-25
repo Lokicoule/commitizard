@@ -61,8 +61,6 @@ export class CommitBuilderImpl implements CommitBuilder {
   }
 
   public build(): Commit {
-    this.validate();
-
     return {
       type: this.type,
       scope: this.scope,
@@ -72,15 +70,5 @@ export class CommitBuilderImpl implements CommitBuilder {
       body: this.body,
       footer: this.footer,
     };
-  }
-
-  private validate(): void {
-    if (!this.type) {
-      throw new Error("Commit type must be set!");
-    }
-
-    if (!this.subject) {
-      throw new Error("Commit subject must be set!");
-    }
   }
 }

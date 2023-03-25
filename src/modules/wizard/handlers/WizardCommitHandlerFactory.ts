@@ -64,7 +64,7 @@ export class WizardCommitHandlerFactory {
     );
   }
 
-  public creatWizardDisplayStagedFilesHandler(): WizardCommitHandler {
+  public createWizardDisplayStagedFilesHandler(): WizardCommitHandler {
     return new WizardDisplayStagedFilesHandler(
       this.promptManager,
       this.configurationManager,

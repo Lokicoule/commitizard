@@ -10,7 +10,9 @@ import { ConfigCommand } from "../command/ConfigCommand";
  * @see ConfigCommand
  */
 export class ConfigCommandFactory {
-  private constructor() {}
+  private constructor() {
+    // This class is not meant to be instantiated.
+  }
 
   public static create(): Command {
     return new ConfigCommand(

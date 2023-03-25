@@ -14,7 +14,7 @@ export class ConventionalFooterHandler extends BaseConventionalHandler {
   private async selectCommitFooter(): Promise<CommitFooter> {
     let footerLines: string[] = [];
 
-    let hasFooter = await this.promptManager.confirm({
+    const hasFooter = await this.promptManager.confirm({
       defaultValue: false,
       message: "Does this commit have a footer?",
       abortMessage: ABORT_MESSAGE,

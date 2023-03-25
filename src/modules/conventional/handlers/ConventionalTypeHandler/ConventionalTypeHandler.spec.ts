@@ -65,7 +65,7 @@ describe("ConventionalTypeHandler", () => {
   describe("handle", () => {
     it("should throw an error if configuration types are not defined", async () => {
       mockConfigurationManager.getConventionalCliOptionsTypes.mockReturnValue(
-        undefined
+        []
       );
       await expect(sut.handle(mockCommitBuilder)).rejects.toThrowError(
         "No conventional commit types defined in configuration!"

@@ -10,7 +10,7 @@ export interface WizardCommitBuilder {
 }
 
 export class WizardCommitBuilderImpl implements WizardCommitBuilder {
-  private message: string = "";
+  private message = "";
   private files: string[] = [];
 
   public withMessage(message: string): WizardCommitBuilder {

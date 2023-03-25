@@ -9,9 +9,6 @@ export const DEFAULT_COMMIT_SUBJECT = "No commit subject";
 export class RedGreenRefactorSubjectHandler extends BaseRedGreenRefactorHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const commitType = commitBuilder.getType();
-    if (!commitType) {
-      throw new Error("Commit type is not set!");
-    }
 
     const type =
       this.configurationManager.selectorRedGreenRefactorCliOptionsTypes(
@@ -43,7 +40,7 @@ export class RedGreenRefactorSubjectHandler extends BaseRedGreenRefactorHandler 
 
     let commitSubject: string | undefined;
 
-    while (!commitSubject) {
+    while (commitSubject === null || commitSubject === undefined) {
       const selection = await this.promptManager.select<CliOptions[], string>({
         message: "Select commit subject:",
         options,

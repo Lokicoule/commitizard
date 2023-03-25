@@ -65,7 +65,7 @@ describe("RedGreenRefactorTypeHandler", () => {
   describe("handle", () => {
     it("should throw an error if configuration types are not defined", async () => {
       mockConfigurationManager.getRedGreenRefactorCliOptionsTypes.mockReturnValue(
-        undefined
+        []
       );
       await expect(sut.handle(mockCommitBuilder)).rejects.toThrowError(
         "No red-green-refactor commit types defined in configuration!"

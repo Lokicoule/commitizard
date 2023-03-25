@@ -14,7 +14,7 @@ export class ConventionalBreakingChangesHandler extends BaseConventionalHandler 
   private async selectCommitBreakingChanges(): Promise<CommitBreakingChanges> {
     let breakingChangeLines: string[] = [];
 
-    let hasBreakingChange = await this.promptManager.confirm({
+    const hasBreakingChange = await this.promptManager.confirm({
       defaultValue: false,
       message: "Does this commit have a breaking change?",
       abortMessage: ABORT_MESSAGE,

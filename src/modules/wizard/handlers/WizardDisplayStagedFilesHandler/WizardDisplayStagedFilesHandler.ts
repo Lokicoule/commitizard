@@ -1,5 +1,4 @@
 import { chunk } from "~/core/utils/chunk";
-import { WizardCommitBuilder } from "../../builder/WizardCommit";
 import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
 
 /**
@@ -10,15 +9,13 @@ import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
  * Wizard commit handler that displays staged files.
  */
 export class WizardDisplayStagedFilesHandler extends BaseWizardCommitHandler {
-  protected async processInput(
-    _commitBuilder: WizardCommitBuilder
-  ): Promise<void> {
+  protected async processInput(): Promise<void> {
     const maxViewFiles =
       this.configurationManager.getWizardMaxViewFilesToShow();
 
     const stagedFiles = await this.gitManager.getStagedFiles();
 
-    if (!stagedFiles || stagedFiles.length === 0) {
+    if (stagedFiles.length === 0) {
       this.promptManager.log.warn("You don't have any staged files.");
       return;
     }
@@ -35,7 +32,7 @@ export class WizardDisplayStagedFilesHandler extends BaseWizardCommitHandler {
         }/${totalPages}]: (max ${maxViewFiles} files per page)`
       );
 
-      for (let file of filesToShow) {
+      for (const file of filesToShow) {
         this.promptManager.log.info(` ${file}`);
       }
 

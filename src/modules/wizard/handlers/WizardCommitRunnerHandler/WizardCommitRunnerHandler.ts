@@ -29,16 +29,26 @@ export class WizardCommitRunnerHandler extends BaseWizardCommitHandler {
       await this.gitManager.commit(commit.message);
 
       this.promptManager.outro({
-        message: `${green("✔")} ${bgGreen(" Commit created successfully!")}`,
+        message: `${bgGreen("✔ Commit created successfully!")}`,
       });
-    } catch (error: any) {
-      this.promptManager.outro({
-        message: `${red(
-          "✖"
-        )} An error occurred while creating the commit! ${red(
-          `\n${error.message}`
-        )}`,
-      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        this.promptManager.outro({
+          message: `${red(
+            "✖"
+          )} An error occurred while creating the commit! ${red(
+            `\n${error.message}`
+          )}`,
+        });
+      } else {
+        this.promptManager.outro({
+          message: `${red(
+            "✖"
+          )} An unknown error occurred while creating the commit! ${red(
+            `\n${error}`
+          )}`,
+        });
+      }
     }
   }
 

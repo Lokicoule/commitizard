@@ -31,7 +31,7 @@ export class ConventionalReferencesHandler extends BaseConventionalHandler {
         abortMessage: ABORT_MESSAGE,
       });
 
-      if (issueNumber) {
+      if (issueNumber !== "") {
         commitReferences.push(
           issueNumber.startsWith("#") ? issueNumber : `#${issueNumber}`
         );

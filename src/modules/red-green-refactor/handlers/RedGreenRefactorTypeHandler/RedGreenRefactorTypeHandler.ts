@@ -7,7 +7,7 @@ export class RedGreenRefactorTypeHandler extends BaseRedGreenRefactorHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {
     const types =
       this.configurationManager.getRedGreenRefactorCliOptionsTypes();
-    if (!types || types.length === 0) {
+    if (types.length === 0) {
       throw new Error(
         "No red-green-refactor commit types defined in configuration!"
       );

@@ -109,7 +109,7 @@ export class PromptManagerImpl implements PromptManager {
         message
       )} `;
 
-      const selectedOptions = await this.multiSelect<any, T>({
+      const selectedOptions = await this.multiSelect<typeof itemsToShow, T>({
         message: paginateMessage,
         options: itemsToShow,
       });

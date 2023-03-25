@@ -23,15 +23,18 @@ export class ConfigurationServiceImpl implements ConfigurationService {
   }
 
   read(configPath: string = DEFAULT_CONFIG_PATH): Configuration {
-    if (!configPath || !this.filesystemAdapter.exists(configPath)) {
+    if (configPath === "" || !this.filesystemAdapter.exists(configPath)) {
       return {} as Configuration;
     }
 
     try {
       const configStr = this.filesystemAdapter.read(configPath);
       return JSON.parse(configStr);
-    } catch (err: any) {
-      console.error(`Error reading config file ${configPath}: ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error)
+        console.error(
+          `Error reading config file ${configPath}: ${err.message}`
+        );
       return {} as Configuration;
     }
   }
@@ -41,16 +44,22 @@ export class ConfigurationServiceImpl implements ConfigurationService {
       const configStr = JSON.stringify(config, null, 2);
       this.filesystemAdapter.write(configPath, configStr);
       console.log(`Config written to ${configPath}`);
-    } catch (err: any) {
-      console.error(`Error writing config file ${configPath}: ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error)
+        console.error(
+          `Error writing config file ${configPath}: ${err.message}`
+        );
     }
   }
 
   delete(configPath: string = DEFAULT_CONFIG_PATH): void {
     try {
       this.filesystemAdapter.delete(configPath);
-    } catch (err: any) {
-      console.error(`Error deleting config file ${configPath}: ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error)
+        console.error(
+          `Error deleting config file ${configPath}: ${err.message}`
+        );
     }
   }
 
@@ -62,8 +71,11 @@ export class ConfigurationServiceImpl implements ConfigurationService {
         this.filesystemAdapter.rename(configPath, backupPath);
         console.log(`Backup created at ${backupPath}`);
       }
-    } catch (err: any) {
-      console.error(`Error writing config file ${configPath}: ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error)
+        console.error(
+          `Error writing config file ${configPath}: ${err.message}`
+        );
     }
   }
 }
