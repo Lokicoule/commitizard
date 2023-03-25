@@ -66,7 +66,7 @@ export class WizardCommand extends Command {
           const builder = WizardCommitBuilderFactory.create();
 
           const wizardHandlerChain = wizardHandlerFactory
-            .creatWizardDisplayStagedFilesHandler()
+            .createWizardDisplayStagedFilesHandler()
             .setNext(
               wizardHandlerFactory.createWizardCommitFileSelectionHandler()
             )
@@ -100,6 +100,14 @@ export class WizardCommand extends Command {
             const gitManager = GitManagerFactory.create({
               exclude: configurationManager.getExcludePaths(),
             });
+            const promptManager = PromptManagerFactory.create(
+              PromptAdapterFactory.createClackPromptAdapter()
+            );
+            const strategy = new RedGreenRefactorStrategy(
+              this.providePromptManager(),
+              configurationManager
+            );
+            const builder = WizardCommitBuilderFactory.create();
           })
       )
       .addCommand(
