@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "CommitCraft is an AI-powered tool for generating clear and concise Git commit messages. It analyzes the diff of updated files in your Git repository to suggest relevant and meaningful messages that accurately describe your changes.",
   "main": "src/index.ts",
+  "bin": {
+    "commit-craft": "dist/bundle.js"
+  },
   "scripts": {
-    "build": "rimraf ./build && tsc",
-    "start": "ts-node -r tsconfig-paths/register src/index.ts"
+    "build": "webpack",
+    "start": "webpack && node dist/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -28,9 +31,7 @@
   "homepage": "https://github.com/Lokicoule/CommitCraft#readme",
   "dependencies": {
     "@clack/prompts": "^0.6.3",
-    "@dqbd/tiktoken": "^0.4.0",
     "commander": "^10.0.0",
-    "openai": "^3.2.1",
     "picocolors": "^1.0.0"
   },
   "devDependencies": {
@@ -40,9 +41,13 @@
     "nodemon": "^2.0.21",
     "rimraf": "^4.4.0",
     "ts-jest": "^29.0.5",
+    "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.2",
-    "typescript": "^4.9.5"
+    "tsconfig-paths-webpack-plugin": "^4.0.1",
+    "typescript": "^4.9.5",
+    "webpack": "^5.76.3",
+    "webpack-cli": "^5.0.1"
   },
   "jest": {
     "moduleNameMapper": {
