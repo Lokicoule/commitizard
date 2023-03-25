@@ -40,12 +40,6 @@ export class WizardCommitFileSelectionHandler extends BaseWizardCommitHandler {
         })),
       });
 
-      /*  const commitUpdatedFiles = await paginate(updatedFiles, {
-        pageSize: maxViewFiles,
-        multiSelectMessage: "Updated files to add to the commit:",
-        confirmMessage: "files",
-        promptManager,
-      }); */
       filesToAdd.push(...commitUpdatedFiles);
     }
 
@@ -61,13 +55,8 @@ export class WizardCommitFileSelectionHandler extends BaseWizardCommitHandler {
           label: file,
           value: file,
         })),
-      }); /* 
-      const commitCreatedFiles = await paginate(createdFiles, {
-        pageSize: maxViewFiles,
-        multiSelectMessage: "Created files to add to the commit:",
-        confirmMessage: "files",
-        promptManager,
-      }); */
+      });
+
       filesToAdd.push(...commitCreatedFiles);
     }
 

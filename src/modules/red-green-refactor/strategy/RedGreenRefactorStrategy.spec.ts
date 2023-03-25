@@ -39,6 +39,7 @@ describe("RedGreenRefactorStrategy", () => {
       success: jest.fn(),
       warn: jest.fn(),
     },
+    multiSelectPaginate: jest.fn(),
   } satisfies PromptManager;
 
   // System under test

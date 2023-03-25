@@ -37,6 +37,7 @@ describe("WizardCommitMessageGeneratorHandler", () => {
       success: jest.fn(),
       warn: jest.fn(),
     },
+    multiSelectPaginate: jest.fn(),
   } satisfies PromptManager;
 
   const mockGitManager = {

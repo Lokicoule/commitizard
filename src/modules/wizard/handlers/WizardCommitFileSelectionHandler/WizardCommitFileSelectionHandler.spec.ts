@@ -1,11 +1,10 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { GitManager } from "~/core/git";
 import { PromptManager } from "~/core/prompt";
-import { CommitConventionStrategy } from "~/modules/commit/strategy/CommitConventionStrategy";
 import { WizardCommitBuilder } from "../../builder/WizardCommit";
-import { WizardCommitStagingHandler } from "./WizardCommitStagingHandler";
+import { WizardCommitFileSelectionHandler } from "./WizardCommitFileSelectionHandler";
 
-describe("WizardCommitStagingHandler", () => {
+describe("WizardCommitFileSelectionHandler", () => {
   const mockConfigurationManager = {
     getVersion: jest.fn(),
     getWizardMaxViewFilesToShow: jest.fn(),
@@ -34,6 +33,7 @@ describe("WizardCommitStagingHandler", () => {
       success: jest.fn(),
       warn: jest.fn(),
     },
+    multiSelectPaginate: jest.fn(),
   } satisfies PromptManager;
 
   const mockGitManager = {
@@ -49,27 +49,18 @@ describe("WizardCommitStagingHandler", () => {
 
   const mockWizardCommitBuilder = {
     withMessage: jest.fn(),
+    withFiles: jest.fn(),
     build: jest.fn(),
   } satisfies WizardCommitBuilder;
 
-  const mockConventionalStrategy = {
-    getCommitMessage: jest.fn(),
-  } satisfies CommitConventionStrategy;
-
-  const mockRedGreenRefactorStrategy = {
-    getCommitMessage: jest.fn(),
-  } satisfies CommitConventionStrategy;
-
   // System under test
-  let sut: WizardCommitStagingHandler;
+  let sut: WizardCommitFileSelectionHandler;
 
   beforeEach(() => {
-    sut = new WizardCommitStagingHandler(
+    sut = new WizardCommitFileSelectionHandler(
       mockPromptManager,
       mockConfigurationManager,
-      mockGitManager,
-      mockConventionalStrategy,
-      mockRedGreenRefactorStrategy
+      mockGitManager
     );
   });
 
@@ -77,4 +68,33 @@ describe("WizardCommitStagingHandler", () => {
     jest.clearAllMocks();
   });
 
-  
+  describe("processInput", () => {
+    it("should add files to the commit", async () => {
+      mockGitManager.getUpdatedFiles.mockResolvedValue(["file1", "file2"]);
+      mockGitManager.getCreatedFiles.mockResolvedValue(["file3", "file4"]);
+
+      mockPromptManager.multiSelectPaginate
+        .mockResolvedValueOnce(["file1", "file2"])
+        .mockResolvedValueOnce(["file3", "file4"]);
+
+      await sut.handle(mockWizardCommitBuilder);
+
+      expect(mockWizardCommitBuilder.withFiles).toHaveBeenCalledTimes(1);
+      expect(mockWizardCommitBuilder.withFiles).toHaveBeenCalledWith([
+        "file1",
+        "file2",
+        "file3",
+        "file4",
+      ]);
+    });
+
+    it("should not add files to the commit", async () => {
+      mockGitManager.getUpdatedFiles.mockResolvedValue([]);
+      mockGitManager.getCreatedFiles.mockResolvedValue([]);
+
+      await sut.handle(mockWizardCommitBuilder);
+
+      expect(mockWizardCommitBuilder.withFiles).not.toHaveBeenCalled();
+    });
+  });
+});
