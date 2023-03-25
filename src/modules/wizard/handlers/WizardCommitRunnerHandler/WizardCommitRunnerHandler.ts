@@ -23,7 +23,9 @@ export class WizardCommitRunnerHandler extends BaseWizardCommitHandler {
 
       const commit = commitBuilder.build();
 
-      await this.gitManager.stageFiles(commit.files);
+      if (commit.files.length > 0) {
+        await this.gitManager.stageFiles(commit.files);
+      }
 
       await this.gitManager.commit(commit.message);
 
