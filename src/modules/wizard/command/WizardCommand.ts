@@ -52,8 +52,12 @@ export class WizardCommand extends Command {
         "-S, --no-select-files",
         "Prompt user to select files to stage before prompting for commit message"
       )
-      .option("-s, --strategy [strategy]", "Commit message strategy to use")
-      .option("-e, --with-emoji", "Add emoji to the configuration", false)
+      .option("-s, --strategy <strategy>", "Commit message strategy to use")
+      .option(
+        "-e, --with-emoji",
+        "Use a relevant emoji as a prefix for the commit message type.",
+        false
+      )
       .action(async (options: SubcommandOptions) => {
         console.log(options);
         await this.handleAction(options);
