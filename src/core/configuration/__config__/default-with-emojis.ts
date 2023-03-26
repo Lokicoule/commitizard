@@ -1,6 +1,6 @@
 import { Configuration } from "../types";
 
-export const defaultConfig = {
+export const defaultConfigWithEmojis = {
   version: "0.0.1",
   settings: {
     maxViewFilesToShow: 5,
@@ -21,7 +21,7 @@ export const defaultConfig = {
   conventional: {
     commitOptions: {
       template: {
-        type: "{{type}}",
+        type: "{{type}} ",
         scope: "({{scope}})",
         subject: ": {{subject}}",
         body: "\n\n{{body}}",
@@ -41,32 +41,32 @@ export const defaultConfig = {
     },
     cliOptions: {
       types: [
-        { value: ":sparkles:", label: "feat: A new feature" },
-        { value: ":bug:", label: "fix: A bug fix" },
-        { value: ":books:", label: "docs: Documentation only changes" },
+        { value: "✨", label: "feat: A new feature" },
+        { value: "🐛", label: "fix: A bug fix" },
+        { value: "📚", label: "docs: Documentation only changes" },
         {
-          value: ":gem:",
+          value: "💎",
           label: "style: Changes that do not affect the meaning of the code",
         },
         {
-          value: ":hammer:",
+          value: "🔨",
           label:
             "refactor: A code change that neither fixes a bug nor adds a feature",
         },
         {
-          value: ":rocket:",
+          value: "🚀",
           label: "perf: A code change that improves performance",
         },
         {
-          value: ":rotating_light:",
+          value: "🚨",
           label: "test: Adding missing tests or correcting existing tests",
         },
         {
-          value: ":construction_worker:",
+          value: "👷",
           label: "ci: Changes to our CI configuration files and scripts",
         },
         {
-          value: ":wrench:",
+          value: "🔧",
           label:
             "chore: Changes to the build process or auxiliary tools and libraries",
         },
@@ -85,7 +85,7 @@ export const defaultConfig = {
     cliOptions: {
       types: [
         {
-          value: ":red_circle:",
+          value: "🔴",
           label: "RED: Write a test that fails",
           patterns: [
             "Add failing test for {{feature}}",
@@ -100,7 +100,7 @@ export const defaultConfig = {
           ],
         },
         {
-          value: ":green_circle:",
+          value: "🟢",
           label: "GREEN: Make the test pass",
           patterns: [
             "Make test pass for {{feature}}",
@@ -115,7 +115,7 @@ export const defaultConfig = {
           ],
         },
         {
-          value: ":blue_circle:",
+          value: "🔵",
           label: "REFACTOR: Refactor the code without changing functionality",
           patterns: [
             "Refactor {{feature}} to improve {{performance/maintainability/readability/usability}}",

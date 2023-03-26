@@ -3,6 +3,7 @@ import { ConfigurationService } from "../ConfigurationService";
 import { DEFAULT_CONFIG_PATH } from "../../constants";
 import { defaultConfig } from "../../__config__/default";
 import { Configuration } from "../../types";
+import { defaultConfigWithEmojis } from "../../__config__/default-with-emojis";
 
 export class ConfigurationServiceImpl implements ConfigurationService {
   private readonly filesystemAdapter: FilesystemAdapter;
@@ -11,15 +12,18 @@ export class ConfigurationServiceImpl implements ConfigurationService {
     this.filesystemAdapter = filesystemAdapter;
   }
 
-  load(configPath?: string): Configuration {
+  load(configPath?: string, withEmojis = false): Configuration {
     const userConfig = this.read(configPath);
-    const config = this.merge(userConfig);
 
-    return config;
+    if (withEmojis) {
+      return this.merge(userConfig, defaultConfigWithEmojis);
+    }
+
+    return this.merge(userConfig);
   }
 
-  merge(userConfig: Configuration): Configuration {
-    return { ...defaultConfig, ...userConfig };
+  merge(userConfig: Configuration, safeConfig = defaultConfig): Configuration {
+    return { ...safeConfig, ...userConfig };
   }
 
   read(configPath: string = DEFAULT_CONFIG_PATH): Configuration {

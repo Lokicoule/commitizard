@@ -21,11 +21,15 @@ export class ConfigCommand extends Command {
           "Path to initialize the application",
           DEFAULT_CONFIG_PATH
         )
-        .action((options) => {
+        .option("-e, --with-emoji", "Add emoji to the configuration", false)
+        .action((options: { path: string; withEmoji: boolean }) => {
           console.log("Initializing the application");
           console.log(options);
           const configPath = options.path;
-          const { ...safeConfig } = this.configurationService.load();
+          const { ...safeConfig } = this.configurationService.load(
+            undefined,
+            options.withEmoji
+          );
           this.configurationService.write(safeConfig, configPath);
         })
     )
