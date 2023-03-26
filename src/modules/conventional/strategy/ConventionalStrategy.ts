@@ -23,14 +23,42 @@ export class ConventionalStrategy implements CommitConventionStrategy {
       this.configurationManager
     );
 
-    const commitHandlerChain = commitHandlerFactory
-      .createTypeHandler()
-      .setNext(commitHandlerFactory.createScopeHandler())
-      .setNext(commitHandlerFactory.createSubjectHandler())
-      .setNext(commitHandlerFactory.createBodyHandler())
-      .setNext(commitHandlerFactory.createBreakingChangesHandler())
-      .setNext(commitHandlerFactory.createReferencesHandler())
-      .setNext(commitHandlerFactory.createFooterHandler());
+    const templatesOrder =
+      this.configurationManager.getConventionalCommitTemplateOrder();
+    const commitHandlerChain = commitHandlerFactory.createTypeHandler();
+
+    templatesOrder.forEach((order) => {
+      switch (order) {
+        case "scope":
+          commitHandlerChain.setNext(commitHandlerFactory.createScopeHandler());
+          break;
+        case "subject":
+          commitHandlerChain.setNext(
+            commitHandlerFactory.createSubjectHandler()
+          );
+          break;
+        case "body":
+          commitHandlerChain.setNext(commitHandlerFactory.createBodyHandler());
+          break;
+        case "breaking":
+          commitHandlerChain.setNext(
+            commitHandlerFactory.createBreakingChangesHandler()
+          );
+          break;
+        case "refs":
+          commitHandlerChain.setNext(
+            commitHandlerFactory.createReferencesHandler()
+          );
+          break;
+        case "footer":
+          commitHandlerChain.setNext(
+            commitHandlerFactory.createFooterHandler()
+          );
+          break;
+        default:
+          break;
+      }
+    });
 
     await commitHandlerChain.handle(commitBuilder);
 

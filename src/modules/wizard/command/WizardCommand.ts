@@ -1,171 +1,179 @@
 import { Command } from "commander";
 import { PromptAdapterFactory } from "~/adapters/prompt/PromptAdapterFactory";
 import {
-  Configuration,
-  ConfigurationManager,
   ConfigurationManagerFactory,
   ConfigurationService,
   DEFAULT_CONFIG_PATH,
 } from "~/core/configuration";
-import { GitManager, GitManagerFactory } from "~/core/git";
-import { PromptManager } from "~/core/prompt";
+import { GitManagerFactory } from "~/core/git";
 import { PromptManagerFactory } from "~/core/prompt/manager/PromptManagerFactory";
+import { CommitConventionStrategyType } from "~/modules/commit/strategy/CommitConventionStrategy";
 import { ConventionalStrategy } from "~/modules/conventional/strategy/ConventionalStrategy";
 import { RedGreenRefactorStrategy } from "~/modules/red-green-refactor/strategy/RedGreenRefactorStrategy";
 import { WizardCommitBuilderFactory } from "../builder/WizardCommit";
-import { WizardCommitHandlerFactory } from "../handlers/WizardCommitHandlerFactory";
+import { WizardCommitHandlerChainBuilder } from "../handlers/WizardCommitHandlerBuilder";
+
+type SubcommandOptions = {
+  config?: string;
+  displayStagedFiles?: boolean;
+  selectFiles?: boolean;
+  strategy?: CommitConventionStrategyType;
+};
+
+type SubcommandFactoryOptions = {
+  name: string;
+  aliases: string[];
+  description: string;
+  handleAction: (options: SubcommandOptions) => Promise<void>;
+};
 
 export class WizardCommand extends Command {
-  private readonly configurationService: ConfigurationService;
-  constructor(configurationService: ConfigurationService) {
+  constructor(private readonly configurationService: ConfigurationService) {
     super();
-    this.configurationService = configurationService;
-
-    this.name("wizard");
-    this.description("A CLI tool for generating commit messages");
-    this.version("0.0.1");
-
-    // Add a default action for the wizard command
-    this.action(async () => {
-      await this.runSubcommand("default");
-    });
-
-    this.addCommand(
-      new Command("default")
-        .description("Default commit message generator")
-        .option(
-          "-p, --path [path]",
-          "Path to clean up the application",
-          DEFAULT_CONFIG_PATH
-        )
-        .action(async (options) => {
-          const promptManager = PromptManagerFactory.create(
-            PromptAdapterFactory.createClackPromptAdapter()
-          );
-
-          promptManager.intro({
-            message: "Welcome to the commit wizard!",
-          });
-
-          const path = options.path;
-          const config = this.loadConfig(path);
-          const configurationManager =
-            ConfigurationManagerFactory.create(config);
-          const gitManager = GitManagerFactory.create({
-            exclude: configurationManager.getExcludePaths(),
-          });
-
-          const wizardHandlerFactory = new WizardCommitHandlerFactory(
-            promptManager,
-            configurationManager,
-            gitManager,
-            new ConventionalStrategy(promptManager, configurationManager),
-            new RedGreenRefactorStrategy(promptManager, configurationManager)
-          );
-
-          const builder = WizardCommitBuilderFactory.create();
-
-          const wizardHandlerChain = wizardHandlerFactory
-            .createWizardDisplayStagedFilesHandler()
-            .setNext(
-              wizardHandlerFactory.createWizardCommitFileSelectionHandler()
-            )
-            .setNext(
-              wizardHandlerFactory.createWizardCommitMessageGeneratorHandler()
-            )
-            .setNext(
-              wizardHandlerFactory.createWizardCommitConfirmationHandler()
-            )
-            .setNext(wizardHandlerFactory.createWizardCommitRunnerHandler());
-
-          await wizardHandlerChain.handle(builder);
-        })
-    )
-      .addCommand(
-        new Command("red-green-refactor")
-          .aliases(["rgr", "tdd"])
-          .description(
-            "Commit message generator following the red-green-refactor pattern"
-          )
-          .option(
-            "-p, --path [path]",
-            "Path to clean up the application",
-            DEFAULT_CONFIG_PATH
-          )
-          .action(async (options) => {
-            const path = options.path;
-            const config = this.loadConfig(path);
-            const configurationManager =
-              ConfigurationManagerFactory.create(config);
-            const gitManager = GitManagerFactory.create({
-              exclude: configurationManager.getExcludePaths(),
-            });
-            const promptManager = PromptManagerFactory.create(
-              PromptAdapterFactory.createClackPromptAdapter()
-            );
-            const strategy = new RedGreenRefactorStrategy(
-              this.providePromptManager(),
-              configurationManager
-            );
-            const builder = WizardCommitBuilderFactory.create();
-          })
-      )
-      .addCommand(
-        new Command("conventional")
-          .aliases(["conv", "cc"])
-          .description(
-            "Commit message generator following the conventional commit pattern"
-          )
-          .option(
-            "-p, --path [path]",
-            "Path to clean up the application",
-            DEFAULT_CONFIG_PATH
-          )
-          .action(async (options) => {
-            const path = options.path;
-            const config = this.loadConfig(path);
-            const configurationManager =
-              ConfigurationManagerFactory.create(config);
-            const gitManager = GitManagerFactory.create({
-              exclude: configurationManager.getExcludePaths(),
-            });
-          })
-      );
+    this.configure();
   }
 
-  private provideConfigurationManager(
-    configuration: Configuration
-  ): ConfigurationManager {
+  private configure(): void {
+    this.name("wizard")
+      .description("A CLI tool for generating commit messages")
+      .version("0.0.1")
+      .enablePositionalOptions()
+      .option(
+        "-c, --config <path>",
+        "Path to the configuration file",
+        DEFAULT_CONFIG_PATH
+      )
+      .option(
+        "-D, --no-display-staged-files",
+        "Display staged files before prompting for commit message"
+      )
+      .option(
+        "-S, --no-select-files",
+        "Prompt user to select files to stage before prompting for commit message"
+      )
+      .option("-s, --strategy [strategy]", "Commit message strategy to use")
+      .action(async (options: SubcommandOptions) => {
+        await this.handleAction(options);
+      });
+
+    this.addDefaultCommand();
+    this.addRedGreenRefactorCommand();
+    this.addConventionalCommand();
+    this.passThroughOptions();
+  }
+
+  private addDefaultCommand(): void {
+    this.addCommand(
+      this.createSubcommandFactory({
+        name: "default",
+        aliases: [],
+        description: "Commit message generator with default options",
+        handleAction: async (options) => {
+          await this.handleAction(options);
+        },
+      })
+    );
+  }
+
+  private addRedGreenRefactorCommand(): void {
+    this.addCommand(
+      this.createSubcommandFactory({
+        name: "red-green-refactor",
+        aliases: ["rg", "rgr", "tdd"],
+        description:
+          "Commit message generator following the red-green-refactor pattern",
+        handleAction: async (options) => {
+          await this.handleAction({
+            ...options,
+            strategy: CommitConventionStrategyType.RED_GREEN_REFACTOR,
+          });
+        },
+      })
+    );
+  }
+
+  private addConventionalCommand(): void {
+    this.addCommand(
+      this.createSubcommandFactory({
+        name: "conventional",
+        aliases: ["conv", "convention", "cv", "cc", "c"],
+        description:
+          "Commit message generator following the conventional pattern",
+        handleAction: async (options) => {
+          await this.handleAction({
+            ...options,
+            strategy: CommitConventionStrategyType.CONVENTIONAL,
+          });
+        },
+      })
+    );
+  }
+
+  private async handleAction({
+    config = DEFAULT_CONFIG_PATH,
+    strategy,
+    displayStagedFiles = true,
+    selectFiles = true,
+  }: {
+    config?: string;
+    strategy?: CommitConventionStrategyType;
+    displayStagedFiles?: boolean;
+    selectFiles?: boolean;
+  }): Promise<void> {
+    const configuration = this.configurationService.load(config);
     const configurationManager =
       ConfigurationManagerFactory.create(configuration);
-    return configurationManager;
-  }
 
-  private provideGitManager(
-    configurationManager: ConfigurationManager
-  ): GitManager {
     const gitManager = GitManagerFactory.create({
       exclude: configurationManager.getExcludePaths(),
     });
-    return gitManager;
-  }
 
-  private providePromptManager(): PromptManager {
     const promptManager = PromptManagerFactory.create(
       PromptAdapterFactory.createClackPromptAdapter()
     );
-    return promptManager;
+
+    const wizardHandlerChainBuilder = new WizardCommitHandlerChainBuilder(
+      promptManager,
+      configurationManager,
+      gitManager,
+      new ConventionalStrategy(promptManager, configurationManager),
+      new RedGreenRefactorStrategy(promptManager, configurationManager)
+    )
+      .withDisplayStagedFilesHandler(displayStagedFiles)
+      .withCommitFileSelectionHandler(selectFiles)
+      .withCommitMessageGeneratorHandler(strategy)
+      .withCommitConfirmationHandler()
+      .withCommitRunnerHandler();
+
+    await wizardHandlerChainBuilder.buildAndExecute(
+      WizardCommitBuilderFactory.create()
+    );
   }
 
-  private loadConfig(configPath: string = DEFAULT_CONFIG_PATH): Configuration {
-    const configuration = this.configurationService.load(configPath);
-    return configuration;
-  }
-
-  private async runSubcommand(name: string) {
-    const subcommand = this.commands.find((command) => command.name() === name);
-    if (subcommand) {
-      await subcommand.parseAsync(process.argv);
-    }
+  private createSubcommandFactory({
+    name,
+    aliases,
+    description,
+    handleAction,
+  }: SubcommandFactoryOptions) {
+    return new Command(name)
+      .aliases(aliases)
+      .description(description)
+      .option(
+        "-c, --config [config]",
+        "Use a specific configuration file",
+        DEFAULT_CONFIG_PATH
+      )
+      .option(
+        "-D, --no-display-staged-files",
+        "Display staged files before prompting for commit message"
+      )
+      .option(
+        "-S, --no-select-files",
+        "Prompt user to select files to stage before prompting for commit message"
+      )
+      .action(async (options: SubcommandOptions) => {
+        await handleAction(options);
+      });
   }
 }

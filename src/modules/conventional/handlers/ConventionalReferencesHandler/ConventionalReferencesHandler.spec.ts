@@ -91,7 +91,7 @@ describe("ConventionalReferencesHandler", () => {
     });
 
     expect(commitBuilder.withReferences).toHaveBeenCalledWith({
-      message: "#references",
+      message: "references",
     });
   });
 
@@ -112,15 +112,15 @@ describe("ConventionalReferencesHandler", () => {
       message: "fix",
     });
     jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-    mockPromptManager.text.mockResolvedValueOnce("references");
+    mockPromptManager.text.mockResolvedValueOnce("123");
     jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-    mockPromptManager.text.mockResolvedValueOnce("references2");
+    mockPromptManager.text.mockResolvedValueOnce("456");
     jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
 
     await sut.handle(commitBuilder);
 
     expect(commitBuilder.withReferences).toHaveBeenCalledWith({
-      message: "#references, #references2",
+      message: "#123, #456",
     });
   });
 

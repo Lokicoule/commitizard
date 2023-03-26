@@ -33,7 +33,7 @@ export class ConventionalReferencesHandler extends BaseConventionalHandler {
 
       if (issueNumber !== "") {
         commitReferences.push(
-          issueNumber.startsWith("#") ? issueNumber : `#${issueNumber}`
+          isNaN(Number(issueNumber)) ? issueNumber : `#${issueNumber}`
         );
       }
 

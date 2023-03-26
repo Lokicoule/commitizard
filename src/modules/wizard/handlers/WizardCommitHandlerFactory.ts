@@ -1,7 +1,10 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { GitManager } from "~/core/git";
 import { PromptManager } from "~/core/prompt";
-import { CommitConventionStrategy } from "~/modules/commit/strategy/CommitConventionStrategy";
+import {
+  CommitConventionStrategy,
+  CommitConventionStrategyType,
+} from "~/modules/commit/strategy/CommitConventionStrategy";
 import { WizardCommitConfirmationHandler } from "./WizardCommitConfirmationHandler/WizardCommitConfirmationHandler";
 import { WizardCommitFileSelectionHandler } from "./WizardCommitFileSelectionHandler/WizardCommitFileSelectionHandler";
 import { WizardCommitHandler } from "./WizardCommitHandler";
@@ -46,13 +49,16 @@ export class WizardCommitHandlerFactory {
     );
   }
 
-  public createWizardCommitMessageGeneratorHandler(): WizardCommitHandler {
+  public createWizardCommitMessageGeneratorHandler(
+    strategy?: CommitConventionStrategyType
+  ): WizardCommitHandler {
     return new WizardCommitMessageGeneratorHandler(
       this.promptManager,
       this.configurationManager,
       this.gitManager,
       this.conventionalStrategy,
-      this.redGreenRefactorStrategy
+      this.redGreenRefactorStrategy,
+      strategy
     );
   }
 

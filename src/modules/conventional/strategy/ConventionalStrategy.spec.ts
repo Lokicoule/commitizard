@@ -100,21 +100,19 @@ describe("ConventionalStrategy", () => {
         .spyOn(mockPromptManager, "multiText")
         .mockResolvedValueOnce(["breaking changes line"]);
 
-      // References
-      jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-      mockPromptManager.text.mockResolvedValueOnce("references");
-      jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(false);
-
       // Footer
-      jest.spyOn(mockPromptManager, "confirm").mockResolvedValueOnce(true);
-      jest
-        .spyOn(mockPromptManager, "multiText")
-        .mockResolvedValueOnce(["footer line"]);
+      mockPromptManager.confirm.mockResolvedValueOnce(true);
+      mockPromptManager.multiText.mockResolvedValueOnce(["footer line"]);
+
+      // References
+      mockPromptManager.confirm.mockResolvedValueOnce(true);
+      mockPromptManager.text.mockResolvedValueOnce("references");
+      mockPromptManager.confirm.mockResolvedValueOnce(false);
 
       const commit = await sut.getCommitMessage();
 
       expect(commit).toBe(
-        "fix(test): subject\n\nbody line\n\nBREAKING CHANGE:\n breaking changes line\n\nfooter line\n\nRefs: #references"
+        "fix(test): subject\n\nbody line\n\nBREAKING CHANGE:\n breaking changes line\n\nfooter line\n\nRefs: references"
       );
     });
   });

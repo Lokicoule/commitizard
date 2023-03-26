@@ -1,5 +1,5 @@
+import { Configuration } from "../../types";
 import { ConfigurationValidator } from "../ConfigurationValidator";
-import { Configuration, ConventionalCommitTemplate } from "../../types";
 
 export class ConfigurationValidatorImpl implements ConfigurationValidator {
   public validate(config: Configuration): void {

@@ -19,22 +19,37 @@ import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
 export class WizardCommitMessageGeneratorHandler extends BaseWizardCommitHandler {
   private readonly conventionalStrategy: CommitConventionStrategy;
   private readonly redGreenRefactorStrategy: CommitConventionStrategy;
+  private readonly strategy?: CommitConventionStrategyType;
 
   constructor(
     promptManager: PromptManager,
     configurationManager: ConfigurationManager,
     gitManager: GitManager,
     conventionalStrategy: CommitConventionStrategy,
-    redGreenRefactorStrategy: CommitConventionStrategy
+    redGreenRefactorStrategy: CommitConventionStrategy,
+    strategy?: CommitConventionStrategyType
   ) {
     super(promptManager, configurationManager, gitManager);
     this.conventionalStrategy = conventionalStrategy;
     this.redGreenRefactorStrategy = redGreenRefactorStrategy;
+    this.strategy = strategy;
   }
 
   protected async processInput(
     commitBuilder: WizardCommitBuilder
   ): Promise<void> {
+    if (this.strategy) {
+      const strategy = CommitConventionStrategyFactory.create(this.strategy, {
+        conventionalStrategy: this.conventionalStrategy,
+        redGreenRefactorStrategy: this.redGreenRefactorStrategy,
+      });
+
+      const message = await strategy.getCommitMessage();
+
+      commitBuilder.withMessage(message);
+      return;
+    }
+
     const convention = (await this.promptManager.select<CliOptions[], string>({
       message: "Which convention would you like to use?",
       options: [
