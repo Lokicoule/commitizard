@@ -44,6 +44,7 @@ describe("WizardCommitConfirmationHandler", () => {
     getUpdatedFiles: jest.fn(),
     isGitRepository: jest.fn(),
     hasStagedFiles: jest.fn(),
+    getDeletedFiles: jest.fn(),
     runGitCommand: jest.fn(),
   } satisfies GitManager;
 

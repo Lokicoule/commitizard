@@ -45,6 +45,7 @@ describe("WizardCommitFileSelectionHandler", () => {
     isGitRepository: jest.fn(),
     hasStagedFiles: jest.fn(),
     runGitCommand: jest.fn(),
+    getDeletedFiles: jest.fn(),
   } satisfies GitManager;
 
   const mockWizardCommitBuilder = {
@@ -72,10 +73,12 @@ describe("WizardCommitFileSelectionHandler", () => {
     it("should add files to the commit", async () => {
       mockGitManager.getUpdatedFiles.mockResolvedValue(["file1", "file2"]);
       mockGitManager.getCreatedFiles.mockResolvedValue(["file3", "file4"]);
+      mockGitManager.getDeletedFiles.mockResolvedValue(["file5", "file6"]);
 
       mockPromptManager.multiSelectPaginate
         .mockResolvedValueOnce(["file1", "file2"])
-        .mockResolvedValueOnce(["file3", "file4"]);
+        .mockResolvedValueOnce(["file3", "file4"])
+        .mockResolvedValueOnce(["file5", "file6"]);
 
       await sut.handle(mockWizardCommitBuilder);
 
@@ -85,12 +88,15 @@ describe("WizardCommitFileSelectionHandler", () => {
         "file2",
         "file3",
         "file4",
+        "file5",
+        "file6",
       ]);
     });
 
     it("should not add files to the commit", async () => {
       mockGitManager.getUpdatedFiles.mockResolvedValue([]);
       mockGitManager.getCreatedFiles.mockResolvedValue([]);
+      mockGitManager.getDeletedFiles.mockResolvedValue([]);
 
       await sut.handle(mockWizardCommitBuilder);
 

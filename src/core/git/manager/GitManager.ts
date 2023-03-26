@@ -12,6 +12,7 @@
  * @method isGitRepository - Checks if the current directory is a git repository.
  * @method runGitCommand - Runs a git command.
  * @method stageFiles - Stages the given files.
+ * @method getDeletedFiles - Gets the deleted files.
  */
 export interface GitManager {
   isGitRepository(): Promise<boolean>;
@@ -22,4 +23,5 @@ export interface GitManager {
   getCreatedFiles(): Promise<string[]>;
   getUpdatedFiles(): Promise<string[]>;
   runGitCommand(command: string[]): Promise<string>;
+  getDeletedFiles(): Promise<string[]>;
 }

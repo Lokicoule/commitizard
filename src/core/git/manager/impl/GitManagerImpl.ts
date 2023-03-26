@@ -45,6 +45,17 @@ export class GitManagerImpl implements GitManager {
     return updatedFiles.split("\n").filter(Boolean) ?? [];
   }
 
+  public async getDeletedFiles(): Promise<string[]> {
+    const deletedFiles = await this.runGitCommand([
+      "diff",
+      "--name-only",
+      "--diff-filter=D",
+      ...this.options.exclude.map((file) => `:(exclude)${file}`),
+    ]);
+
+    return deletedFiles.split("\n").filter(Boolean) ?? [];
+  }
+
   public async isGitRepository(): Promise<boolean> {
     const result = await this.runGitCommand([
       "rev-parse",

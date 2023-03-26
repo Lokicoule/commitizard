@@ -12,55 +12,47 @@ export class WizardCommitFileSelectionHandler extends BaseWizardCommitHandler {
   protected async processInput(
     commitBuilder: WizardCommitBuilder
   ): Promise<void> {
-    const { promptManager } = this;
     const filesToAdd: string[] = [];
 
     const maxViewFiles =
       this.configurationManager.getWizardMaxViewFilesToShow();
 
-    // Prompt user to select updated and created files to add to the commit
-    const updatedFiles = await this.gitManager.getUpdatedFiles();
-    const createdFiles = await this.gitManager.getCreatedFiles();
+    const fileTypes = [
+      {
+        label: "Updated files to add to the commit:",
+        getter: this.gitManager.getUpdatedFiles.bind(this.gitManager),
+      },
+      {
+        label: "Created files to add to the commit:",
+        getter: this.gitManager.getCreatedFiles.bind(this.gitManager),
+      },
+      {
+        label: "Deleted files to add to the commit:",
+        getter: this.gitManager.getDeletedFiles.bind(this.gitManager),
+      },
+    ];
 
-    if (updatedFiles.length === 0 && createdFiles.length === 0) {
-      return;
-    }
+    for (const { label, getter } of fileTypes) {
+      const files = await getter();
 
-    if (updatedFiles.length > 0) {
-      const updatedFilesOptions = updatedFiles.map((file) => ({
-        label: file,
-        value: file,
-      }));
-      const commitUpdatedFiles = await promptManager.multiSelectPaginate<
-        typeof updatedFilesOptions,
-        string
-      >({
-        pageSize: maxViewFiles,
-        message: "Updated files to add to the commit:",
-        confirmMessage: "files",
-        options: updatedFilesOptions,
-      });
+      if (files.length > 0) {
+        const fileOptions = files.map((file) => ({
+          label: file,
+          value: file,
+        }));
 
-      filesToAdd.push(...commitUpdatedFiles);
-    }
+        const commitFiles = await this.promptManager.multiSelectPaginate<
+          typeof fileOptions,
+          string
+        >({
+          pageSize: maxViewFiles,
+          message: label,
+          confirmMessage: "files",
+          options: fileOptions,
+        });
 
-    if (createdFiles.length > 0) {
-      const createdFilesOptions = createdFiles.map((file) => ({
-        label: file,
-        value: file,
-      }));
-
-      const commitCreatedFiles = await promptManager.multiSelectPaginate<
-        typeof createdFilesOptions,
-        string
-      >({
-        pageSize: maxViewFiles,
-        message: "Created files to add to the commit:",
-        confirmMessage: "files",
-        options: createdFilesOptions,
-      });
-
-      filesToAdd.push(...commitCreatedFiles);
+        filesToAdd.push(...commitFiles);
+      }
     }
 
     if (filesToAdd.length > 0) {
