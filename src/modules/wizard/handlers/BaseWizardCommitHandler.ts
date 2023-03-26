@@ -2,7 +2,7 @@ import { ConfigurationManager } from "~/core/configuration";
 import { GitManager } from "~/core/git";
 import { BaseChainHandler } from "~/core/handler/impl/BaseChainHandler";
 import { PromptManager } from "~/core/prompt";
-import { WizardCommitBuilder } from "../builder/WizardCommit";
+import { WizardCommitBuilder } from "../builder/WizardCommitBuilder";
 import { WizardCommitHandler } from "./WizardCommitHandler";
 
 export abstract class BaseWizardCommitHandler

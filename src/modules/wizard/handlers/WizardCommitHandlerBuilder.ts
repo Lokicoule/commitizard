@@ -5,7 +5,7 @@ import {
   CommitConventionStrategy,
   CommitConventionStrategyType,
 } from "~/modules/commit/strategy/CommitConventionStrategy";
-import { WizardCommitBuilder } from "../builder/WizardCommit";
+import { WizardCommitBuilder } from "../builder/WizardCommitBuilder";
 import { WizardCommitHandler } from "./WizardCommitHandler";
 import { WizardCommitHandlerFactory } from "./WizardCommitHandlerFactory";
 

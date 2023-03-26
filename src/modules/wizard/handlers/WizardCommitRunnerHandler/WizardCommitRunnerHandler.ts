@@ -1,5 +1,6 @@
 import { bgGreen, red } from "picocolors";
-import { WizardCommit, WizardCommitBuilder } from "../../builder/WizardCommit";
+import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
+import { WizardCommit } from "../../types";
 import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
 
 /**

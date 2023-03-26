@@ -1,13 +1,5 @@
-export interface WizardCommit {
-  message: string;
-  files: string[];
-}
-
-export interface WizardCommitBuilder {
-  withMessage(message: string): WizardCommitBuilder;
-  withFiles(files: string[]): WizardCommitBuilder;
-  build(): WizardCommit;
-}
+import { WizardCommit } from "../../types";
+import { WizardCommitBuilder } from "../WizardCommitBuilder";
 
 export class WizardCommitBuilderImpl implements WizardCommitBuilder {
   private message = "";
@@ -28,11 +20,5 @@ export class WizardCommitBuilderImpl implements WizardCommitBuilder {
       message: this.message,
       files: this.files,
     };
-  }
-}
-
-export class WizardCommitBuilderFactory {
-  public static create(): WizardCommitBuilder {
-    return new WizardCommitBuilderImpl();
   }
 }

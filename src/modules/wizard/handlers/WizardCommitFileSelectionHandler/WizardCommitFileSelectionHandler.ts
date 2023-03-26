@@ -1,4 +1,4 @@
-import { WizardCommitBuilder } from "../../builder/WizardCommit";
+import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
 import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
 
 /**

@@ -1,7 +1,7 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { GitManager } from "~/core/git";
 import { PromptManager } from "~/core/prompt";
-import { WizardCommitBuilder } from "../../builder/WizardCommit";
+import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
 import { WizardCommitConfirmationHandler } from "./WizardCommitConfirmationHandler";
 
 describe("WizardCommitConfirmationHandler", () => {

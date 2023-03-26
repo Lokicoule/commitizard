@@ -10,7 +10,7 @@ import { PromptManagerFactory } from "~/core/prompt/manager/PromptManagerFactory
 import { CommitConventionStrategyType } from "~/modules/commit/strategy/CommitConventionStrategy";
 import { ConventionalStrategy } from "~/modules/conventional/strategy/ConventionalStrategy";
 import { RedGreenRefactorStrategy } from "~/modules/red-green-refactor/strategy/RedGreenRefactorStrategy";
-import { WizardCommitBuilderFactory } from "../builder/WizardCommit";
+import { WizardCommitBuilderFactory } from "../builder/WizardCommitBuilderFactory";
 import { WizardCommitHandlerChainBuilder } from "../handlers/WizardCommitHandlerBuilder";
 
 type SubcommandOptions = {
