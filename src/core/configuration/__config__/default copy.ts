@@ -41,32 +41,32 @@ export const defaultConfig = {
     },
     cliOptions: {
       types: [
-        { value: ":sparkles:", label: "feat: A new feature" },
-        { value: ":bug:", label: "fix: A bug fix" },
-        { value: ":books:", label: "docs: Documentation only changes" },
+        { value: "feat", label: "feat: A new feature" },
+        { value: "fix", label: "fix: A bug fix" },
+        { value: "docs", label: "docs: Documentation only changes" },
         {
-          value: ":gem:",
+          value: "style",
           label: "style: Changes that do not affect the meaning of the code",
         },
         {
-          value: ":hammer:",
+          value: "refactor",
           label:
             "refactor: A code change that neither fixes a bug nor adds a feature",
         },
         {
-          value: ":rocket:",
+          value: "perf",
           label: "perf: A code change that improves performance",
         },
         {
-          value: ":rotating_light:",
+          value: "test",
           label: "test: Adding missing tests or correcting existing tests",
         },
         {
-          value: ":construction_worker:",
+          value: "ci",
           label: "ci: Changes to our CI configuration files and scripts",
         },
         {
-          value: ":wrench:",
+          value: "chore",
           label:
             "chore: Changes to the build process or auxiliary tools and libraries",
         },
@@ -85,7 +85,7 @@ export const defaultConfig = {
     cliOptions: {
       types: [
         {
-          value: ":red_circle:",
+          value: "RED",
           label: "RED: Write a test that fails",
           patterns: [
             "Add failing test for {{feature}}",
@@ -100,7 +100,7 @@ export const defaultConfig = {
           ],
         },
         {
-          value: ":green_circle:",
+          value: "GREEN",
           label: "GREEN: Make the test pass",
           patterns: [
             "Make test pass for {{feature}}",
@@ -115,7 +115,7 @@ export const defaultConfig = {
           ],
         },
         {
-          value: ":blue_circle:",
+          value: "REFACTOR",
           label: "REFACTOR: Refactor the code without changing functionality",
           patterns: [
             "Refactor {{feature}} to improve {{performance/maintainability/readability/usability}}",
