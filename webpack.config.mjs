@@ -1,5 +1,6 @@
 import path from "path";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+import webpack from "webpack";
 
 export default {
   mode: "production",
@@ -8,7 +9,7 @@ export default {
     filename: "bundle.js",
     path: path.resolve(process.cwd(), "dist"),
     library: "commit-craft",
-    libraryTarget: "umd",
+    libraryTarget: "commonjs",
   },
   resolve: {
     extensions: [".ts", ".js"],
@@ -28,4 +29,10 @@ export default {
     ],
   },
   target: "node",
+  plugins: [
+    new webpack.BannerPlugin({
+      banner: "#!/usr/bin/env node",
+      raw: true,
+    }),
+  ],
 };
