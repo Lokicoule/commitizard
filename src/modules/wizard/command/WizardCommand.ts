@@ -18,6 +18,7 @@ type SubcommandOptions = {
   displayStagedFiles?: boolean;
   selectFiles?: boolean;
   strategy?: CommitConventionStrategyType;
+  withEmoji?: boolean;
 };
 
 type SubcommandFactoryOptions = {
@@ -52,7 +53,9 @@ export class WizardCommand extends Command {
         "Prompt user to select files to stage before prompting for commit message"
       )
       .option("-s, --strategy [strategy]", "Commit message strategy to use")
+      .option("-e, --with-emoji", "Add emoji to the configuration", false)
       .action(async (options: SubcommandOptions) => {
+        console.log(options);
         await this.handleAction(options);
       });
 
@@ -100,13 +103,9 @@ export class WizardCommand extends Command {
     strategy,
     displayStagedFiles = true,
     selectFiles = true,
-  }: {
-    config?: string;
-    strategy?: CommitConventionStrategyType;
-    displayStagedFiles?: boolean;
-    selectFiles?: boolean;
-  }): Promise<void> {
-    const configuration = this.configurationService.load(config);
+    withEmoji = false,
+  }: SubcommandOptions): Promise<void> {
+    const configuration = this.configurationService.load(config, withEmoji);
     const configurationManager =
       ConfigurationManagerFactory.create(configuration);
 
@@ -158,6 +157,7 @@ export class WizardCommand extends Command {
         "-S, --no-select-files",
         "Prompt user to select files to stage before prompting for commit message"
       )
+      .option("-e, --with-emoji", "Add emoji to commit message", false)
       .action(async (options: SubcommandOptions) => {
         await handleAction(options);
       });

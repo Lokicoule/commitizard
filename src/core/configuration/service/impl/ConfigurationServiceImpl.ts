@@ -12,10 +12,10 @@ export class ConfigurationServiceImpl implements ConfigurationService {
     this.filesystemAdapter = filesystemAdapter;
   }
 
-  load(configPath?: string, withEmojis = false): Configuration {
+  load(configPath?: string, withEmoji = false): Configuration {
     const userConfig = this.read(configPath);
 
-    if (withEmojis) {
+    if (withEmoji) {
       return this.merge(userConfig, defaultConfigWithEmojis);
     }
 

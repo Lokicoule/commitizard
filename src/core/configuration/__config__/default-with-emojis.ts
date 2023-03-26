@@ -21,7 +21,7 @@ export const defaultConfigWithEmojis = {
   conventional: {
     commitOptions: {
       template: {
-        type: "{{type}} ",
+        type: "{{type}}",
         scope: "({{scope}})",
         subject: ": {{subject}}",
         body: "\n\n{{body}}",

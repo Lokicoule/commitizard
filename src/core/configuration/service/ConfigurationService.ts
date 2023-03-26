@@ -1,7 +1,7 @@
 import { Configuration } from "../types";
 
 export interface ConfigurationService {
-  load(configPath?: string, withEmojis?: boolean): Configuration;
+  load(configPath?: string, withEmoji?: boolean): Configuration;
   merge(userConfig: Configuration, defaultConfig: Configuration): Configuration;
   read(configPath: string): Configuration;
   write(config: Configuration, configPath: string): void;
