@@ -1,6 +1,6 @@
 {
   "name": "commit-craft",
-  "version": "0.0.0",
+  "version": "0.0.1-0",
   "description": "CommitCraft is an AI-powered tool for generating clear and concise Git commit messages. It analyzes the diff of updated files in your Git repository to suggest relevant and meaningful messages that accurately describe your changes.",
   "main": "src/index.ts",
   "bin": {
