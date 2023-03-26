@@ -1,5 +1,5 @@
 import { ConfigurationValidator } from "../ConfigurationValidator";
-import { Configuration } from "../../types";
+import { Configuration, ConventionalCommitTemplate } from "../../types";
 
 export class ConfigurationValidatorImpl implements ConfigurationValidator {
   public validate(config: Configuration): void {
@@ -34,5 +34,37 @@ export class ConfigurationValidatorImpl implements ConfigurationValidator {
         "Configuration redGreenRefactor cliOptions types is empty"
       );
     }
+
+    if (
+      !this.templateAndTemplateOrderAreEqual(
+        Object.keys(config.conventional.commitOptions.template),
+        config.conventional.commitOptions.templateOrder
+      )
+    ) {
+      throw new Error(
+        "Configuration conventional commitOptions template and templateOrder are not equal"
+      );
+    }
+
+    if (
+      !this.templateAndTemplateOrderAreEqual(
+        Object.keys(config.redGreenRefactor.commitOptions.template),
+        config.redGreenRefactor.commitOptions.templateOrder
+      )
+    ) {
+      throw new Error(
+        "Configuration redGreenRefactor commitOptions template and templateOrder are not equal"
+      );
+    }
+  }
+
+  private templateAndTemplateOrderAreEqual(
+    template: string[],
+    templateOrder: string[]
+  ): boolean {
+    return (
+      template.length === templateOrder.length &&
+      template.every((value) => templateOrder.includes(value))
+    );
   }
 }

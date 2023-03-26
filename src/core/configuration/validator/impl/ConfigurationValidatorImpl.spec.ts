@@ -184,7 +184,7 @@ describe("ConfigurationValidatorImpl", () => {
       );
     });
 
-    it("should not throw an error if the configuration is valid", () => {
+    it("should throw an error if the template and templateOrder are not the same", () => {
       const config = {
         version: "1.0.0",
         settings: {
@@ -193,6 +193,10 @@ describe("ConfigurationValidatorImpl", () => {
         conventional: {
           commitOptions: {
             templateOrder: ["type", "scope", "subject"],
+            template: {
+              type: "{{type}}",
+              scope: "{{scope}}",
+            },
           },
           cliOptions: {
             types: ["feat", "fix"],
@@ -200,6 +204,82 @@ describe("ConfigurationValidatorImpl", () => {
         },
         redGreenRefactor: {
           commitOptions: {
+            templateOrder: ["type", "scope", "subject"],
+          },
+          cliOptions: {
+            types: ["feat", "fix"],
+          },
+        },
+      } as unknown as Configuration;
+
+      expect(() => configurationValidator.validate(config)).toThrowError(
+        "Configuration conventional commitOptions template and templateOrder are not equal"
+      );
+    });
+
+    it("should throw an error if the RedGreenRefactor template and templateOrder are not the same", () => {
+      const config = {
+        version: "1.0.0",
+        settings: {
+          maxViewFilesToShow: 10,
+        },
+        conventional: {
+          commitOptions: {
+            template: {
+              type: "{{type}}",
+              scope: "{{scope}}",
+              subject: "{{subject}}",
+            },
+            templateOrder: ["type", "scope", "subject"],
+          },
+          cliOptions: {
+            types: ["feat", "fix"],
+          },
+        },
+        redGreenRefactor: {
+          commitOptions: {
+            templateOrder: ["type", "scope", "subject"],
+            template: {
+              type: "{{type}}",
+            },
+          },
+          cliOptions: {
+            types: ["feat", "fix"],
+          },
+        },
+      } as unknown as Configuration;
+
+      expect(() => configurationValidator.validate(config)).toThrowError(
+        "Configuration redGreenRefactor commitOptions template and templateOrder are not equal"
+      );
+    });
+
+    it("should not throw an error if the configuration is valid", () => {
+      const config = {
+        version: "1.0.0",
+        settings: {
+          maxViewFilesToShow: 10,
+        },
+        conventional: {
+          commitOptions: {
+            template: {
+              type: "{{type}}",
+              scope: "{{scope}}",
+              subject: "{{subject}}",
+            },
+            templateOrder: ["type", "scope", "subject"],
+          },
+          cliOptions: {
+            types: ["feat", "fix"],
+          },
+        },
+        redGreenRefactor: {
+          commitOptions: {
+            template: {
+              type: "{{type}}",
+              scope: "{{scope}}",
+              subject: "{{subject}}",
+            },
             templateOrder: ["type", "scope", "subject"],
           },
           cliOptions: {
