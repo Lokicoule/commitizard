@@ -1,5 +1,7 @@
 # CommitCraft
 
+[![Coverage Status](https://coveralls.io/repos/github/Lokicoule/CommitCraft/badge.svg?branch=main)](https://coveralls.io/github/Lokicoule/CommitCraft?branch=main)
+
 The Commit Craft CLI is a tool that helps you generate better commit messages. It provides an interactive prompt that guides you through the process of writing a commit message, based on different strategies.
 
 The tool is built with TypeScript and uses Commander to create the CLI interface.
