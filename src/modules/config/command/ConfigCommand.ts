@@ -23,8 +23,6 @@ export class ConfigCommand extends Command {
         )
         .option("-e, --with-emoji", "Add emoji to the configuration", false)
         .action((options: { path: string; withEmoji: boolean }) => {
-          console.log("Initializing the application");
-          console.log(options);
           const configPath = options.path;
           const { ...safeConfig } = this.configurationService.load(
             undefined,
