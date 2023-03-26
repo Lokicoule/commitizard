@@ -56,23 +56,9 @@ export class WizardCommand extends Command {
         await this.handleAction(options);
       });
 
-    this.addDefaultCommand();
     this.addRedGreenRefactorCommand();
     this.addConventionalCommand();
     this.passThroughOptions();
-  }
-
-  private addDefaultCommand(): void {
-    this.addCommand(
-      this.createSubcommandFactory({
-        name: "default",
-        aliases: [],
-        description: "Commit message generator with default options",
-        handleAction: async (options) => {
-          await this.handleAction(options);
-        },
-      })
-    );
   }
 
   private addRedGreenRefactorCommand(): void {
