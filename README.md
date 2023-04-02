@@ -1,6 +1,6 @@
 # CommitCraft
 
-[![Coverage Status](https://coveralls.io/repos/github/Lokicoule/CommitCraft/badge.svg?branch=main)](https://coveralls.io/github/Lokicoule/CommitCraft?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/Lokicoule/CommitCraft/badge.svg?branch=main&kill_cache=1)](https://coveralls.io/github/Lokicoule/CommitCraft?branch=main)
 
 Commit Craft is a command-line tool that helps you generate high-quality commit messages with ease. With support for both conventional and red-green-refactor commit message patterns, it provides an interactive prompt that guides you through the process of writing a commit message and a flexible and customizable solution for your commit message needs.
 
