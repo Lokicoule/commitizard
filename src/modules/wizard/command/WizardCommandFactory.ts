@@ -3,7 +3,7 @@ import { ConfigurationServiceFactory } from "~/core/configuration";
 import { WizardCommand } from "./WizardCommand";
 
 export class WizardCommandFactory {
-  public static create(): WizardCommand {
+  public static create() {
     return new WizardCommand(
       ConfigurationServiceFactory.create(
         FilesystemAdapterFactory.createLocalFilesystemAdapter()

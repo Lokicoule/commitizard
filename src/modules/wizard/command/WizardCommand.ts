@@ -1,4 +1,4 @@
-import { Command } from "commander";
+import { Command, Argument, Option, ParsedOptions } from "commandzen";
 import { PromptAdapterFactory } from "~/adapters/prompt/PromptAdapterFactory";
 import {
   ConfigurationManagerFactory,
@@ -13,157 +13,105 @@ import { RedGreenRefactorStrategy } from "~/modules/red-green-refactor/strategy/
 import { WizardCommitBuilderFactory } from "../builder/WizardCommitBuilderFactory";
 import { WizardCommitHandlerChainBuilder } from "../handlers/WizardCommitHandlerBuilder";
 
-type SubcommandOptions = {
-  config?: string;
-  displayStagedFiles?: boolean;
-  selectFiles?: boolean;
-  strategy?: CommitConventionStrategyType;
-  withEmoji?: boolean;
-};
-
-type SubcommandFactoryOptions = {
-  name: string;
-  aliases: string[];
-  description: string;
-  handleAction: (options: SubcommandOptions) => Promise<void>;
+type Options = {
+  config: string;
+  "display-staged-files": boolean;
+  "select-files": boolean;
+  strategy: CommitConventionStrategyType;
+  "with-emoji": boolean;
 };
 
 export class WizardCommand extends Command {
   constructor(private readonly configurationService: ConfigurationService) {
-    super();
-    this.configure();
-  }
-
-  private configure(): void {
-    this.name("wizard")
-      .description("A CLI tool for generating commit messages")
-      .version("0.0.1")
-      .enablePositionalOptions()
-      .option(
-        "-c, --config <path>",
-        "Path to the configuration file",
-        DEFAULT_CONFIG_PATH
-      )
-      .option(
-        "-D, --no-display-staged-files",
-        "Display staged files before prompting for commit message"
-      )
-      .option(
-        "-S, --no-select-files",
-        "Prompt user to select files to stage before prompting for commit message"
-      )
-      .option("-s, --strategy <strategy>", "Commit message strategy to use")
-      .option(
-        "-e, --with-emoji",
-        "Use a relevant emoji as a prefix for the commit message type.",
-        false
-      )
-      .action(async (options: SubcommandOptions) => {
-        console.log(options);
-        await this.handleAction(options);
-      });
-
-    this.addRedGreenRefactorCommand();
-    this.addConventionalCommand();
-    this.passThroughOptions();
-  }
-
-  private addRedGreenRefactorCommand(): void {
-    this.addCommand(
-      this.createSubcommandFactory({
-        name: "red-green-refactor",
-        aliases: ["rg", "rgr", "tdd"],
-        description:
-          "Commit message generator following the red-green-refactor pattern",
-        handleAction: async (options) => {
-          await this.handleAction({
-            ...options,
-            strategy: CommitConventionStrategyType.RED_GREEN_REFACTOR,
-          });
-        },
-      })
-    );
-  }
-
-  private addConventionalCommand(): void {
-    this.addCommand(
-      this.createSubcommandFactory({
-        name: "conventional",
-        aliases: ["conv", "convention", "cv", "cc", "c"],
-        description:
-          "Commit message generator following the conventional pattern",
-        handleAction: async (options) => {
-          await this.handleAction({
-            ...options,
-            strategy: CommitConventionStrategyType.CONVENTIONAL,
-          });
-        },
-      })
-    );
-  }
-
-  private async handleAction({
-    config = DEFAULT_CONFIG_PATH,
-    strategy,
-    displayStagedFiles = true,
-    selectFiles = true,
-    withEmoji = false,
-  }: SubcommandOptions): Promise<void> {
-    const configuration = this.configurationService.load(config, withEmoji);
-    const configurationManager =
-      ConfigurationManagerFactory.create(configuration);
-
-    const gitManager = GitManagerFactory.create({
-      exclude: configurationManager.getExcludePaths(),
+    super({
+      name: "wizard",
+      description: "A CLI tool for generating commit messages",
     });
-
-    const promptManager = PromptManagerFactory.create(
-      PromptAdapterFactory.createClackPromptAdapter()
-    );
-
-    const wizardHandlerChainBuilder = new WizardCommitHandlerChainBuilder(
-      promptManager,
-      configurationManager,
-      gitManager,
-      new ConventionalStrategy(promptManager, configurationManager),
-      new RedGreenRefactorStrategy(promptManager, configurationManager)
-    )
-      .withDisplayStagedFilesHandler(displayStagedFiles)
-      .withCommitFileSelectionHandler(selectFiles)
-      .withCommitMessageGeneratorHandler(strategy)
-      .withCommitConfirmationHandler()
-      .withCommitRunnerHandler();
-
-    await wizardHandlerChainBuilder.buildAndExecute(
-      WizardCommitBuilderFactory.create()
-    );
+    this.configureOptions();
+    this.configureAction();
   }
 
-  private createSubcommandFactory({
-    name,
-    aliases,
-    description,
-    handleAction,
-  }: SubcommandFactoryOptions) {
-    return new Command(name)
-      .aliases(aliases)
-      .description(description)
-      .option(
-        "-c, --config [config]",
-        "Use a specific configuration file",
-        DEFAULT_CONFIG_PATH
-      )
-      .option(
-        "-D, --no-display-staged-files",
-        "Display staged files before prompting for commit message"
-      )
-      .option(
-        "-S, --no-select-files",
-        "Prompt user to select files to stage before prompting for commit message"
-      )
-      .option("-e, --with-emoji", "Add emoji to commit message", false)
-      .action(async (options: SubcommandOptions) => {
-        await handleAction(options);
+  private configureOptions(): void {
+    this.options = [
+      Option.create({
+        shortName: "-p",
+        longName: "--path",
+        description: "Path to the configuration file",
+        argument: Argument.create({
+          type: "string",
+          defaultValue: DEFAULT_CONFIG_PATH,
+        }),
+      }),
+      Option.create({
+        shortName: "-D",
+        longName: "--display-staged-files",
+        description: "Display staged files before prompting for commit message",
+      }),
+      Option.create({
+        shortName: "-S",
+        longName: "--select-files",
+        description:
+          "Prompt user to select files to stage before prompting for commit message",
+      }),
+      Option.create({
+        shortName: "-s",
+        longName: "--strategy",
+        description: "Commit message strategy to use",
+        argument: Argument.create({
+          type: "string",
+        }),
+      }),
+      Option.create({
+        shortName: "-e",
+        longName: "--with-emoji",
+        description:
+          "Use a relevant emoji as a prefix for the commit message type.",
+        argument: Argument.create({
+          type: "boolean",
+          defaultValue: false,
+        }),
+      }),
+    ];
+  }
+
+  private configureAction(): void {
+    this.action = async (options: ParsedOptions) => {
+      const {
+        config,
+        "display-staged-files": displayStagedFiles,
+        "select-files": selectFiles,
+        strategy,
+        "with-emoji": withEmoji,
+      } = options as Options;
+
+      const configuration = this.configurationService.load(config, withEmoji);
+      const configurationManager =
+        ConfigurationManagerFactory.create(configuration);
+
+      const gitManager = GitManagerFactory.create({
+        exclude: configurationManager.getExcludePaths(),
       });
+
+      const promptManager = PromptManagerFactory.create(
+        PromptAdapterFactory.createClackPromptAdapter()
+      );
+
+      const wizardHandlerChainBuilder = new WizardCommitHandlerChainBuilder(
+        promptManager,
+        configurationManager,
+        gitManager,
+        new ConventionalStrategy(promptManager, configurationManager),
+        new RedGreenRefactorStrategy(promptManager, configurationManager)
+      )
+        .withDisplayStagedFilesHandler(displayStagedFiles)
+        .withCommitFileSelectionHandler(selectFiles)
+        .withCommitMessageGeneratorHandler(strategy)
+        .withCommitConfirmationHandler()
+        .withCommitRunnerHandler();
+
+      await wizardHandlerChainBuilder.buildAndExecute(
+        WizardCommitBuilderFactory.create()
+      );
+    };
   }
 }

@@ -4,16 +4,23 @@
   "description": "CommitCraft is an AI-powered tool for generating clear and concise Git commit messages. It analyzes the diff of updated files in your Git repository to suggest relevant and meaningful messages that accurately describe your changes.",
   "main": "src/index.ts",
   "bin": {
-    "commit-craft": "dist/bundle.js"
+    "commit-craft": "dist/bundle.js",
+    "cc": "dist/bundle.js"
   },
   "scripts": {
-    "build": "webpack",
-    "start": "webpack && node dist/bundle.js",
+    "build": "webpack && chmod +x dist/bundle.js",
+    "start": "npm run build && node dist/bundle.js",
     "test": "jest",
     "type-check": "tsc --noEmit",
     "lint": "eslint --ext .ts src",
     "coverage": "jest --coverage && coveralls < coverage/lcov.info",
-    "release": "release-it"
+    "release": "webpack && release-it",
+    "release:patch": "release-it patch",
+    "release:minor": "release-it minor",
+    "release:major": "release-it major",
+    "release:prerelease": "release-it prerelease",
+    "release:prerelease:alpha": "release-it prerelease --preReleaseId alpha",
+    "release:prerelease:beta": "release-it prerelease --preReleaseId beta"
   },
   "repository": {
     "type": "git",
@@ -33,20 +40,19 @@
     "url": "https://github.com/Lokicoule/CommitCraft/issues"
   },
   "homepage": "https://github.com/Lokicoule/CommitCraft#readme",
-  "dependencies": {
-    "@clack/prompts": "^0.6.3",
-    "commander": "^10.0.0",
-    "picocolors": "^1.0.0"
-  },
   "devDependencies": {
+    "@clack/prompts": "^0.6.3",
     "@types/jest": "^29.4.0",
     "@types/node": "^18.14.6",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
+    "commander": "^10.0.0",
+    "commit-craft": "^0.0.1-1",
     "coveralls": "^3.1.1",
     "eslint": "^8.36.0",
     "jest": "^29.5.0",
     "nodemon": "^2.0.21",
+    "picocolors": "^1.0.0",
     "release-it": "^15.9.3",
     "rimraf": "^4.4.0",
     "ts-jest": "^29.0.5",
@@ -79,5 +85,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "dependencies": {
+    "commandzen": "^0.1.1"
   }
 }

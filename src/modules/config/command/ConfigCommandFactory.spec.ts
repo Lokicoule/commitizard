@@ -1,4 +1,4 @@
-import { ConfigCommand } from "../command/ConfigCommand";
+import { ConfigCommand } from "./ConfigCommand";
 import { ConfigCommandFactory } from "./ConfigCommandFactory";
 
 describe("ConfigCommandFactory", () => {
