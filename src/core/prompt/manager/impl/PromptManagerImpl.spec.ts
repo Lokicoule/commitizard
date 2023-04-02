@@ -173,4 +173,51 @@ describe("PromptManagerImpl", () => {
       expect(adapter.log.success).toHaveBeenCalledWith(message);
     });
   });
+
+  describe("multiSelectPaginate", () => {
+    it("should paginate options and call multiSelect with each chunk", async () => {
+      const options = {
+        message: "message",
+        options: [
+          { label: "label1", value: "value1" },
+          { label: "label2", value: "value2" },
+          { label: "label3", value: "value3" },
+          { label: "label4", value: "value4" },
+          { label: "label5", value: "value5" },
+        ],
+        pageSize: 2,
+        confirmMessage: "confirmMessage",
+      };
+
+      (
+        adapter.multiSelect as jest.MockedFunction<typeof adapter.multiSelect>
+      ).mockReturnValue(Promise.resolve([]));
+      (
+        adapter.confirm as jest.MockedFunction<typeof adapter.confirm>
+      ).mockReturnValue(Promise.resolve(true));
+
+      await sut.multiSelectPaginate(options);
+
+      expect(adapter.multiSelect).toHaveBeenCalledTimes(3);
+      expect(
+        (adapter.multiSelect as jest.MockedFunction<typeof adapter.multiSelect>)
+          .mock.calls[0][0].options
+      ).toEqual([
+        { label: "label1", value: "value1" },
+        { label: "label2", value: "value2" },
+      ]);
+      expect(
+        (adapter.multiSelect as jest.MockedFunction<typeof adapter.multiSelect>)
+          .mock.calls[1][0].options
+      ).toEqual([
+        { label: "label3", value: "value3" },
+        { label: "label4", value: "value4" },
+      ]);
+      expect(
+        (adapter.multiSelect as jest.MockedFunction<typeof adapter.multiSelect>)
+          .mock.calls[2][0].options
+      ).toEqual([{ label: "label5", value: "value5" }]);
+      expect(adapter.confirm).toHaveBeenCalledTimes(2);
+    });
+  });
 });
