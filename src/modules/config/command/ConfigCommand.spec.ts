@@ -17,6 +17,54 @@ describe("ConfigCommand", () => {
     } as unknown as ConfigurationService;
   });
 
+  const testCases = [
+    {
+      name: "backup",
+      options: {
+        backup: true,
+      },
+      methods: ["backup"] as const,
+    },
+    {
+      name: "restore",
+      options: {
+        restore: true,
+      },
+      methods: ["load", "backup", "write"] as const,
+    },
+    {
+      name: "delete",
+      options: {
+        delete: true,
+      },
+      methods: ["delete"] as const,
+    },
+    {
+      name: "install",
+      options: {
+        install: true,
+      },
+      methods: ["load", "write"] as const,
+    },
+  ];
+
+  testCases.forEach((testCase) => {
+    it(`should execute ConfigCommand action with ${testCase.name} option`, () => {
+      parsedOptions = {
+        path: "",
+        "with-emoji": false,
+        ...testCase.options,
+      } as unknown as ParsedOptions;
+
+      const configCommand = new ConfigCommand(configurationService);
+      configCommand.execute(parsedOptions);
+
+      testCase.methods.forEach((method) => {
+        expect(configurationService[method]).toHaveBeenCalled();
+      });
+    });
+  });
+
   it("should create a ConfigCommand instance", () => {
     const configCommand = new ConfigCommand(configurationService);
 
