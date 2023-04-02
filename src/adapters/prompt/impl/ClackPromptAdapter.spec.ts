@@ -168,4 +168,15 @@ describe("ClackPromptAdapter", () => {
     await adapter.outro("Outro message");
     expect(clackPrompts.outro).toHaveBeenCalledWith("Outro message");
   });
+
+  it("should abort confirm prompt", async () => {
+    const confirmOptions: Confirm = {
+      message: "Are you sure?",
+      defaultValue: true,
+      abortMessage: "Operation canceled",
+    };
+
+    (clackPrompts.confirm as jest.Mock).mockResolvedValue(false);
+    await expect(adapter.confirm(confirmOptions)).resolves.toBeFalsy();
+  });
 });
