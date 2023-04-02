@@ -66,4 +66,72 @@ describe("ConfigurationServiceImpl", () => {
 
     expect(config).toEqual({ ...defaultConfig, ...userConfig });
   });
+
+  it("should handle error when reading config file", () => {
+    (filesystemAdapter.exists as jest.Mock).mockReturnValue(true);
+    (filesystemAdapter.read as jest.Mock).mockImplementation(() => {
+      throw new Error("Read error");
+    });
+    const configurationService = new ConfigurationServiceImpl(
+      filesystemAdapter
+    );
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
+
+    const config = configurationService.load();
+
+    expect(config).toEqual(defaultConfig);
+    expect(consoleErrorSpy).toHaveBeenCalled();
+
+    consoleErrorSpy.mockRestore();
+  });
+
+  it("should handle error when writing config file", () => {
+    const configurationService = new ConfigurationServiceImpl(
+      filesystemAdapter
+    );
+    const config = defaultConfig;
+    (filesystemAdapter.write as jest.Mock).mockImplementation(() => {
+      throw new Error("Write error");
+    });
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
+
+    configurationService.write(config);
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
+
+    consoleErrorSpy.mockRestore();
+  });
+
+  it("should handle error when deleting config file", () => {
+    const configurationService = new ConfigurationServiceImpl(
+      filesystemAdapter
+    );
+    (filesystemAdapter.delete as jest.Mock).mockImplementation(() => {
+      throw new Error("Delete error");
+    });
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
+
+    configurationService.delete();
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
+
+    consoleErrorSpy.mockRestore();
+  });
+
+  it("should handle error when creating backup of config file", () => {
+    (filesystemAdapter.exists as jest.Mock).mockReturnValue(true);
+    (filesystemAdapter.rename as jest.Mock).mockImplementation(() => {
+      throw new Error("Backup error");
+    });
+    const configurationService = new ConfigurationServiceImpl(
+      filesystemAdapter
+    );
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
+
+    configurationService.backup();
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
+
+    consoleErrorSpy.mockRestore();
+  });
 });
