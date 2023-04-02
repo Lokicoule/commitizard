@@ -112,4 +112,75 @@ describe("GitManagerImpl", () => {
       "Test commit message",
     ]);
   });
+
+  it("should exclude files when getting staged files", async () => {
+    const output = "file1.txt\nfile3.txt\n";
+    mockProcess.stdout.push(output);
+    mockProcess.stdout.push(null);
+
+    options.exclude = ["file2.txt"];
+    gitManager = new GitManagerImpl(options);
+
+    const result = await gitManager.getStagedFiles();
+
+    expect(result).toEqual(["file1.txt", "file3.txt"]);
+    expect(ProcessBuilderFactory.create().addArgs).toHaveBeenCalledWith([
+      "diff",
+      "--cached",
+      "--name-only",
+      ":(exclude)file2.txt",
+    ]);
+  });
+
+  it("should exclude files when getting updated files", async () => {
+    const output = "file1.txt\nfile3.txt\n";
+    mockProcess.stdout.push(output);
+    mockProcess.stdout.push(null);
+
+    options.exclude = ["file2.txt"];
+    gitManager = new GitManagerImpl(options);
+
+    const result = await gitManager.getUpdatedFiles();
+
+    expect(result).toEqual(["file1.txt", "file3.txt"]);
+    expect(ProcessBuilderFactory.create().addArgs).toHaveBeenCalledWith([
+      "diff",
+      "--name-only",
+      "--diff-filter=M",
+      ":(exclude)file2.txt",
+    ]);
+  });
+
+  it("should exclude files when getting deleted files", async () => {
+    const output = "file1.txt\nfile3.txt\n";
+    mockProcess.stdout.push(output);
+    mockProcess.stdout.push(null);
+
+    options.exclude = ["file2.txt"];
+    gitManager = new GitManagerImpl(options);
+
+    const result = await gitManager.getDeletedFiles();
+
+    expect(result).toEqual(["file1.txt", "file3.txt"]);
+    expect(ProcessBuilderFactory.create().addArgs).toHaveBeenCalledWith([
+      "diff",
+      "--name-only",
+      "--diff-filter=D",
+      ":(exclude)file2.txt",
+    ]);
+  });
+
+  it("should handle error in streamToString", async () => {
+    const errorMessage = "Stream error";
+
+    process.nextTick(() => {
+      mockProcess.stdout.emit("error", new Error(errorMessage));
+    });
+
+    try {
+      await gitManager.getStagedFiles();
+    } catch (error: any) {
+      expect(error.message).toEqual(errorMessage);
+    }
+  });
 });
