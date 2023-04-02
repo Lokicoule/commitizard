@@ -179,4 +179,37 @@ describe("ClackPromptAdapter", () => {
     (clackPrompts.confirm as jest.Mock).mockResolvedValue(false);
     await expect(adapter.confirm(confirmOptions)).resolves.toBeFalsy();
   });
+
+  it("should abort and exit process on cancel", async () => {
+    const confirmOptions: Confirm = {
+      message: "Are you sure?",
+      defaultValue: true,
+      abortMessage: "Operation canceled",
+    };
+
+    (clackPrompts.confirm as jest.Mock).mockResolvedValue(
+      Symbol.for("clack.cancel")
+    );
+    (clackPrompts.isCancel as unknown as jest.Mock).mockReturnValue(true);
+    (clackPrompts.cancel as jest.Mock).mockImplementation(() => {});
+
+    const processExitSpy = jest
+      .spyOn(process, "exit")
+      .mockImplementation(() => {
+        throw new Error("process.exit called");
+      });
+
+    try {
+      await adapter.confirm(confirmOptions);
+    } catch (error: any) {
+      expect(error.message).toBe("process.exit called");
+    }
+
+    expect(clackPrompts.cancel).toHaveBeenCalledWith(
+      confirmOptions.abortMessage
+    );
+    expect(processExitSpy).toHaveBeenCalledWith(0);
+
+    processExitSpy.mockRestore();
+  });
 });
