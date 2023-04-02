@@ -1,3 +1,4 @@
+import { MAX_FILES_TO_SHOW } from "../../constants";
 import {
   Configuration,
   ConventionalCommitTemplate,
@@ -129,5 +130,42 @@ describe("ConfigurationManagerImpl", () => {
 
   it("should get exclude paths", () => {
     expect(configurationManager.getExcludePaths()).toEqual(["test1", "test2"]);
+  });
+
+  it("should selector red green refactor cli options types", () => {
+    const selectedType =
+      configurationManager.selectorRedGreenRefactorCliOptionsTypes("red");
+    expect(selectedType).toEqual({
+      value: "red",
+      label: "Red",
+      patterns: ["red"],
+    });
+
+    const nonExistentType =
+      configurationManager.selectorRedGreenRefactorCliOptionsTypes(
+        "non-existent"
+      );
+    expect(nonExistentType).toBeUndefined();
+  });
+
+  it("should return default value if maxViewFilesToShow is not set", () => {
+    const configWithoutMaxViewFilesToShow: Configuration = {
+      version: "1.0.0",
+      settings: {},
+      conventional: {
+        commitOptions: {} as ConventionalCommitTemplate,
+        cliOptions: {},
+      },
+      redGreenRefactor: {
+        commitOptions: {} as RedGreenRefactorCommitTemplate,
+        cliOptions: {},
+      },
+    } as unknown as Configuration;
+    const configurationManagerWithoutMaxViewFilesToShow =
+      new ConfigurationManagerImpl(configWithoutMaxViewFilesToShow);
+
+    expect(
+      configurationManagerWithoutMaxViewFilesToShow.getWizardMaxViewFilesToShow()
+    ).toBe(MAX_FILES_TO_SHOW);
   });
 });
