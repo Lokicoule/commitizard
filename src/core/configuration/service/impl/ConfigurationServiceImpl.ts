@@ -47,7 +47,6 @@ export class ConfigurationServiceImpl implements ConfigurationService {
     try {
       const configStr = JSON.stringify(config, null, 2);
       this.filesystemAdapter.write(configPath, configStr);
-      console.log(`Config written to ${configPath}`);
     } catch (err: unknown) {
       if (err instanceof Error)
         console.error(
@@ -73,7 +72,6 @@ export class ConfigurationServiceImpl implements ConfigurationService {
         const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
         const backupPath = `${configPath}.${timestamp}`;
         this.filesystemAdapter.rename(configPath, backupPath);
-        console.log(`Backup created at ${backupPath}`);
       }
     } catch (err: unknown) {
       if (err instanceof Error)
