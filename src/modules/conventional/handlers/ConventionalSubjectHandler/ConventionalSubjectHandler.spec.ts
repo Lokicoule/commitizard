@@ -72,4 +72,21 @@ describe("ConventionalSubjectHandler", () => {
       message: subject,
     });
   });
+
+  it("should prompt the user to enter a commit subject and set it in the commit builder", async () => {
+    const subject = "feat: add feature X";
+    mockPromptManager.text.mockResolvedValueOnce(subject);
+
+    await sut.handle(mockCommitBuilder);
+
+    expect(mockPromptManager.text).toHaveBeenCalledWith({
+      message: "Enter commit subject:",
+      abortMessage: "Commit subject selection aborted!",
+      validate: expect.any(Function),
+    });
+
+    expect(mockCommitBuilder.withSubject).toHaveBeenCalledWith({
+      message: subject,
+    });
+  });
 });
