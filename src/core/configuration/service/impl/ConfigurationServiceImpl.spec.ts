@@ -67,6 +67,22 @@ describe("ConfigurationServiceImpl", () => {
     expect(config).toEqual({ ...defaultConfig, ...userConfig });
   });
 
+  it("should not create a backup when config file does not exist", () => {
+    (filesystemAdapter.exists as jest.Mock).mockReturnValue(false);
+    const configurationService = new ConfigurationServiceImpl(
+      filesystemAdapter
+    );
+    const consoleLogSpy = jest.spyOn(console, "log").mockImplementation();
+    const renameSpy = jest.spyOn(filesystemAdapter, "rename");
+
+    configurationService.backup();
+
+    expect(renameSpy).not.toHaveBeenCalled();
+    expect(consoleLogSpy).not.toHaveBeenCalled();
+
+    consoleLogSpy.mockRestore();
+  });
+
   it("should handle error when reading config file", () => {
     (filesystemAdapter.exists as jest.Mock).mockReturnValue(true);
     (filesystemAdapter.read as jest.Mock).mockImplementation(() => {
