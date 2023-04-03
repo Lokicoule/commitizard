@@ -150,4 +150,43 @@ describe("WizardCommitMessageGeneratorHandler", () => {
     expect(mockConventionalStrategy.getCommitMessage).not.toHaveBeenCalled();
     expect(mockCommitBuilder.withMessage).toHaveBeenCalledWith(commitMessage);
   });
+
+  describe("handle with strategy", () => {
+    const commitMessage = "Test commit message - conventional";
+    const strategy = CommitConventionStrategyType.CONVENTIONAL;
+
+    let sut: WizardCommitMessageGeneratorHandler;
+
+    beforeEach(() => {
+      sut = new WizardCommitMessageGeneratorHandler(
+        mockPromptManager,
+        mockConfigurationManager,
+        mockGitManager,
+        mockConventionalStrategy,
+        mockRedGreenRefactorStrategy,
+        strategy
+      );
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it("should generate a commit message using the specified strategy", async () => {
+      const mockCommitBuilder = {
+        withMessage: jest.fn(),
+        withFiles: jest.fn(),
+        build: jest.fn(),
+      } satisfies WizardCommitBuilder;
+
+      await sut.handle(mockCommitBuilder);
+
+      expect(mockPromptManager.select).not.toHaveBeenCalled();
+      expect(mockConventionalStrategy.getCommitMessage).toHaveBeenCalled();
+      expect(
+        mockRedGreenRefactorStrategy.getCommitMessage
+      ).not.toHaveBeenCalled();
+      expect(mockCommitBuilder.withMessage).toHaveBeenCalledWith(commitMessage);
+    });
+  });
 });
