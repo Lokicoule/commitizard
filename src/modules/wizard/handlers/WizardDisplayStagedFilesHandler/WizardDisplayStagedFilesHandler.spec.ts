@@ -137,5 +137,38 @@ describe("WizardDisplayStagedFilesHandler", () => {
       expect(logInfoMock).toHaveBeenCalledWith(" file2.txt");
       expect(logInfoMock).toHaveBeenCalledWith(" file3.txt");
     });
+
+    it("should break when should show more is false", async () => {
+      const files = [
+        "file1.txt",
+        "file2.txt",
+        "file3.txt",
+        "file4.txt",
+        "file5.txt",
+        "file6.txt",
+      ];
+      const getStagedFilesMock = jest
+        .spyOn(mockGitManager, "getStagedFiles")
+        .mockResolvedValue(files);
+      const logInfoMock = jest.spyOn(mockPromptManager.log, "info");
+      mockConfigurationManager.getWizardMaxViewFilesToShow.mockReturnValue(4);
+      mockPromptManager.confirm.mockResolvedValue(false);
+
+      await sut.handle(mockWizardCommitBuilder);
+
+      expect(getStagedFilesMock).toHaveBeenCalled();
+      expect(logInfoMock).toHaveBeenCalledWith(
+        "Staged files [Page 1/2]: (max 4 files per page)"
+      );
+      expect(logInfoMock).toHaveBeenCalledWith(" file1.txt");
+      expect(logInfoMock).toHaveBeenCalledWith(" file2.txt");
+      expect(logInfoMock).toHaveBeenCalledWith(" file3.txt");
+      expect(logInfoMock).toHaveBeenCalledWith(" file4.txt");
+      expect(logInfoMock).not.toHaveBeenCalledWith(
+        "Staged files [Page 2/2]: (max 4 files per page)"
+      );
+      expect(logInfoMock).not.toHaveBeenCalledWith(" file5.txt");
+      expect(logInfoMock).not.toHaveBeenCalledWith(" file6.txt");
+    });
   });
 });
