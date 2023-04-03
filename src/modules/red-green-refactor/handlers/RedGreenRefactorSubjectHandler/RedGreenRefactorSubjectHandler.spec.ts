@@ -2,7 +2,10 @@ import { blue } from "picocolors";
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
 import { CommitBuilder } from "~/modules/commit";
-import { RedGreenRefactorSubjectHandler } from "./RedGreenRefactorSubjectHandler";
+import {
+  DEFAULT_COMMIT_SUBJECT,
+  RedGreenRefactorSubjectHandler,
+} from "./RedGreenRefactorSubjectHandler";
 
 describe("RedGreenRefactorSubjectHandler", () => {
   // Mocks
@@ -415,6 +418,67 @@ describe("RedGreenRefactorSubjectHandler", () => {
 
     expect(mockCommitBuilder.withSubject).toHaveBeenCalledWith({
       message: expectedSubject,
+    });
+  });
+
+  it("selectPlaceholders should throw an error if the placeholder is required and no value is entered", async () => {
+    jest.spyOn(mockCommitBuilder, "getType").mockReturnValue({
+      message: "GREEN",
+    });
+    jest
+      .spyOn(
+        mockConfigurationManager,
+        "selectorRedGreenRefactorCliOptionsTypes"
+      )
+      .mockReturnValue({
+        value: "GREEN",
+        label: "GREEN: Add new feature",
+        patterns: ["Add new feature {{requiredPlaceholder}}"],
+      });
+
+    (mockPromptManager.select as jest.Mock).mockResolvedValue(
+      "Add new feature {{requiredPlaceholder}}"
+    );
+    (mockPromptManager.text as jest.Mock).mockImplementation((options) => {
+      if (options.validate) {
+        const validationResult = options.validate("");
+        expect(validationResult).toEqual("requiredPlaceholder is required!");
+      }
+      return Promise.resolve("A valid commit subject");
+    });
+
+    await expect(sut.handle(mockCommitBuilder)).rejects.toThrow();
+  });
+
+  it("inputCustomCommitSubject should not call withSubject if no value is entered for the custom commit subject", async () => {
+    jest.spyOn(mockCommitBuilder, "getType").mockReturnValue({
+      message: "GREEN",
+    });
+    jest
+      .spyOn(
+        mockConfigurationManager,
+        "selectorRedGreenRefactorCliOptionsTypes"
+      )
+      .mockReturnValue({
+        value: "GREEN",
+        label: "GREEN: Add new feature",
+        patterns: ["Add new feature {{description}}"],
+      });
+
+    (mockPromptManager.select as jest.Mock).mockResolvedValue(
+      DEFAULT_COMMIT_SUBJECT
+    );
+    (mockPromptManager.text as jest.Mock).mockImplementation((options) => {
+      if (options.validate) {
+        const validationResult = options.validate("");
+        expect(validationResult).toEqual("Subject is required!");
+      }
+      return Promise.resolve("");
+    });
+
+    await sut.handle(mockCommitBuilder);
+    expect(mockCommitBuilder.withSubject).toBeCalledWith({
+      message: "",
     });
   });
 });
