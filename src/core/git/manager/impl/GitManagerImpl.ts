@@ -10,50 +10,23 @@ export class GitManagerImpl implements GitManager {
   }
 
   public async getStagedFiles(): Promise<string[]> {
-    const stagedFiles = await this.runGitCommand([
-      "diff",
-      "--cached",
-      "--name-only",
-      ...this.options.exclude.map((file) => `:(exclude)${file}`),
-    ]);
-    return stagedFiles.split("\n").filter(Boolean) ?? [];
+    return await this.getFiles(["diff", "--cached", "--name-only"]);
   }
 
   public async getCreatedFiles(): Promise<string[]> {
     const cmdResult = await this.runGitCommand(["status", "--porcelain"]);
-    const output = cmdResult.trim();
-    const lines = output.split(/\r?\n/);
-    const createdFiles: string[] = [];
-
-    for (const line of lines) {
-      if (line.startsWith("??")) {
-        createdFiles.push(line.substring(3));
-      }
-    }
-
-    return createdFiles;
+    const lines = cmdResult.trim().split(/\r?\n/);
+    return lines
+      .filter((line) => line.startsWith("??"))
+      .map((line) => line.substring(3));
   }
 
   public async getUpdatedFiles(): Promise<string[]> {
-    const updatedFiles = await this.runGitCommand([
-      "diff",
-      "--name-only",
-      "--diff-filter=M",
-      ...this.options.exclude.map((file) => `:(exclude)${file}`),
-    ]);
-
-    return updatedFiles.split("\n").filter(Boolean) ?? [];
+    return await this.getFiles(["diff", "--name-only", "--diff-filter=M"]);
   }
 
   public async getDeletedFiles(): Promise<string[]> {
-    const deletedFiles = await this.runGitCommand([
-      "diff",
-      "--name-only",
-      "--diff-filter=D",
-      ...this.options.exclude.map((file) => `:(exclude)${file}`),
-    ]);
-
-    return deletedFiles.split("\n").filter(Boolean) ?? [];
+    return await this.getFiles(["diff", "--name-only", "--diff-filter=D"]);
   }
 
   public async isGitRepository(): Promise<boolean> {
@@ -84,6 +57,18 @@ export class GitManagerImpl implements GitManager {
       .addArgs(command)
       .spawn("git");
     return await this.streamToString(process.stdout);
+  }
+
+  private async getFiles(command: string[]): Promise<string[]> {
+    const fileList = await this.runGitCommand([
+      ...command,
+      ...this.getExcludedOptions(),
+    ]);
+    return fileList.split("\n").filter(Boolean);
+  }
+
+  private getExcludedOptions(): string[] {
+    return this.options.exclude.map((file) => `:(exclude)${file}`);
   }
 
   private async streamToString(
