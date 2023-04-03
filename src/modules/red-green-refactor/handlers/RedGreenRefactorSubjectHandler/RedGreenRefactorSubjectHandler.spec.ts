@@ -301,4 +301,56 @@ describe("RedGreenRefactorSubjectHandler", () => {
       message: expectedSubject,
     });
   });
+
+  it("should handle placeholders with multiple options separated by a slash", async () => {
+    const expectedSubject = "Make test pass for optionA";
+    jest.spyOn(mockCommitBuilder, "getType").mockReturnValue({
+      message: "GREEN",
+    });
+    jest
+      .spyOn(
+        mockConfigurationManager,
+        "selectorRedGreenRefactorCliOptionsTypes"
+      )
+      .mockReturnValue({
+        value: "GREEN",
+        label: "GREEN: Make the test pass",
+        patterns: ["Make test pass for {{optionA/optionB}}"],
+      });
+
+    (mockPromptManager.select as jest.Mock).mockImplementation((options) => {
+      if (options.message === "Select commit subject:") {
+        return Promise.resolve("Make test pass for {{optionA/optionB}}");
+      }
+      if (options.message.includes("Select value for placeholder")) {
+        return Promise.resolve("optionA");
+      }
+    });
+
+    await sut.handle(mockCommitBuilder);
+
+    expect(mockPromptManager.select).toHaveBeenCalledWith({
+      message: "Select commit subject:",
+      options: [
+        {
+          label: "Use custom commit subject",
+          value: "No commit subject",
+        },
+        {
+          label: "Make test pass for {{optionA/optionB}}",
+          value: "Make test pass for {{optionA/optionB}}",
+        },
+      ],
+    });
+
+    expect(mockPromptManager.select).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: expect.stringContaining("Select value for placeholder"),
+      })
+    );
+
+    expect(mockCommitBuilder.withSubject).toHaveBeenCalledWith({
+      message: expectedSubject,
+    });
+  });
 });
