@@ -183,4 +183,28 @@ describe("GitManagerImpl", () => {
       expect(error.message).toEqual(errorMessage);
     }
   });
+
+  it("should return an empty array if no staged files are found", async () => {
+    mockProcess.stdout.push(null);
+
+    const result = await gitManager.getStagedFiles();
+
+    expect(result).toEqual([]);
+  });
+
+  it("should return an empty array if no updated files are found", async () => {
+    mockProcess.stdout.push(null);
+
+    const result = await gitManager.getUpdatedFiles();
+
+    expect(result).toEqual([]);
+  });
+
+  it("should return an empty array if no deleted files are found", async () => {
+    mockProcess.stdout.push(null);
+
+    const result = await gitManager.getDeletedFiles();
+
+    expect(result).toEqual([]);
+  });
 });
