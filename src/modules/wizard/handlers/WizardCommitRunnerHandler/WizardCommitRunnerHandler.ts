@@ -41,14 +41,6 @@ export class WizardCommitRunnerHandler extends BaseWizardCommitHandler {
             `\n${error.message}`
           )}`,
         });
-      } else {
-        this.promptManager.outro({
-          message: `${red(
-            "✖"
-          )} An unknown error occurred while creating the commit! ${red(
-            `\n${error}`
-          )}`,
-        });
       }
     }
   }
