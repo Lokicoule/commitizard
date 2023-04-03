@@ -263,25 +263,42 @@ describe("RedGreenRefactorSubjectHandler", () => {
     });
   });
 
-  it("should validate the commit subject", async () => {
-    const commitSubjectHandler = new RedGreenRefactorSubjectHandler(
-      mockPromptManager as unknown as PromptManager,
-      mockConfigurationManager
-    );
+  it("should handle subject without placeholders", async () => {
+    const expectedSubject = "Make test pass";
+    jest.spyOn(mockCommitBuilder, "getType").mockReturnValue({
+      message: "GREEN",
+    });
+    jest
+      .spyOn(
+        mockConfigurationManager,
+        "selectorRedGreenRefactorCliOptionsTypes"
+      )
+      .mockReturnValue({
+        value: "GREEN",
+        label: "GREEN: Make the test pass",
+        patterns: ["Make test pass"],
+      });
 
-    (mockPromptManager.text as jest.Mock).mockImplementation((options) => {
-      if (options.validate) {
-        expect(options.validate("")).toBe("Subject is required!");
-        expect(options.validate("A valid commit subject")).toBeUndefined();
-      }
-      return Promise.resolve("A valid commit subject");
+    jest.spyOn(mockPromptManager, "select").mockResolvedValue("Make test pass");
+
+    await sut.handle(mockCommitBuilder);
+
+    expect(mockPromptManager.select).toHaveBeenCalledWith({
+      message: "Select commit subject:",
+      options: [
+        {
+          label: "Use custom commit subject",
+          value: "No commit subject",
+        },
+        {
+          label: "Make test pass",
+          value: "Make test pass",
+        },
+      ],
     });
 
-    await commitSubjectHandler.handle(mockCommitBuilder);
-
-    expect(mockPromptManager.text).toHaveBeenCalled();
     expect(mockCommitBuilder.withSubject).toHaveBeenCalledWith({
-      message: "A valid commit subject",
+      message: expectedSubject,
     });
   });
 });
