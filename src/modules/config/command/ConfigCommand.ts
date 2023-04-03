@@ -42,7 +42,7 @@ export class ConfigCommand extends Command {
       Option.create({
         shortName: "-e",
         longName: "--with-emoji",
-        description: "Add emoji to the configuration",
+        description: "Use the emoji configuration file",
       }),
       Option.create({
         shortName: "-b",

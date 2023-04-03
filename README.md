@@ -1,16 +1,24 @@
 # CommitCraft
 
-[![Coverage Status](https://coveralls.io/repos/github/Lokicoule/CommitCraft/badge.svg?branch=main&kill_cache=1)](https://coveralls.io/github/Lokicoule/CommitCraft?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/Lokicoule/CommitCraft/badge.svg?branch=main)](https://coveralls.io/github/Lokicoule/CommitCraft?branch=main)
 
-Commit Craft is a command-line tool that helps you generate high-quality commit messages with ease. With support for both conventional and red-green-refactor commit message patterns, it provides an interactive prompt that guides you through the process of writing a commit message and a flexible and customizable solution for your commit message needs.
+Commit Craft is a powerful command-line tool designed to simplify the process of generating high-quality commit messages. It provides an interactive prompt that guides users through the process of writing a commit message, making it easy to adhere to conventional commit message guidelines. With support for two commit message strategies, including conventional and red-green-refactor, Commit Craft offers a flexible and customizable solution to meet your unique commit message needs. Plus, with the ability to customize the configuration file, users can tailor Commit Craft to fit their specific preferences and requirements.
 
 ## Installation
+
+Commit Craft is primarily designed to be used locally as part of a development workflow. It can be installed locally in your project by running:
+
+```sh
+npm install --save-dev commit-craft
+```
+
+Alternatively, you can install it globally so that it can be run from any git directory:
 
 ```sh
 npm install -g commit-craft
 ```
 
-## Usage
+## Usage TO COMPLETE
 
 To use the Commit Craft CLI tool, simply run the `commit-craft` command in your terminal.
 
@@ -20,47 +28,206 @@ commit-craft
 
 This will start the wizard in interactive mode, prompting you for the necessary information to generate a commit message. You can customize the behavior of the wizard using various command-line options and configuration file.
 
-### Options
+### Red-green-refactor
 
-- `-c, --config <path>`: Path to the configuration file. Default: ./commit-wizard.json.
-- `-D, --no-display-staged-files`: Do not display staged files before prompting for commit message.
-- `-S, --no-select-files`: Do not prompt user to select files to stage before prompting for commit message.
-- `-s, --strategy <strategy>`: Commit message strategy to use. Can be either conventional or red-green-refactor.
-- `-e, --with-emoji`: Prefix message with a relevant emoji.
+The Red-Green-Refactor commit type is used to describe the process of Test-Driven Development (TDD), where a test is written first, then the code is written to pass the test, and then the code is refactored to improve it without changing its functionality. Commit Craft supports Red-Green-Refactor commits and allows you to customize them based on your needs.
 
-### Examples
+## Commands
 
-Here are some examples of how to use the Commit Wizard:
+Commit Craft supports the following commands:
 
-```sh
-commit-craft --strategy conventional
-commit-craft -s conventional
+1. ### **_wizard_** _(default)_
+
+By default, Commit Craft will run the wizard command, which provides an interactive prompt to guide you through the process of generating a commit message.
+This command supports the following options:
+
+- `--path` or `-p`: Path to the configuration file (default is config.json).
+- `--display-staged-files` or `-D`: Display staged files before prompting for commit message.
+- `--select-files` or `-S`: Prompt user to select files to stage before prompting for commit message.
+- `--strategy` or `-s`: Commit message strategy to use (e.g. conventional or red-green-refactor).
+- `--with-emoji` or `-e`: Use a relevant emoji as a prefix for the commit message type.
+
+2. ### **_config_**
+
+The config command manages the application configuration. This command supports the following options:
+
+- `--path` or `-p`: Path to the configuration file (default is config.json).
+- `--install` or `-i`: Install the configuration file.
+- `--with-emoji` or `-e`: Use the emoji configuration file.
+- `--backup` or `-b`: Backup the configuration file.
+- `--restore` or `-r`: Restore the configuration file.
+- `--delete` or `-d`: Delete the configuration file.
+
+## Configuration
+
+Commit Craft is fully configurable via a JSON file. It can be generated into your project folder using the `commit-craft config -i` command.
+
+The configuration file includes settings for both **_conventional_** and **_red-green-refactor_** commit message patterns. Here is an example of the available configuration options:
+
+1. Conventional Commits
+
+- `types` (array): An array of commit **_types_**, with each item containing a `value` and `label`.
+  - `value` represents the type of the commit (e.g. feat, fix, docs).
+  - `label` is the text that will be displayed in the interactive prompt to describe the type of the commit.
+- `scopes` (array): An array of commit **_scopes_**, with each item containing a `value` and `label`.
+  - `value` represents the scope of the commit (e.g. core, ui, docs)
+  - `label` is the text that will be displayed in the interactive prompt to describe the scope of the commit.
+
+2. Red-Green-Refactor Commits
+
+- `types` (array): An array of commit **_types_**, with each item containing a `value`, `label`, and `patterns`.
+  - `value` represents the type of the commit (e.g. RED, GREEN, REFACTOR).
+  - `label` is the text that will be displayed in the interactive prompt to describe the type of the commit.
+  - `patterns` is an array of regular expressions or strings that will be used to match against the commit message when generating a commit. If a match is found, the commit type will be automatically set to the corresponding value.
+
+The configuration file can be edited to add, remove, or modify the available options for commit types and scopes. This allows you to fully customize the prompts and messages generated by Commit Craft to match your team's specific needs.
+
+## Example
+
+Here's an example configuration file:
+
+```json
+{
+  "version": "0.0.1",
+  "settings": {
+    "maxViewFilesToShow": 5,
+    "excludePaths": [
+      "package-lock.json",
+      "yarn.lock",
+      "yarn-error.log",
+      "pnpm-lock.yaml",
+      "**/yarn.lock",
+      "**/pnpm-lock.yaml",
+      "**/package-lock.json",
+      "**/yarn-error.log",
+      "**/yarn.lock.*",
+      "**/yarn.lock/*.log",
+      "**/.yarn/cache"
+    ]
+  },
+  "conventional": {
+    "commitOptions": {
+      "template": {
+        "type": "{{type}}",
+        "scope": "({{scope}})",
+        "subject": ": {{subject}}",
+        "body": "\n\n{{body}}",
+        "footer": "\n\n{{footer}}",
+        "breaking": "\n\nBREAKING CHANGE:\n {{breaking}}",
+        "refs": "\n\nRefs: {{refs}}"
+      },
+      "templateOrder": [
+        "type",
+        "scope",
+        "subject",
+        "body",
+        "breaking",
+        "footer",
+        "refs"
+      ]
+    },
+    "cliOptions": {
+      "types": [
+        {
+          "value": "feat",
+          "label": "feat: A new feature"
+        },
+        {
+          "value": "fix",
+          "label": "fix: A bug fix"
+        },
+        {
+          "value": "docs",
+          "label": "docs: Documentation only changes"
+        },
+        {
+          "value": "style",
+          "label": "style: Changes that do not affect the meaning of the code"
+        },
+        {
+          "value": "refactor",
+          "label": "refactor: A code change that neither fixes a bug nor adds a feature"
+        },
+        {
+          "value": "perf",
+          "label": "perf: A code change that improves performance"
+        },
+        {
+          "value": "test",
+          "label": "test: Adding missing tests or correcting existing tests"
+        },
+        {
+          "value": "ci",
+          "label": "ci: Changes to our CI configuration files and scripts"
+        },
+        {
+          "value": "chore",
+          "label": "chore: Changes to the build process or auxiliary tools and libraries"
+        }
+      ]
+    }
+  },
+  "redGreenRefactor": {
+    "commitOptions": {
+      "template": {
+        "type": "[{{type}}]: ",
+        "subject": "{{subject}}",
+        "body": "\n\n{{body}}"
+      },
+      "templateOrder": ["type", "subject", "body"]
+    },
+    "cliOptions": {
+      "types": [
+        {
+          "value": "RED",
+          "label": "RED: Write a test that fails",
+          "patterns": [
+            "Add failing test for {{feature}}",
+            "Write failing test for {{feature}}",
+            "Create failing test for {{feature}}",
+            "Implement failing test for {{feature}}",
+            "Introduce failing test for {{feature}}",
+            "Start failing test for {{feature}}",
+            "Begin failing test for {{feature}}",
+            "Initiate failing test for {{feature}}",
+            "Setup failing test for {{feature}}"
+          ]
+        },
+        {
+          "value": "GREEN",
+          "label": "GREEN: Make the test pass",
+          "patterns": [
+            "Make test pass for {{feature}}",
+            "Fix failing test for {{feature}}",
+            "Implement solution for {{feature}}",
+            "Add code to pass test for {{feature}}",
+            "Introduce passing test for {{feature}}",
+            "Start passing test for {{feature}}",
+            "Begin passing test for {{feature}}",
+            "Initiate passing test for {{feature}}",
+            "Setup passing test for {{feature}}"
+          ]
+        },
+        {
+          "value": "REFACTOR",
+          "label": "REFACTOR: Refactor the code without changing functionality",
+          "patterns": [
+            "Refactor {{feature}} to improve {{performance/maintainability/readability/usability}}",
+            "Restructure {{feature}} to {{simplify/consolidate/clarify}}",
+            "Extract {{feature}} to {{separate file/module}}",
+            "Inline {{feature}}",
+            "Rename {{feature}} to {{new name}}",
+            "Move {{feature}} to {{new location}}",
+            "Reorganize {{feature}} to {{streamline/improve}}",
+            "Simplify {{feature}} by {{removing unnecessary code/logic}}",
+            "Optimize {{feature}} by {{reducing complexity/improving efficiency}}",
+            "Improve {{feature}} by {{cleaning up/rewriting}} code for {{clarity/consistency}}"
+          ]
+        }
+      ]
+    }
+  }
+}
 ```
 
-Similarly, to use the red-green-refactor convention, you would run:
-
-```sh
-commit-craft --strategy red-green-refactor
-commit-craft -s red-green-refactor
-```
-
-You can also specify a configuration file to use with the `--config` option:
-
-```sh
-commit-craft --config ./my-commit-wizard-config.json
-commit-wizard -c ./my-commit-wizard-config.json
-```
-
-This will use the configuration file at _./my-commit-wizard-config.json_ instead of the default configuration file.
-
-The Commit Craft CLI tool also offers some additional options, such as displaying staged files before prompting for a commit message (`--display-staged-files`), prompting the user to select files to stage before prompting for a commit message (`--select-files`) and adding a relevant emoji as a prefix to the commit message (`--with-emoji`).
-
-For more information on how to use the Commit Wizard CLI tool, run:
-
-```sh
-commit-craft --help
-```
-
-## Contributing
-
-Contributions to the Commit Craft are welcome! To contribute, please fork the repository and submit a pull request.
+## Advanced Usage

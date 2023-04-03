@@ -85,11 +85,7 @@
         "subject": "{{subject}}",
         "body": "\n\n{{body}}"
       },
-      "templateOrder": [
-        "type",
-        "subject",
-        "body"
-      ]
+      "templateOrder": ["type", "subject", "body"]
     },
     "cliOptions": {
       "types": [

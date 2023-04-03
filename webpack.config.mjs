@@ -24,7 +24,7 @@ export default {
       {
         test: /\.ts$/,
         use: "ts-loader",
-        exclude: /node_modules/, // TODO: add __config__ to exclude
+        exclude: /node_modules/,
       },
     ],
   },
