@@ -353,4 +353,68 @@ describe("RedGreenRefactorSubjectHandler", () => {
       message: expectedSubject,
     });
   });
+
+  it("should handle empty placeholder values", async () => {
+    const expectedSubject = "Add new feature My custom subject";
+    jest.spyOn(mockCommitBuilder, "getType").mockReturnValue({
+      message: "GREEN",
+    });
+    jest
+      .spyOn(
+        mockConfigurationManager,
+        "selectorRedGreenRefactorCliOptionsTypes"
+      )
+      .mockReturnValue({
+        value: "GREEN",
+        label: "GREEN: Add new feature",
+        patterns: ["Add new feature {{description}}"],
+      });
+
+    (mockPromptManager.select as jest.Mock).mockImplementation((options) => {
+      if (options.message === "Select commit subject:") {
+        return Promise.resolve("Add new feature {{description}}");
+      }
+      if (options.message.includes("Select value for placeholder")) {
+        return Promise.resolve("");
+      }
+    });
+
+    await sut.handle(mockCommitBuilder);
+
+    expect(mockCommitBuilder.withSubject).toHaveBeenCalledWith({
+      message: expectedSubject,
+    });
+  });
+
+  it("should handle non-empty placeholder values", async () => {
+    const expectedSubject = "Add new feature My custom subject";
+    jest.spyOn(mockCommitBuilder, "getType").mockReturnValue({
+      message: "GREEN",
+    });
+    jest
+      .spyOn(
+        mockConfigurationManager,
+        "selectorRedGreenRefactorCliOptionsTypes"
+      )
+      .mockReturnValue({
+        value: "GREEN",
+        label: "GREEN: Add new feature",
+        patterns: ["Add new feature {{description}}"],
+      });
+
+    (mockPromptManager.select as jest.Mock).mockImplementation((options) => {
+      if (options.message === "Select commit subject:") {
+        return Promise.resolve("Add new feature {{description}}");
+      }
+      if (options.message.includes("Select value for placeholder")) {
+        return Promise.resolve("My custom subject");
+      }
+    });
+
+    await sut.handle(mockCommitBuilder);
+
+    expect(mockCommitBuilder.withSubject).toHaveBeenCalledWith({
+      message: expectedSubject,
+    });
+  });
 });
