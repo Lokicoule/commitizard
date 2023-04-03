@@ -89,4 +89,26 @@ describe("ConventionalSubjectHandler", () => {
       message: subject,
     });
   });
+
+  it("should validate the commit subject", async () => {
+    const commitSubjectHandler = new ConventionalSubjectHandler(
+      mockPromptManager as unknown as PromptManager,
+      mockConfigurationManager
+    );
+
+    (mockPromptManager.text as jest.Mock).mockImplementation((options) => {
+      if (options.validate) {
+        expect(options.validate("")).toBe("Subject is required!");
+        expect(options.validate("A valid commit subject")).toBeUndefined();
+      }
+      return Promise.resolve("A valid commit subject");
+    });
+
+    await commitSubjectHandler.handle(mockCommitBuilder);
+
+    expect(mockPromptManager.text).toHaveBeenCalled();
+    expect(mockCommitBuilder.withSubject).toHaveBeenCalledWith({
+      message: "A valid commit subject",
+    });
+  });
 });

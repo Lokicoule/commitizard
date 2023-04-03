@@ -1,9 +1,8 @@
+import { blue } from "picocolors";
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
 import { CommitBuilder } from "~/modules/commit";
 import { RedGreenRefactorSubjectHandler } from "./RedGreenRefactorSubjectHandler";
-import { blue } from "picocolors";
-import { ConventionalSubjectHandler } from "~/modules/conventional/handlers/ConventionalSubjectHandler/ConventionalSubjectHandler";
 
 describe("RedGreenRefactorSubjectHandler", () => {
   // Mocks
@@ -265,7 +264,7 @@ describe("RedGreenRefactorSubjectHandler", () => {
   });
 
   it("should validate the commit subject", async () => {
-    const commitSubjectHandler = new ConventionalSubjectHandler(
+    const commitSubjectHandler = new RedGreenRefactorSubjectHandler(
       mockPromptManager as unknown as PromptManager,
       mockConfigurationManager
     );
