@@ -59,7 +59,7 @@ describe("WizardCommand", () => {
 
   it("should execute WizardCommand action", async () => {
     const wizardCommand = new WizardCommand(configurationService);
-    wizardCommand.execute(parsedOptions);
+    wizardCommand.execute(parsedOptions as any);
 
     expect(ConfigurationManagerFactory.create).toHaveBeenCalled();
     expect(GitManagerFactory.create).toHaveBeenCalled();

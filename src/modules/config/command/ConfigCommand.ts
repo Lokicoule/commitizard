@@ -1,4 +1,4 @@
-import { Argument, Command, Option, ParsedOptions } from "commandzen";
+import { Argument, Command, Option } from "commandzen";
 import {
   ConfigurationService,
   DEFAULT_CONFIG_PATH,
@@ -13,7 +13,7 @@ type Options = {
   install: boolean;
 };
 
-export class ConfigCommand extends Command {
+export class ConfigCommand extends Command<Options> {
   constructor(private readonly configurationService: ConfigurationService) {
     super({
       name: "config",
@@ -63,7 +63,7 @@ export class ConfigCommand extends Command {
   }
 
   private configureAction(): void {
-    this.action = (options: ParsedOptions) => {
+    this.action = (options: Options) => {
       const {
         path,
         "with-emoji": withEmoji,
@@ -71,7 +71,7 @@ export class ConfigCommand extends Command {
         restore,
         delete: deleteConfig,
         install,
-      } = options as Options;
+      } = options;
 
       if (backup) {
         this.configurationService.backup(path);

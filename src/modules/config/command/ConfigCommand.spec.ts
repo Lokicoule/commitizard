@@ -54,10 +54,10 @@ describe("ConfigCommand", () => {
         path: "",
         "with-emoji": false,
         ...testCase.options,
-      } as unknown as ParsedOptions;
+      } as any;
 
       const configCommand = new ConfigCommand(configurationService);
-      configCommand.execute(parsedOptions);
+      configCommand.execute(parsedOptions as any);
 
       testCase.methods.forEach((method) => {
         expect(configurationService[method]).toHaveBeenCalled();
@@ -82,7 +82,7 @@ describe("ConfigCommand", () => {
     };
 
     const configCommand = new ConfigCommand(configurationService);
-    configCommand.execute(parsedOptions);
+    configCommand.execute(parsedOptions as any);
 
     expect(configurationService.backup).toHaveBeenCalled();
   });
@@ -98,7 +98,7 @@ describe("ConfigCommand", () => {
     };
 
     const configCommand = new ConfigCommand(configurationService);
-    configCommand.execute(parsedOptions);
+    configCommand.execute(parsedOptions as any);
 
     expect(configurationService.load).toHaveBeenCalled();
     expect(configurationService.backup).toHaveBeenCalled();
@@ -116,7 +116,7 @@ describe("ConfigCommand", () => {
     };
 
     const configCommand = new ConfigCommand(configurationService);
-    configCommand.execute(parsedOptions);
+    configCommand.execute(parsedOptions as any);
 
     expect(configurationService.delete).toHaveBeenCalled();
   });
@@ -132,7 +132,7 @@ describe("ConfigCommand", () => {
     };
 
     const configCommand = new ConfigCommand(configurationService);
-    configCommand.execute(parsedOptions);
+    configCommand.execute(parsedOptions as any);
 
     expect(configurationService.load).toHaveBeenCalled();
     expect(configurationService.write).toHaveBeenCalled();
@@ -150,7 +150,7 @@ describe("ConfigCommand", () => {
 
     const configCommand = new ConfigCommand(configurationService);
     const consoleInfoSpy = jest.spyOn(console, "info").mockImplementation();
-    configCommand.execute(parsedOptions);
+    configCommand.execute(parsedOptions as any);
 
     expect(consoleInfoSpy).toHaveBeenCalled();
     consoleInfoSpy.mockRestore();

@@ -1,4 +1,4 @@
-import { Command, Argument, Option, ParsedOptions } from "commandzen";
+import { Argument, Command, Option } from "commandzen";
 import { PromptAdapterFactory } from "~/adapters/prompt/PromptAdapterFactory";
 import {
   ConfigurationManagerFactory,
@@ -21,7 +21,7 @@ type Options = {
   "with-emoji": boolean;
 };
 
-export class WizardCommand extends Command {
+export class WizardCommand extends Command<Options> {
   constructor(private readonly configurationService: ConfigurationService) {
     super({
       name: "wizard",
@@ -75,14 +75,14 @@ export class WizardCommand extends Command {
   }
 
   private configureAction(): void {
-    this.action = async (options: ParsedOptions) => {
+    this.action = async (options: Options) => {
       const {
         config,
         "display-staged-files": displayStagedFiles,
         "select-files": selectFiles,
         strategy,
         "with-emoji": withEmoji,
-      } = options as Options;
+      } = options;
 
       const configuration = this.configurationService.load(config, withEmoji);
       const configurationManager =
