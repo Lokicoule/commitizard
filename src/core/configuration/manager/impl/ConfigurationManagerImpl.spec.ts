@@ -321,4 +321,25 @@ describe("ConfigurationManagerImpl", () => {
       configurationManagerWithoutRedGreenRefactorCliOptionsTypes.getRedGreenRefactorCliOptionsTypes()
     ).toEqual([]);
   });
+
+  it("should return default value if exclude paths is not set", () => {
+    const configWithoutExcludeFiles: Configuration = {
+      version: "1.0.0",
+      settings: {},
+      conventional: {
+        commitOptions: {} as ConventionalCommitTemplate,
+        cliOptions: {},
+      },
+      redGreenRefactor: {
+        commitOptions: {} as RedGreenRefactorCommitTemplate,
+        cliOptions: {},
+      },
+    } as unknown as Configuration;
+    const configurationManagerWithoutExcludeFiles =
+      new ConfigurationManagerImpl(configWithoutExcludeFiles);
+
+    expect(configurationManagerWithoutExcludeFiles.getExcludePaths()).toEqual(
+      []
+    );
+  });
 });
