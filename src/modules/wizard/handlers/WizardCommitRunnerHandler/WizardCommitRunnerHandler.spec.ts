@@ -151,5 +151,25 @@ describe("WizardCommitRunnerHandler", () => {
         ),
       });
     });
+
+    it("should display an error message if an error occurs while staging the files", async () => {
+      const errorMessage = "An error occurred while staging the files";
+      const files = ["file1", "file2"];
+      mockGitManager.isGitRepository.mockResolvedValue(true);
+      mockGitManager.hasStagedFiles.mockResolvedValue(false);
+      mockGitManager.stageFiles.mockRejectedValue(new Error(errorMessage));
+      mockWizardCommitBuilder.build.mockReturnValue({
+        message: "",
+        files,
+      });
+
+      await sut.handle(mockWizardCommitBuilder);
+
+      expect(mockPromptManager.outro).toHaveBeenCalledWith({
+        message: expect.stringContaining(
+          "An error occurred while staging the files"
+        ),
+      });
+    });
   });
 });
