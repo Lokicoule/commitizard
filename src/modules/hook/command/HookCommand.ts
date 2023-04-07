@@ -89,17 +89,8 @@ npx commit-craft wizard
         return;
       }
     } else {
-      // Uninstall pre-commit hook
       const preCommitSymlinkPath = `.git/hooks/pre-commit`;
       await fs.rm(preCommitSymlinkPath);
-
-      // Uninstall prepare-commit-msg hook
-      const prepareCommitMsgSymlinkPath = `.git/hooks/prepare-commit-msg`;
-      await fs.rm(prepareCommitMsgSymlinkPath);
-      /* if (realpath !== hookPath) {
-        console.warn("Hook is not installed");
-        return;
-      } */
     }
 
     /*     await fs.rm(symlinkPath);
