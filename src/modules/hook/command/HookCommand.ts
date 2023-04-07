@@ -1,4 +1,4 @@
-import { Command, Option } from "commandzen";
+import { Command } from "commandzen";
 import * as fs from "fs/promises";
 import * as path from "path";
 import { pathToFileURL } from "url";
@@ -9,80 +9,43 @@ export interface HookCommandOptions {
   uninstall: boolean;
 }
 
-export class HookCommand extends Command<HookCommandOptions> {
-  private hookName = "pre-commit";
-  private symlinkPath = `.git/hooks/${this.hookName}`;
-  private hookPath = path.resolve(process.cwd(), "dist/bundle.js");
-  private isWindows = process.platform === "win32";
-  private windowsHook = `#!/usr/bin/env node
-  import(${JSON.stringify(pathToFileURL(this.hookPath))})
-  `.trim();
+export const hookCommandFactory = () => {
+  const hookName = "prepare-commit-msg";
+  const symlinkPath = `.git/hooks/${hookName}`;
+  const hookPath = path.resolve(process.cwd(), "dist/bundle.js");
+  const isWindows = process.platform === "win32";
+  const windowsHook = `#!/usr/bin/env node
+import(${JSON.stringify(pathToFileURL(hookPath))})
+`.trim();
 
-  private unixHook = `#!/bin/sh
+  const unixHook = `#!/bin/sh
+exec < /dev/tty
+npx commit-craft wizard
+`.trim();
+  const preCommitHook = `#!/bin/sh
 exec < /dev/tty
 npx commit-craft wizard
 `.trim();
 
-  private gitManager = GitManagerFactory.create({
+  const gitManager = GitManagerFactory.create({
     exclude: [],
   });
 
-  constructor() {
-    super({
-      name: "hook",
-      description: "Manage the application hooks",
-    });
-    this.configureAction();
-    this.configureOptions();
-  }
-
-  private configureOptions(): void {
-    this.options = [
-      Option.create({
-        shortName: "-i",
-        longName: "--install",
-        description: "Install the hooks",
-      }),
-      Option.create({
-        shortName: "-u",
-        longName: "--uninstall",
-        description: "Uninstall the hooks",
-      }),
-    ];
-  }
-
-  private configureAction(): void {
-    this.action = async (options: HookCommandOptions) => {
-      if (!(await this.gitManager.isGitRepository())) {
-        console.error("This is not a git repository");
-        process.exit(1);
-      }
-
-      if (options.install) {
-        await this.installHook();
-      } else if (options.uninstall) {
-        await this.uninstallHook();
-      } else {
-        console.log("Please specify --install or --uninstall.");
-      }
-    };
-  }
-
-  private async installHook(): Promise<void> {
+  const installHook = async () => {
     try {
-      await fs.access(this.symlinkPath);
+      await fs.access(symlinkPath);
 
-      const realpath = await fs.realpath(this.symlinkPath).catch(() => {
+      const realpath = await fs.realpath(symlinkPath).catch(() => {
         console.warn("A different hook seems to be installed");
       });
       console.log(realpath);
-      if (realpath === this.hookPath) {
+      if (realpath === hookPath) {
         console.warn("The hook is already installed");
         return;
       }
 
       throw new Error(
-        `A different ${this.hookName} hook seems to be installed. Please remove it before installing.`
+        `A different ${hookName} hook seems to be installed. Please remove it before installing.`
       );
     } catch (err: any) {
       if (err.code !== "ENOENT") {
@@ -91,13 +54,15 @@ npx commit-craft wizard
       }
     }
     try {
-      await fs.mkdir(path.dirname(this.symlinkPath), { recursive: true });
+      await fs.mkdir(path.dirname(symlinkPath), { recursive: true });
 
-      if (this.isWindows) {
-        await fs.writeFile(this.symlinkPath, this.windowsHook);
+      if (isWindows) {
+        await fs.writeFile(symlinkPath, windowsHook);
       } else {
-        await fs.writeFile(this.symlinkPath, this.unixHook);
-        await fs.chmod(this.symlinkPath, 0o755);
+        // Install pre-commit hook
+        const preCommitSymlinkPath = `.git/hooks/pre-commit`;
+        await fs.writeFile(preCommitSymlinkPath, preCommitHook);
+        await fs.chmod(preCommitSymlinkPath, 0o755);
       }
 
       console.log("Hook installed");
@@ -105,11 +70,11 @@ npx commit-craft wizard
       console.error(err.message);
       process.exit(1);
     }
-  }
+  };
 
-  private async uninstallHook(): Promise<void> {
+  const uninstallHook = async () => {
     try {
-      await fs.access(this.symlinkPath);
+      await fs.access(symlinkPath);
     } catch (err: any) {
       if (err.code === "ENOENT") {
         console.warn("Hook is not installed");
@@ -117,21 +82,56 @@ npx commit-craft wizard
       }
     }
 
-    if (this.isWindows) {
-      const scriptContent = await fs.readFile(this.symlinkPath, "utf8");
-      if (scriptContent !== this.windowsHook) {
+    if (isWindows) {
+      const scriptContent = await fs.readFile(symlinkPath, "utf8");
+      if (scriptContent !== windowsHook) {
         console.warn("Hook is not installed");
         return;
       }
     } else {
-      const realpath = await fs.realpath(this.symlinkPath);
-      if (realpath !== this.hookPath) {
+      // Uninstall pre-commit hook
+      const preCommitSymlinkPath = `.git/hooks/pre-commit`;
+      await fs.rm(preCommitSymlinkPath);
+
+      // Uninstall prepare-commit-msg hook
+      const prepareCommitMsgSymlinkPath = `.git/hooks/prepare-commit-msg`;
+      await fs.rm(prepareCommitMsgSymlinkPath);
+      /* if (realpath !== hookPath) {
         console.warn("Hook is not installed");
         return;
-      }
+      } */
     }
 
-    await fs.rm(this.symlinkPath);
-    console.log("Hook uninstalled");
-  }
-}
+    /*     await fs.rm(symlinkPath);
+     */ console.log("Hook uninstalled");
+  };
+
+  const action = async (options: HookCommandOptions) => {
+    if (!(await gitManager.isGitRepository())) {
+      console.error("This is not a git repository");
+      process.exit(1);
+    }
+
+    if (options.install) {
+      await installHook();
+    } else if (options.uninstall) {
+      await uninstallHook();
+    } else {
+      console.log("Please specify --install or --uninstall.");
+    }
+  };
+
+  return Command.create({
+    name: "hook",
+    description: "Manage the application hooks",
+  })
+    .addOption({
+      flag: "-i, --install",
+      description: "Install the hooks",
+    })
+    .addOption({
+      flag: "-u, --uninstall",
+      description: "Uninstall the hooks",
+    })
+    .registerAction(action);
+};

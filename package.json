@@ -8,8 +8,10 @@
     "cc": "dist/bundle.js"
   },
   "scripts": {
-    "build": "webpack && chmod +x dist/bundle.js",
+    "build": "npm run clean && webpack && chmod +x dist/bundle.js",
+    "clean": "rm -rf dist",
     "start": "npm run build && node dist/bundle.js",
+    "dev": "npm run build && nodemon dist/bundle.js",
     "test": "jest",
     "type-check": "tsc --noEmit",
     "lint": "eslint --ext .ts src",
@@ -89,6 +91,6 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "commandzen": "^0.2.0"
+    "commandzen": "^0.3.1"
   }
 }

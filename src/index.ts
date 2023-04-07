@@ -1,16 +1,18 @@
-import { CLI } from "commandzen";
-import { ConfigCommandFactory } from "./modules/config/command/ConfigCommandFactory";
-import { HookCommand } from "./modules/hook/command/HookCommand";
-import { WizardCommandFactory } from "./modules/wizard/command/WizardCommandFactory";
+import { CliBuilder } from "commandzen";
+import { configCommandFactory } from "./modules/config";
+import { hookCommandFactory } from "./modules/hook/command/HookCommand";
+import { wizardCommandFactory } from "./modules/wizard/command/wizardCommandFactory";
 
 function main() {
-  const cli = new CLI();
+  const cli = CliBuilder.create({
+    name: "commit-craft",
+    description: "A CLI tool for generating commit messages",
+  })
+    .setDefaultCommand(wizardCommandFactory())
+    .addCommand(configCommandFactory())
+    .addCommand(hookCommandFactory());
 
-  cli.registerDefaultCommand(WizardCommandFactory.create());
-  cli.registerCommand(ConfigCommandFactory.create());
-  cli.registerHelpCommand();
-  cli.registerCommand(new HookCommand());
-  cli.parse(process.argv.slice(2));
+  cli.parse();
 }
 
 main();

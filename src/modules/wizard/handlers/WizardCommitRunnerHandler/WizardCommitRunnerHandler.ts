@@ -28,7 +28,6 @@ export class WizardCommitRunnerHandler extends BaseWizardCommitHandler {
       }
 
       await this.gitManager.commit(commit.message);
-
       this.promptManager.outro({
         message: `${bgGreen("✔ Commit created successfully!")}`,
       });

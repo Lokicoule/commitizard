@@ -49,7 +49,8 @@ export class GitManagerImpl implements GitManager {
   }
 
   public async commit(message: string): Promise<void> {
-    await this.runGitCommand(["commit", "-m", message]);
+    /*     await this.runGitCommand(["commit", "-m", message]);
+     */ await this.runGitCommand(["commit", "-F", ".git/COMMIT_EDITMSG"]);
   }
 
   public async runGitCommand(command: string[]): Promise<string> {

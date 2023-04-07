@@ -5,14 +5,5 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": { "project": ["./tsconfig.build.json"] },
   "plugins": ["@typescript-eslint"],
-  "rules": {
-    "@typescript-eslint/strict-boolean-expressions": [
-      2,
-      {
-        "allowString": false,
-        "allowNumber": false
-      }
-    ]
-  },
   "ignorePatterns": ["src/**/*.spec.ts"]
 }
