@@ -1,4 +1,5 @@
 import { GitManagerFactory } from "./GitManagerFactory";
+import { GitHookManagerImpl } from "./impl/GitHookManagerImpl";
 import { GitManagerImpl } from "./impl/GitManagerImpl";
 
 describe("GitManagerFactory", () => {
@@ -8,5 +9,11 @@ describe("GitManagerFactory", () => {
         exclude: [],
       })
     ).toBeInstanceOf(GitManagerImpl);
+  });
+
+  it("should create a GitHookManager", () => {
+    expect(GitManagerFactory.createHookManager()).toBeInstanceOf(
+      GitHookManagerImpl
+    );
   });
 });

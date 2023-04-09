@@ -1,7 +1,20 @@
-import { GitManagerImpl } from "./GitManagerImpl";
+import { ChildProcessWithoutNullStreams } from "child_process";
+import { promises as fs } from "fs";
+import { join } from "path";
+import { COMMIT_MSG_TMP_PATH } from "~/core/configuration";
 import { ProcessBuilderFactory } from "~/core/process/builder/ProcessBuilderFactory";
 import { GitManagerOptions } from "../../types";
-import { ChildProcessWithoutNullStreams } from "child_process";
+import { GitManagerImpl } from "./GitManagerImpl";
+
+jest.mock("fs", () => ({
+  promises: {
+    writeFile: jest.fn(),
+    access: jest.fn(),
+    appendFile: jest.fn(),
+    readFile: jest.fn(),
+    rename: jest.fn(),
+  },
+}));
 
 jest.mock("~/core/process/builder/ProcessBuilderFactory");
 
@@ -101,16 +114,31 @@ describe("GitManagerImpl", () => {
     ]);
   });
 
-  it("should commit with a message", async () => {
-    mockProcess.stdout.push(null);
+  it("should commit with a temporary message file", async () => {
+    const tempCommitMsgFile = `${COMMIT_MSG_TMP_PATH}.tmp`;
+    const commitMessage = "Test commit message with temp file";
 
-    await gitManager.commit("Test commit message");
+    (fs.access as jest.Mock).mockRejectedValueOnce({ code: "ENOENT" });
+    (fs.readFile as jest.Mock).mockResolvedValue("");
 
-    expect(ProcessBuilderFactory.create().addArgs).toHaveBeenCalledWith([
-      "commit",
-      "-m",
-      "Test commit message",
-    ]);
+    await gitManager.commit(commitMessage);
+
+    expect(fs.writeFile).toHaveBeenCalledWith(
+      tempCommitMsgFile,
+      commitMessage,
+      { encoding: "utf8" }
+    );
+    expect(fs.writeFile).toHaveBeenCalledWith(COMMIT_MSG_TMP_PATH, "", {
+      encoding: "utf8",
+    });
+    expect(fs.appendFile).toHaveBeenCalled();
+    expect(fs.readFile).toHaveBeenCalledWith(COMMIT_MSG_TMP_PATH, {
+      encoding: "utf8",
+    });
+    expect(fs.rename).toHaveBeenCalledWith(
+      tempCommitMsgFile,
+      COMMIT_MSG_TMP_PATH
+    );
   });
 
   it("should exclude files when getting staged files", async () => {

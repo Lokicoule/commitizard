@@ -46,7 +46,6 @@ describe("WizardCommitRunnerHandler", () => {
     hasStagedFiles: jest.fn(),
     getDeletedFiles: jest.fn(),
     runGitCommand: jest.fn(),
-    writeToCommitMsgFile: jest.fn(),
   } satisfies GitManager;
 
   const mockWizardCommitBuilder = {
@@ -102,7 +101,7 @@ describe("WizardCommitRunnerHandler", () => {
       });
     });
 
-    /* it("should display a success message when git manager has staged files is true", async () => {
+    it("should display a success message when git manager has staged files is true", async () => {
       const commitMessage = "Test commit";
       mockGitManager.isGitRepository.mockResolvedValue(true);
       mockGitManager.hasStagedFiles.mockResolvedValue(true);
@@ -152,7 +151,7 @@ describe("WizardCommitRunnerHandler", () => {
         ),
       });
     });
- */
+
     it("should display an error message if an error occurs while staging the files", async () => {
       const errorMessage = "An error occurred while staging the files";
       const files = ["file1", "file2"];

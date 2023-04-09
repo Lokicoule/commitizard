@@ -46,7 +46,6 @@ describe("WizardCommitFileSelectionHandler", () => {
     hasStagedFiles: jest.fn(),
     runGitCommand: jest.fn(),
     getDeletedFiles: jest.fn(),
-    writeToCommitMsgFile: jest.fn(),
   } satisfies GitManager;
 
   const mockWizardCommitBuilder = {

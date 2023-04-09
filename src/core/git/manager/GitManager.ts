@@ -1,4 +1,6 @@
 /**
+ * @category Core
+ * @subcategory Git
  * @interface GitManager
  * @description
  * This interface defines the contract for the GitManager.
@@ -24,8 +26,4 @@ export interface GitManager {
   getUpdatedFiles(): Promise<string[]>;
   runGitCommand(command: string[]): Promise<string>;
   getDeletedFiles(): Promise<string[]>;
-  writeToCommitMsgFile(
-    commitMessage: string,
-    commitMsgFile?: string
-  ): Promise<void>;
 }

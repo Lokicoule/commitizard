@@ -1,5 +1,4 @@
 import { bgGreen, red } from "picocolors";
-import { GitHookManager } from "~/core/git/manager/GitHookManager";
 import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
 import { WizardCommit } from "../../types";
 import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";

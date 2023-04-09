@@ -1,6 +1,6 @@
 import { Command } from "commandzen";
+import { COMMIT_MSG_TMP_PATH } from "~/core/configuration";
 import { GitManagerFactory } from "~/core/git";
-import { GitHookManager } from "~/core/git/manager/GitHookManager";
 
 export interface HookCommandOptions {
   install: boolean;
@@ -12,8 +12,7 @@ export const hookCommandFactory = () => {
     exclude: [],
   });
 
-  const gitRoot = process.cwd();
-  const gitHookManager = new GitHookManager(gitRoot);
+  const gitHookManager = GitManagerFactory.createHookManager();
 
   const hooks = [
     {
@@ -27,7 +26,7 @@ node ./dist/bundle.js --from-hook
     {
       name: "prepare-commit-msg",
       script: `#!/bin/sh
-commit_msg=$(cat .git/COMMIT_MSG_TMP)
+commit_msg=$(cat ${COMMIT_MSG_TMP_PATH})
 echo "Generated commit message: $commit_msg"
 echo "$commit_msg" > $1
 rm .git/COMMIT_MSG_TMP
