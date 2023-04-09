@@ -1,6 +1,7 @@
 import { ProcessBuilderFactory } from "~/core/process/builder/ProcessBuilderFactory";
 import { GitManagerOptions } from "../../types";
 import { GitManager } from "../GitManager";
+import { promises as fs } from "fs";
 
 export class GitManagerImpl implements GitManager {
   private options: GitManagerOptions;
@@ -49,8 +50,41 @@ export class GitManagerImpl implements GitManager {
   }
 
   public async commit(message: string): Promise<void> {
-    /*     await this.runGitCommand(["commit", "-m", message]);
-     */ await this.runGitCommand(["commit", "-F", ".git/COMMIT_EDITMSG"]);
+    console.log("committing with message: ", message);
+    await this.runGitCommand(["commit", "-m", message]);
+    console.log("committed with message: ", message);
+    /* await this.runGitCommand(["commit", "-F", ".git/COMMIT_EDITMSG"]); */
+  }
+
+  async writeToCommitMsgFile(
+    commitMsgFile: string,
+    commitMessage: string
+  ): Promise<void> {
+    try {
+      const tempCommitMsgFile = `${commitMsgFile}.tmp`;
+
+      await fs.writeFile(tempCommitMsgFile, commitMessage, {
+        encoding: "utf8",
+      });
+
+      try {
+        await fs.access(commitMsgFile);
+      } catch (error: any) {
+        if (error.code === "ENOENT") {
+          await fs.writeFile(commitMsgFile, "", { encoding: "utf8" });
+        } else {
+          throw error;
+        }
+      }
+
+      await fs.appendFile(
+        tempCommitMsgFile,
+        await fs.readFile(commitMsgFile, { encoding: "utf8" })
+      );
+      await fs.rename(tempCommitMsgFile, commitMsgFile);
+    } catch (error) {
+      console.log("error: ", error);
+    }
   }
 
   public async runGitCommand(command: string[]): Promise<string> {

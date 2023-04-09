@@ -108,8 +108,8 @@ describe("GitManagerImpl", () => {
 
     expect(ProcessBuilderFactory.create().addArgs).toHaveBeenCalledWith([
       "commit",
-      "-F",
-      ".git/COMMIT_EDITMSG",
+      "-m",
+      "Test commit message",
     ]);
   });
 

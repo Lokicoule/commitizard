@@ -24,4 +24,8 @@ export interface GitManager {
   getUpdatedFiles(): Promise<string[]>;
   runGitCommand(command: string[]): Promise<string>;
   getDeletedFiles(): Promise<string[]>;
+  writeToCommitMsgFile(
+    commitMsgFile: string,
+    commitMessage: string
+  ): Promise<void>;
 }

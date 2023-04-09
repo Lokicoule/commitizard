@@ -1,4 +1,5 @@
 import { bgGreen, red } from "picocolors";
+import { GitHookManager } from "~/core/git/manager/GitHookManager";
 import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
 import { WizardCommit } from "../../types";
 import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
@@ -27,7 +28,11 @@ export class WizardCommitRunnerHandler extends BaseWizardCommitHandler {
         await this.gitManager.stageFiles(commit.files);
       }
 
-      await this.gitManager.commit(commit.message);
+      //await this.gitManager.commit(commit.message);
+      await this.gitManager.writeToCommitMsgFile(
+        ".git/COMMIT_MSG_TMP",
+        commit.message
+      );
       this.promptManager.outro({
         message: `${bgGreen("✔ Commit created successfully!")}`,
       });

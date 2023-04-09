@@ -1,8 +1,8 @@
 import { Command } from "commandzen";
-import * as fs from "fs/promises";
-import * as path from "path";
-import { pathToFileURL } from "url";
+import { promises as fs } from "fs";
+import { join } from "path";
 import { GitManagerFactory } from "~/core/git";
+import { GitHookManager } from "~/core/git/manager/GitHookManager";
 
 export interface HookCommandOptions {
   install: boolean;
@@ -10,91 +10,46 @@ export interface HookCommandOptions {
 }
 
 export const hookCommandFactory = () => {
-  const hookName = "prepare-commit-msg";
-  const symlinkPath = `.git/hooks/${hookName}`;
-  const hookPath = path.resolve(process.cwd(), "dist/bundle.js");
-  const isWindows = process.platform === "win32";
-  const windowsHook = `#!/usr/bin/env node
-import(${JSON.stringify(pathToFileURL(hookPath))})
-`.trim();
-
-  const unixHook = `#!/bin/sh
-exec < /dev/tty
-npx commit-craft wizard
-`.trim();
-  const preCommitHook = `#!/bin/sh
-exec < /dev/tty
-npx commit-craft wizard
-`.trim();
-
   const gitManager = GitManagerFactory.create({
     exclude: [],
   });
 
+  const gitRoot = process.cwd(); // or use the path to your Git repository root
+  const gitHookManager = new GitHookManager(gitRoot);
+
+  const hookName = "prepare-commit-msg";
+  const prepareCommitMsgHook = `#!/bin/sh
+commit_msg=$(cat .git/COMMIT_MSG_TMP)
+echo "Generated commit message: $commit_msg"
+echo "$commit_msg" > $1
+rm .git/COMMIT_MSG_TMP
+`.trim();
+
+  const preCommitHookName = "pre-commit";
+  const preCommitHook = `#!/bin/sh
+echo "Running pre-commit hook"
+exec < /dev/tty
+node ./dist/bundle.js
+`.trim();
+
   const installHook = async () => {
-    try {
-      await fs.access(symlinkPath);
-
-      const realpath = await fs.realpath(symlinkPath).catch(() => {
-        console.warn("A different hook seems to be installed");
-      });
-      console.log(realpath);
-      if (realpath === hookPath) {
-        console.warn("The hook is already installed");
-        return;
-      }
-
-      throw new Error(
-        `A different ${hookName} hook seems to be installed. Please remove it before installing.`
-      );
-    } catch (err: any) {
-      if (err.code !== "ENOENT") {
-        console.error(err.message);
-        process.exit(1);
-      }
+    if (await gitHookManager.isHookInstalled(hookName)) {
+      console.warn("The hook is already installed");
+      return;
     }
-    try {
-      await fs.mkdir(path.dirname(symlinkPath), { recursive: true });
-
-      if (isWindows) {
-        await fs.writeFile(symlinkPath, windowsHook);
-      } else {
-        // Install pre-commit hook
-        const preCommitSymlinkPath = `.git/hooks/pre-commit`;
-        await fs.writeFile(preCommitSymlinkPath, preCommitHook);
-        await fs.chmod(preCommitSymlinkPath, 0o755);
-      }
-
-      console.log("Hook installed");
-    } catch (err: any) {
-      console.error(err.message);
-      process.exit(1);
-    }
+    await gitHookManager.installHook(preCommitHookName, preCommitHook);
+    await gitHookManager.installHook(hookName, prepareCommitMsgHook);
+    console.log("Hook installed");
   };
 
   const uninstallHook = async () => {
-    try {
-      await fs.access(symlinkPath);
-    } catch (err: any) {
-      if (err.code === "ENOENT") {
-        console.warn("Hook is not installed");
-        return;
-      }
+    if (!(await gitHookManager.isHookInstalled(hookName))) {
+      console.warn("Hook is not installed");
+      return;
     }
 
-    if (isWindows) {
-      const scriptContent = await fs.readFile(symlinkPath, "utf8");
-      if (scriptContent !== windowsHook) {
-        console.warn("Hook is not installed");
-        return;
-      }
-    } else {
-      const preCommitSymlinkPath = `.git/hooks/pre-commit`;
-      await fs.rm(preCommitSymlinkPath);
-    }
-
-    /*     await fs.rm(symlinkPath);
-     */ console.log("Hook uninstalled");
+    await gitHookManager.uninstallHook(hookName);
+    console.log("Hook uninstalled");
   };
 
   const action = async (options: HookCommandOptions) => {
