@@ -28,11 +28,8 @@ export class WizardCommitRunnerHandler extends BaseWizardCommitHandler {
         await this.gitManager.stageFiles(commit.files);
       }
 
-      //await this.gitManager.commit(commit.message);
-      await this.gitManager.writeToCommitMsgFile(
-        ".git/COMMIT_MSG_TMP",
-        commit.message
-      );
+      await this.gitManager.commit(commit.message);
+
       this.promptManager.outro({
         message: `${bgGreen("✔ Commit created successfully!")}`,
       });

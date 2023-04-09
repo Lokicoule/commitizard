@@ -47,6 +47,10 @@ export const wizardCommandFactory = (
         flag: "-e, --with-emoji",
         description:
           "Use a relevant emoji as a prefix for the commit message type.",
+      },
+      {
+        flag: "--from-hook",
+        description: "Indicates that the command was called from a git hook",
       }
     )
     .registerAction<{
@@ -55,6 +59,7 @@ export const wizardCommandFactory = (
       selectFiles: boolean;
       strategy: CommitConventionStrategyType;
       withEmoji: boolean;
+      fromHook: boolean;
     }>(async (options) => {
       const { path, displayStagedFiles, selectFiles, strategy, withEmoji } =
         options;
@@ -65,6 +70,7 @@ export const wizardCommandFactory = (
 
       const gitManager = GitManagerFactory.create({
         exclude: configurationManager.getExcludePaths(),
+        fromHook: options.fromHook,
       });
 
       const promptManager = PromptManagerFactory.create(

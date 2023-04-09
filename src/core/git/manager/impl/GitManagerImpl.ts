@@ -50,15 +50,16 @@ export class GitManagerImpl implements GitManager {
   }
 
   public async commit(message: string): Promise<void> {
-    console.log("committing with message: ", message);
-    await this.runGitCommand(["commit", "-m", message]);
-    console.log("committed with message: ", message);
-    /* await this.runGitCommand(["commit", "-F", ".git/COMMIT_EDITMSG"]); */
+    if (this.options.fromHook) {
+      await this.writeToCommitMsgFile(message);
+    } else {
+      await this.runGitCommand(["commit", "-m", message]);
+    }
   }
 
   async writeToCommitMsgFile(
-    commitMsgFile: string,
-    commitMessage: string
+    commitMessage: string,
+    commitMsgFile = ".git/COMMIT_MSG_TMP"
   ): Promise<void> {
     try {
       const tempCommitMsgFile = `${commitMsgFile}.tmp`;
