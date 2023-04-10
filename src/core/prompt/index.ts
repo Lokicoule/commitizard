@@ -1,4 +1,9 @@
-export * from "./manager/PromptManager";
-export * from "./manager/PromptManagerFactory";
+import { PromptAdapter } from "~/adapters/prompt";
+import { PromptManager } from "./interface/PromptManager";
+import { PromptManagerImpl } from "./manager/PromptManagerImpl";
 
-export * from "./types";
+export { PromptManager };
+
+export function createPromptManager(adapter: PromptAdapter): PromptManager {
+  return PromptManagerImpl.create(adapter);
+}

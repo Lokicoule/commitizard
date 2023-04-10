@@ -9,14 +9,18 @@ import {
   Text,
 } from "~/adapters/prompt/types";
 import { chunk } from "~/core/utils/chunk";
-import { IntroInput, IPaginateOptions, OutroInput } from "../../types";
-import { PromptManager } from "../PromptManager";
+import { IntroInput, IPaginateOptions, OutroInput } from "../types";
+import { PromptManager } from "../interface/PromptManager";
 
 export class PromptManagerImpl implements PromptManager {
   private readonly adapter: PromptAdapter;
 
-  constructor(adapter: PromptAdapter) {
+  private constructor(adapter: PromptAdapter) {
     this.adapter = adapter;
+  }
+
+  public static create(adapter: PromptAdapter): PromptManager {
+    return new PromptManagerImpl(adapter);
   }
 
   public async confirm({

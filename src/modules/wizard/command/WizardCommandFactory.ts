@@ -8,7 +8,7 @@ import {
   DEFAULT_CONFIG_PATH,
 } from "~/core/configuration";
 import { createGitManager } from "~/core/git";
-import { PromptManagerFactory } from "~/core/prompt";
+import { createPromptManager } from "~/core/prompt";
 import { CommitConventionStrategyType } from "~/modules/commit";
 import { ConventionalStrategy } from "~/modules/conventional";
 import { RedGreenRefactorStrategy } from "~/modules/red-green-refactor";
@@ -73,7 +73,7 @@ export const wizardCommandFactory = (
         fromHook: options.fromHook,
       });
 
-      const promptManager = PromptManagerFactory.create(
+      const promptManager = createPromptManager(
         PromptAdapterFactory.createClackPromptAdapter()
       );
 
