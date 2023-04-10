@@ -3,7 +3,7 @@ import { COMMIT_MSG_TMP_PATH } from "../configuration";
 
 export class CommitMessageManager {
   public async commitFromHook(message: string): Promise<void> {
-    console.log("message from hook: ", message);
+    console.info("message from hook: ", message);
     try {
       const tempCommitMsgFile = `${COMMIT_MSG_TMP_PATH}.tmp`;
 
@@ -12,7 +12,7 @@ export class CommitMessageManager {
       await this.appendExistingMessage(tempCommitMsgFile);
       await this.renameTempCommitFile(tempCommitMsgFile);
     } catch (error) {
-      console.log("error: ", error);
+      console.error("error: ", error);
     }
   }
 
@@ -26,11 +26,12 @@ export class CommitMessageManager {
   private async ensureCommitMsgFileExists(): Promise<void> {
     try {
       await fs.access(COMMIT_MSG_TMP_PATH);
-    } catch (error: any) {
-      if (error.code === "ENOENT") {
+    } catch (error) {
+      const typedError = error as NodeJS.ErrnoException;
+      if (typedError?.code === "ENOENT") {
         await fs.writeFile(COMMIT_MSG_TMP_PATH, "", { encoding: "utf8" });
       } else {
-        throw error;
+        throw typedError;
       }
     }
   }
