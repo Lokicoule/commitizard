@@ -6,7 +6,7 @@ import {
   writeFileSync,
   accessSync,
 } from "fs";
-import { FilesystemAdapter } from "../FilesystemAdapter";
+import { FilesystemAdapter } from "../interfaces/FilesystemAdapter";
 
 export class LocalFilesystemAdapter implements FilesystemAdapter {
   read(path: string): string {

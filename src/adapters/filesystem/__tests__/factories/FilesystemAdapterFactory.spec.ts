@@ -1,5 +1,5 @@
-import { FilesystemAdapterFactory } from "./FilesystemAdapterFactory";
-import { LocalFilesystemAdapter } from "./impl/LocalFilesystemAdapter";
+import { FilesystemAdapterFactory } from "../../factories/FilesystemAdapterFactory";
+import { LocalFilesystemAdapter } from "../../impl/LocalFilesystemAdapter";
 
 describe("FilesystemAdapterFactory", () => {
   it("should create a local filesystem adapter", () => {

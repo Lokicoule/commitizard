@@ -1,2 +1,2 @@
-export * from "./FilesystemAdapter";
-export * from "./FilesystemAdapterFactory";
+export * from "./interfaces/FilesystemAdapter";
+export * from "./factories/FilesystemAdapterFactory";

@@ -1,4 +1,4 @@
-import { LocalFilesystemAdapter } from "./LocalFilesystemAdapter";
+import { LocalFilesystemAdapter } from "../../impl/LocalFilesystemAdapter";
 import mockFs from "mock-fs";
 
 describe("LocalFilesystemAdapter", () => {
