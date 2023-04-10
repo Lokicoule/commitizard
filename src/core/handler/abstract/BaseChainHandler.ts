@@ -1,4 +1,4 @@
-import { ChainHandler } from "../ChainHandler";
+import { ChainHandler } from "../interface/ChainHandler";
 
 export abstract class BaseChainHandler<T> implements ChainHandler<T> {
   private nextHandler: ChainHandler<T> | null = null;

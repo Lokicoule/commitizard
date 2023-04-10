@@ -1,5 +1,5 @@
 import { ConfigurationManager } from "~/core/configuration";
-import { BaseChainHandler } from "~/core/handler/impl/BaseChainHandler";
+import { BaseChainHandler } from "~/core/handler";
 import { PromptManager } from "~/core/prompt";
 import { CommitHandler } from "~/modules/commit";
 import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";

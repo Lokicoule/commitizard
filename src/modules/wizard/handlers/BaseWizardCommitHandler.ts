@@ -1,6 +1,6 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { GitManager } from "~/core/git";
-import { BaseChainHandler } from "~/core/handler/impl/BaseChainHandler";
+import { BaseChainHandler } from "~/core/handler";
 import { PromptManager } from "~/core/prompt";
 import { WizardCommitBuilder } from "../builder/WizardCommitBuilder";
 import { WizardCommitHandler } from "./WizardCommitHandler";

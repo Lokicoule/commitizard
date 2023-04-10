@@ -1,4 +1,4 @@
-import { ChainHandler } from "~/core/handler/ChainHandler";
+import { ChainHandler } from "~/core/handler";
 import { CommitBuilder } from "../builder/CommitBuilder";
 
 export type CommitHandler = ChainHandler<CommitBuilder>;
