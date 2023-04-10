@@ -18,35 +18,39 @@ export const hookCommandFactory = () => {
     {
       name: "pre-commit",
       script: `#!/bin/sh
-echo "Running pre-commit hook"
-if [ -z "$BYPASS_HOOKS" ]; then
-  export BYPASS_HOOKS=1
-  exec < /dev/tty
-  node ./dist/bundle.js --from-hook
-fi
-`.trim(),
+  echo "Running pre-commit hook"
+  if [ -z "$BYPASS_HOOKS" ]; then
+    export BYPASS_HOOKS=1
+    exec < /dev/tty
+    node ./dist/bundle.js --from-hook
+  fi
+  `.trim(),
       windowsScript: `@echo off
-echo Running pre-commit hook
-if not defined BYPASS_HOOKS (
-  set BYPASS_HOOKS=1
-  node ./dist/bundle.js --from-hook
-)
-`.trim(),
+  echo Running pre-commit hook
+  if not defined BYPASS_HOOKS (
+    set BYPASS_HOOKS=1
+    node ./dist/bundle.js --from-hook
+  )
+  `.trim(),
     },
     {
       name: "prepare-commit-msg",
       script: `#!/bin/sh
-commit_msg=$(cat ${COMMIT_MSG_TMP_PATH})
-echo "Generated commit message: $commit_msg"
-echo "$commit_msg" > $1
-rm .git/COMMIT_MSG_TMP
-`.trim(),
+  if [ -z "$BYPASS_HOOKS" ]; then
+    commit_msg=$(cat ${COMMIT_MSG_TMP_PATH})
+    echo "Generated commit message: $commit_msg"
+    echo "$commit_msg" > $1
+    rm .git/COMMIT_MSG_TMP
+  fi
+  `.trim(),
       windowsScript: `@echo off
-set /p commit_msg=<${COMMIT_MSG_TMP_PATH}
-echo Generated commit message: %commit_msg%
-echo %commit_msg% > %1
-del .git/COMMIT_MSG_TMP
-`.trim(),
+  if not defined BYPASS_HOOKS (
+    set /p commit_msg=<${COMMIT_MSG_TMP_PATH}
+    echo Generated commit message: %commit_msg%
+    echo %commit_msg% > %1
+    del .git/COMMIT_MSG_TMP
+  )
+  `.trim(),
     },
   ];
 
