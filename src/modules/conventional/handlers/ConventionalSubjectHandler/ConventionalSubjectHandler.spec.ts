@@ -81,7 +81,7 @@ describe("ConventionalSubjectHandler", () => {
 
     expect(mockPromptManager.text).toHaveBeenCalledWith({
       message: "Enter commit subject:",
-      abortMessage: "Commit subject selection aborted!",
+      abortMessage: "Commit subject aborted!",
       validate: expect.any(Function),
     });
 

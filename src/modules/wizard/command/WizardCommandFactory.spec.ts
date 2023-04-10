@@ -5,21 +5,20 @@ import {
   ConfigurationServiceFactory,
   DEFAULT_CONFIG_PATH,
 } from "~/core/configuration";
-import { createGitManager } from "~/core/git";
-import { PromptManagerFactory } from "~/core/prompt/manager/PromptManagerFactory";
+import { GitManagerFactory } from "~/core/git";
+import { PromptManagerFactory } from "~/core/prompt";
 import { CommitConventionStrategyType } from "~/modules/commit/strategy/CommitConventionStrategy";
 import { ConventionalStrategy } from "~/modules/conventional/strategy/ConventionalStrategy";
 import { RedGreenRefactorStrategy } from "~/modules/red-green-refactor/strategy/RedGreenRefactorStrategy";
-import { WizardCommitHandlerChainBuilder } from "../handlers/WizardCommitHandlerBuilder";
+import { WizardCommitHandlerChainBuilder } from "../handlers/builder/WizardCommitHandlerChainBuilder";
 import { wizardCommandFactory } from "./wizardCommandFactory";
 
-jest.mock("~/core/configuration/service/ConfigurationServiceFactory");
-jest.mock("~/core/configuration/manager/ConfigurationManagerFactory");
+jest.mock("~/core/configuration");
 jest.mock("~/core/git");
-jest.mock("~/core/prompt/manager/PromptManagerFactory");
+jest.mock("~/core/prompt");
 jest.mock("~/modules/conventional/strategy/ConventionalStrategy");
 jest.mock("~/modules/red-green-refactor/strategy/RedGreenRefactorStrategy");
-jest.mock("~/modules/wizard/handlers/WizardCommitHandlerBuilder");
+jest.mock("~/modules/wizard/handlers/builder/WizardCommitHandlerChainBuilder");
 
 describe("WizardCommand", () => {
   let configurationService: ConfigurationService;
@@ -35,7 +34,7 @@ describe("WizardCommand", () => {
     (ConfigurationManagerFactory.create as jest.Mock).mockReturnValue({
       getExcludePaths: jest.fn().mockReturnValue([]),
     });
-    (createGitManager as jest.Mock).mockReturnValue({});
+    (GitManagerFactory.create as jest.Mock).mockReturnValue({} as any);
     (PromptManagerFactory.create as jest.Mock).mockReturnValue({});
     (ConventionalStrategy as jest.Mock).mockImplementation(() => {});
     (RedGreenRefactorStrategy as jest.Mock).mockImplementation(() => {});
@@ -69,7 +68,7 @@ describe("WizardCommand", () => {
     });
 
     expect(ConfigurationManagerFactory.create).toHaveBeenCalled();
-    expect(createGitManager).toHaveBeenCalled();
+    expect(GitManagerFactory.create).toHaveBeenCalled();
     expect(PromptManagerFactory.create).toHaveBeenCalled();
     expect(WizardCommitHandlerChainBuilder).toHaveBeenCalled();
   });

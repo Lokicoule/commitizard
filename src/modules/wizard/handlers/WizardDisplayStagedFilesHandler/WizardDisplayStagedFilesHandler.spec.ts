@@ -1,8 +1,8 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { GitManager } from "~/core/git";
 import { PromptManager } from "~/core/prompt";
-import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
-import { WizardDisplayStagedFilesHandler } from "./WizardDisplayStagedFilesHandler";
+import { WizardBuilder } from "~/modules/wizard/builder";
+import { WizardDisplayStagedFilesHandler } from "~/modules/wizard/handlers/WizardDisplayStagedFilesHandler/WizardDisplayStagedFilesHandler";
 
 describe("WizardDisplayStagedFilesHandler", () => {
   const mockConfigurationManager = {
@@ -47,11 +47,11 @@ describe("WizardDisplayStagedFilesHandler", () => {
     getDeletedFiles: jest.fn(),
   } satisfies GitManager;
 
-  const mockWizardCommitBuilder = {
+  const mockWizardBuilder = {
     withMessage: jest.fn(),
     withFiles: jest.fn(),
     build: jest.fn(),
-  } satisfies WizardCommitBuilder;
+  } satisfies WizardBuilder;
 
   // System under test
   let sut: WizardDisplayStagedFilesHandler;
@@ -86,7 +86,7 @@ describe("WizardDisplayStagedFilesHandler", () => {
       mockConfigurationManager.getWizardMaxViewFilesToShow.mockReturnValue(4);
       mockPromptManager.confirm.mockResolvedValue(true);
 
-      await sut.handle(mockWizardCommitBuilder);
+      await sut.handle(mockWizardBuilder);
 
       expect(getStagedFilesMock).toHaveBeenCalled();
       expect(logInfoMock).toHaveBeenCalledWith(
@@ -110,7 +110,7 @@ describe("WizardDisplayStagedFilesHandler", () => {
         .mockResolvedValue([]);
       const logWarnMock = jest.spyOn(mockPromptManager.log, "warn");
 
-      await sut.handle(mockWizardCommitBuilder);
+      await sut.handle(mockWizardBuilder);
 
       expect(getStagedFilesMock).toHaveBeenCalled();
       expect(logWarnMock).toHaveBeenCalledWith(
@@ -126,7 +126,7 @@ describe("WizardDisplayStagedFilesHandler", () => {
       const logInfoMock = jest.spyOn(mockPromptManager.log, "info");
       mockConfigurationManager.getWizardMaxViewFilesToShow.mockReturnValue(3);
 
-      await sut.handle(mockWizardCommitBuilder);
+      await sut.handle(mockWizardBuilder);
 
       expect(getStagedFilesMock).toHaveBeenCalled();
       expect(logInfoMock).toHaveBeenCalledWith(
@@ -153,7 +153,7 @@ describe("WizardDisplayStagedFilesHandler", () => {
       mockConfigurationManager.getWizardMaxViewFilesToShow.mockReturnValue(4);
       mockPromptManager.confirm.mockResolvedValue(false);
 
-      await sut.handle(mockWizardCommitBuilder);
+      await sut.handle(mockWizardBuilder);
 
       expect(getStagedFilesMock).toHaveBeenCalled();
       expect(logInfoMock).toHaveBeenCalledWith(

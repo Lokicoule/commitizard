@@ -1,5 +1,4 @@
 export * from "./constants";
-export * from "./factories";
-export * from "./managers";
-export * from "./services";
+export * from "./manager";
+export * from "./service";
 export * from "./types";

@@ -7,7 +7,7 @@ import {
   CommitScope,
   CommitSubject,
   CommitType,
-} from "../../types";
+} from "../types";
 import { CommitBuilder } from "../CommitBuilder";
 
 export class CommitBuilderImpl implements CommitBuilder {

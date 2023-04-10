@@ -1,4 +1,4 @@
-import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
+import { WizardBuilder } from "../../builder";
 import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
 
 /**
@@ -9,9 +9,7 @@ import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
  * Wizard commit handler that adds files to the commit.
  */
 export class WizardCommitFileSelectionHandler extends BaseWizardCommitHandler {
-  protected async processInput(
-    commitBuilder: WizardCommitBuilder
-  ): Promise<void> {
+  protected async processInput(commitBuilder: WizardBuilder): Promise<void> {
     const filesToAdd: string[] = [];
 
     const maxViewFiles =

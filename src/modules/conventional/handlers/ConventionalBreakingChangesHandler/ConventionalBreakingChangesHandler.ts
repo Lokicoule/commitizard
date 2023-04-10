@@ -1,9 +1,8 @@
-import { yellow } from "picocolors";
 import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
-import { CommitBreakingChanges } from "~/modules/commit/types";
+import { CommitBreakingChanges } from "~/modules/commit/builder/types";
 import { BaseConventionalHandler } from "../BaseConventionalHandler";
 
-export const ABORT_MESSAGE = yellow("✖") + " Commit breaking changes aborted!";
+const ABORT_MESSAGE = "Commit breaking changes aborted!";
 
 export class ConventionalBreakingChangesHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {

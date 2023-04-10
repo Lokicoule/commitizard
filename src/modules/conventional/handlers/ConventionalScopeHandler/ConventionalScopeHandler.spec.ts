@@ -1,12 +1,10 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
 import { CommitBuilder } from "~/modules/commit";
-import {
-  ConventionalScopeHandler,
-  ABORT_MESSAGE,
-} from "./ConventionalScopeHandler";
+import { ConventionalScopeHandler } from "./ConventionalScopeHandler";
 
 describe("ConventionalScopeHandler", () => {
+  const ABORT_MESSAGE = "Commit scope aborted!";
   const mockConfigurationManager = {
     getVersion: jest.fn(),
     getWizardMaxViewFilesToShow: jest.fn(),

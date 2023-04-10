@@ -1,7 +1,7 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { GitManager } from "~/core/git";
 import { PromptManager } from "~/core/prompt";
-import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
+import { WizardBuilder } from "../../builder";
 import { WizardCommitConfirmationHandler } from "./WizardCommitConfirmationHandler";
 
 describe("WizardCommitConfirmationHandler", () => {
@@ -47,11 +47,11 @@ describe("WizardCommitConfirmationHandler", () => {
     getDeletedFiles: jest.fn(),
   } satisfies GitManager;
 
-  const mockWizardCommitBuilder = {
+  const mockWizardBuilder = {
     withMessage: jest.fn(),
     withFiles: jest.fn(),
     build: jest.fn(),
-  } satisfies WizardCommitBuilder;
+  } satisfies WizardBuilder;
 
   // System under test
   let sut: WizardCommitConfirmationHandler;
@@ -71,11 +71,11 @@ describe("WizardCommitConfirmationHandler", () => {
   it("should abort if user does not confirm", async () => {
     mockPromptManager.confirm.mockResolvedValueOnce(false);
     mockPromptManager.log.warn = jest.fn();
-    mockWizardCommitBuilder.build.mockReturnValueOnce({
+    mockWizardBuilder.build.mockReturnValueOnce({
       message: "message",
     });
 
-    await sut.handle(mockWizardCommitBuilder);
+    await sut.handle(mockWizardBuilder);
 
     expect(mockPromptManager.confirm).toBeCalled();
     expect(mockPromptManager.log.warn).toBeCalled();
@@ -83,11 +83,11 @@ describe("WizardCommitConfirmationHandler", () => {
 
   it("should not abort if user confirms", async () => {
     mockPromptManager.confirm.mockResolvedValueOnce(true);
-    mockWizardCommitBuilder.build.mockReturnValueOnce({
+    mockWizardBuilder.build.mockReturnValueOnce({
       message: "message",
     });
 
-    await sut.handle(mockWizardCommitBuilder);
+    await sut.handle(mockWizardBuilder);
 
     expect(mockPromptManager.confirm).toBeCalled();
     expect(mockPromptManager.log.warn).not.toBeCalled();

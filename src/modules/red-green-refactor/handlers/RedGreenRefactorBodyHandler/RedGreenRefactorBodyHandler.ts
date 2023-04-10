@@ -1,9 +1,8 @@
-import { yellow } from "picocolors";
 import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
-import { CommitBody } from "~/modules/commit/types";
+import { CommitBody } from "~/modules/commit/builder/types";
 import { BaseRedGreenRefactorHandler } from "../BaseRedGreenRefactorHandler";
 
-export const ABORT_MESSAGE = `${yellow("✖")} Commit body aborted!`;
+const ABORT_MESSAGE = "Commit body aborted!";
 
 export class RedGreenRefactorBodyHandler extends BaseRedGreenRefactorHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {

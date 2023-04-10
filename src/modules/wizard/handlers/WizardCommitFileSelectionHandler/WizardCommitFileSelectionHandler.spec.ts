@@ -1,8 +1,8 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { GitManager } from "~/core/git";
 import { PromptManager } from "~/core/prompt";
-import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
-import { WizardCommitFileSelectionHandler } from "./WizardCommitFileSelectionHandler";
+import { WizardBuilder } from "~/modules/wizard/builder";
+import { WizardCommitFileSelectionHandler } from "~/modules/wizard/handlers/WizardCommitFileSelectionHandler/WizardCommitFileSelectionHandler";
 
 describe("WizardCommitFileSelectionHandler", () => {
   const mockConfigurationManager = {
@@ -47,11 +47,11 @@ describe("WizardCommitFileSelectionHandler", () => {
     getDeletedFiles: jest.fn(),
   } satisfies GitManager;
 
-  const mockWizardCommitBuilder = {
+  const mockWizardBuilder = {
     withMessage: jest.fn(),
     withFiles: jest.fn(),
     build: jest.fn(),
-  } satisfies WizardCommitBuilder;
+  } satisfies WizardBuilder;
 
   // System under test
   let sut: WizardCommitFileSelectionHandler;
@@ -79,10 +79,10 @@ describe("WizardCommitFileSelectionHandler", () => {
         .mockResolvedValueOnce(["file3", "file4"])
         .mockResolvedValueOnce(["file5", "file6"]);
 
-      await sut.handle(mockWizardCommitBuilder);
+      await sut.handle(mockWizardBuilder);
 
-      expect(mockWizardCommitBuilder.withFiles).toHaveBeenCalledTimes(1);
-      expect(mockWizardCommitBuilder.withFiles).toHaveBeenCalledWith([
+      expect(mockWizardBuilder.withFiles).toHaveBeenCalledTimes(1);
+      expect(mockWizardBuilder.withFiles).toHaveBeenCalledWith([
         "file1",
         "file2",
         "file3",
@@ -97,9 +97,9 @@ describe("WizardCommitFileSelectionHandler", () => {
       mockGitManager.getCreatedFiles.mockResolvedValue([]);
       mockGitManager.getDeletedFiles.mockResolvedValue([]);
 
-      await sut.handle(mockWizardCommitBuilder);
+      await sut.handle(mockWizardBuilder);
 
-      expect(mockWizardCommitBuilder.withFiles).not.toHaveBeenCalled();
+      expect(mockWizardBuilder.withFiles).not.toHaveBeenCalled();
     });
   });
 });

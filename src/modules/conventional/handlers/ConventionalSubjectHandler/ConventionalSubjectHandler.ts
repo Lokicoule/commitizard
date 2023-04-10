@@ -1,5 +1,5 @@
 import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
-import { CommitSubject } from "~/modules/commit/types";
+import { CommitSubject } from "~/modules/commit/builder/types";
 import { BaseConventionalHandler } from "../BaseConventionalHandler";
 
 export class ConventionalSubjectHandler extends BaseConventionalHandler {
@@ -11,7 +11,7 @@ export class ConventionalSubjectHandler extends BaseConventionalHandler {
   private async selectCommitSubject(): Promise<CommitSubject> {
     const commitSubject = await this.promptManager.text({
       message: "Enter commit subject:",
-      abortMessage: "Commit subject selection aborted!",
+      abortMessage: "Commit subject aborted!",
       validate: (value) =>
         value.length === 0 ? `Subject is required!` : undefined,
     });

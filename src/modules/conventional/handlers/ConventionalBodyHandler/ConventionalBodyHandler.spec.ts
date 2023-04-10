@@ -1,12 +1,11 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
 import { CommitBuilder } from "~/modules/commit";
-import {
-  ABORT_MESSAGE,
-  ConventionalBodyHandler,
-} from "./ConventionalBodyHandler";
+import { ConventionalBodyHandler } from "./ConventionalBodyHandler";
 
 describe("ConventionalBodyHandler", () => {
+  const ABORT_MESSAGE = "Commit body aborted!";
+
   // Mocks
   const mockConfigurationManager = {
     getVersion: jest.fn(),

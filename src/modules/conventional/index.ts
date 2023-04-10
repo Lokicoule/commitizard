@@ -1,1 +1,2 @@
-export * from "./strategy/ConventionalStrategy";
+export * from "./strategy";
+export * from "./handlers";

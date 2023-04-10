@@ -6,7 +6,7 @@ import {
   CommitConventionStrategyFactory,
   CommitConventionStrategyType,
 } from "~/modules/commit/strategy/CommitConventionStrategy";
-import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
+import { WizardBuilder } from "../../builder";
 import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
 
 /**
@@ -35,9 +35,7 @@ export class WizardCommitMessageGeneratorHandler extends BaseWizardCommitHandler
     this.strategy = strategy;
   }
 
-  protected async processInput(
-    commitBuilder: WizardCommitBuilder
-  ): Promise<void> {
+  protected async processInput(commitBuilder: WizardBuilder): Promise<void> {
     if (this.strategy) {
       const strategy = CommitConventionStrategyFactory.create(this.strategy, {
         conventionalStrategy: this.conventionalStrategy,

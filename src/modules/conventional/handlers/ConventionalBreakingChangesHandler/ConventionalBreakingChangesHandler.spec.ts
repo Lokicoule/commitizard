@@ -1,12 +1,10 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
 import { CommitBuilder } from "~/modules/commit";
-import {
-  ConventionalBreakingChangesHandler,
-  ABORT_MESSAGE,
-} from "./ConventionalBreakingChangesHandler";
+import { ConventionalBreakingChangesHandler } from "./ConventionalBreakingChangesHandler";
 
 describe("ConventionalBreakingChangesHandler", () => {
+  const ABORT_MESSAGE = "Commit breaking changes aborted!";
   // Mocks
   const mockConfigurationManager = {
     getVersion: jest.fn(),

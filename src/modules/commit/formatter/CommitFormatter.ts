@@ -1,4 +1,4 @@
-import { Commit, CommitTemplate } from "../types";
+import { Commit, CommitTemplate } from "../builder/types";
 
 const keyMap: Record<string, keyof Commit> = {
   type: "type",

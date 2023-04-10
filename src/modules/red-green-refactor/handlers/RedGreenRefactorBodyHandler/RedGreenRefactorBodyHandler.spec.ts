@@ -1,12 +1,10 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
 import { CommitBuilder } from "~/modules/commit";
-import {
-  ABORT_MESSAGE,
-  RedGreenRefactorBodyHandler,
-} from "./RedGreenRefactorBodyHandler";
+import { RedGreenRefactorBodyHandler } from "./RedGreenRefactorBodyHandler";
 
 describe("RedGreenRefactorBodyHandler", () => {
+  const ABORT_MESSAGE = "Commit body aborted!";
   // Mocks
   const mockConfigurationManager = {
     getVersion: jest.fn(),

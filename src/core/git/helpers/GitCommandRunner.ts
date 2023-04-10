@@ -1,5 +1,5 @@
-import { Process } from "~/core/process";
-import { GitManagerOptions } from "../types/GitManagerOptions";
+import { ProcessFactory } from "~/core/process";
+import { GitManagerOptions } from "../managers/GitManager";
 
 export class GitCommandRunner {
   private options: GitManagerOptions;
@@ -73,7 +73,7 @@ export class GitCommandRunner {
     command: string[],
     options: Record<string, unknown> = {}
   ): Promise<string> {
-    const gitCommit = Process.create()
+    const gitCommit = ProcessFactory.create()
       .addArgs(command)
       .addOption(options)
       .spawn("git");

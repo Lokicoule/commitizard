@@ -1,5 +1,5 @@
 import { green, yellow } from "picocolors";
-import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
+import { WizardBuilder } from "../../builder";
 import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
 
 /**
@@ -10,9 +10,7 @@ import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
  * This handler is responsible for confirming the commit message.
  */
 export class WizardCommitConfirmationHandler extends BaseWizardCommitHandler {
-  protected async processInput(
-    commitBuilder: WizardCommitBuilder
-  ): Promise<void> {
+  protected async processInput(commitBuilder: WizardBuilder): Promise<void> {
     const confirmCommit = await this.promptManager.confirm({
       defaultValue: true,
       message: `Commit message: \n\n${green(

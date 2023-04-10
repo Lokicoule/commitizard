@@ -7,7 +7,7 @@ import {
   CommitScope,
   CommitSubject,
   CommitType,
-} from "../types";
+} from "./types";
 
 export interface CommitBuilder {
   getType(): CommitType;

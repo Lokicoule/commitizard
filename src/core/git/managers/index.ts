@@ -1,2 +1,2 @@
-export * from "./interfaces/GitHookManager";
-export * from "./interfaces/GitManager";
+export * from "./GitHookManager";
+export * from "./GitManager";

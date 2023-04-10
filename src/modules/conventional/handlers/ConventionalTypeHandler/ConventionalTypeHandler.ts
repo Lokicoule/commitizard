@@ -1,6 +1,6 @@
 import { CliOptions } from "~/core/configuration/types";
 import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
-import { CommitType } from "~/modules/commit/types";
+import { CommitType } from "~/modules/commit/builder/types";
 import { BaseConventionalHandler } from "../BaseConventionalHandler";
 
 export class ConventionalTypeHandler extends BaseConventionalHandler {
@@ -18,7 +18,7 @@ export class ConventionalTypeHandler extends BaseConventionalHandler {
     const commitType = await this.promptManager.select<CliOptions[], string>({
       message: "Select commit type:",
       options: types,
-      abortMessage: "Commit type selection aborted!",
+      abortMessage: "Commit type aborted!",
     });
 
     return {

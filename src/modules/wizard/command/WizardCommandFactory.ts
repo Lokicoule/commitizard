@@ -7,13 +7,13 @@ import {
   ConfigurationServiceFactory,
   DEFAULT_CONFIG_PATH,
 } from "~/core/configuration";
-import { createGitManager } from "~/core/git";
-import { createPromptManager } from "~/core/prompt";
+import { GitManagerFactory } from "~/core/git";
+import { PromptManagerFactory } from "~/core/prompt";
 import { CommitConventionStrategyType } from "~/modules/commit";
 import { ConventionalStrategy } from "~/modules/conventional";
 import { RedGreenRefactorStrategy } from "~/modules/red-green-refactor";
-import { WizardCommitBuilderFactory } from "../builder/WizardCommitBuilderFactory";
-import { WizardCommitHandlerChainBuilder } from "../handlers/WizardCommitHandlerBuilder";
+import { WizardBuilderFactory } from "../builder/WizardBuilderFactory";
+import { WizardCommitHandlerChainBuilder } from "../handlers/builder/WizardCommitHandlerChainBuilder";
 
 export const wizardCommandFactory = (
   configurationService: ConfigurationService = ConfigurationServiceFactory.create(
@@ -68,12 +68,12 @@ export const wizardCommandFactory = (
       const configurationManager =
         ConfigurationManagerFactory.create(configuration);
 
-      const gitManager = createGitManager({
+      const gitManager = GitManagerFactory.create({
         exclude: configurationManager.getExcludePaths(),
         fromHook: options.fromHook,
       });
 
-      const promptManager = createPromptManager(
+      const promptManager = PromptManagerFactory.create(
         PromptAdapterFactory.createClackPromptAdapter()
       );
 
@@ -91,7 +91,7 @@ export const wizardCommandFactory = (
         .withCommitRunnerHandler();
 
       await wizardHandlerChainBuilder.buildAndExecute(
-        WizardCommitBuilderFactory.create()
+        WizardBuilderFactory.create()
       );
     });
 };

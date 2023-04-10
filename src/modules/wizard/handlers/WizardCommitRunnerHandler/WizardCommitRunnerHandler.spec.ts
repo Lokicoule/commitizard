@@ -1,8 +1,8 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { GitManager } from "~/core/git";
 import { PromptManager } from "~/core/prompt";
-import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
-import { WizardCommitRunnerHandler } from "./WizardCommitRunnerHandler";
+import { WizardBuilder } from "~/modules/wizard/builder";
+import { WizardCommitRunnerHandler } from "~/modules/wizard/handlers/WizardCommitRunnerHandler/WizardCommitRunnerHandler";
 
 describe("WizardCommitRunnerHandler", () => {
   const mockConfigurationManager = {
@@ -47,11 +47,11 @@ describe("WizardCommitRunnerHandler", () => {
     getDeletedFiles: jest.fn(),
   } satisfies GitManager;
 
-  const mockWizardCommitBuilder = {
+  const mockWizardBuilder = {
     withMessage: jest.fn(),
     withFiles: jest.fn(),
     build: jest.fn(),
-  } satisfies WizardCommitBuilder;
+  } satisfies WizardBuilder;
 
   // System under test
   let sut: WizardCommitRunnerHandler;
@@ -72,7 +72,7 @@ describe("WizardCommitRunnerHandler", () => {
     it("should display an error message if not inside a git repository", async () => {
       mockGitManager.isGitRepository.mockResolvedValue(false);
 
-      await sut.handle(mockWizardCommitBuilder);
+      await sut.handle(mockWizardBuilder);
 
       expect(mockPromptManager.log.error).toHaveBeenCalledWith(
         expect.stringContaining("You are not inside a git repository!")
@@ -85,12 +85,12 @@ describe("WizardCommitRunnerHandler", () => {
     it("should display an error message if there are no staged files", async () => {
       mockGitManager.isGitRepository.mockResolvedValue(true);
       mockGitManager.hasStagedFiles.mockResolvedValue(false);
-      mockWizardCommitBuilder.build.mockReturnValue({
+      mockWizardBuilder.build.mockReturnValue({
         message: "",
         files: [],
       });
 
-      await sut.handle(mockWizardCommitBuilder);
+      await sut.handle(mockWizardBuilder);
 
       expect(mockPromptManager.log.error).toHaveBeenCalledWith(
         expect.stringContaining("You have no staged files!")
@@ -104,12 +104,12 @@ describe("WizardCommitRunnerHandler", () => {
       const commitMessage = "Test commit";
       mockGitManager.isGitRepository.mockResolvedValue(true);
       mockGitManager.hasStagedFiles.mockResolvedValue(true);
-      mockWizardCommitBuilder.build.mockReturnValue({
+      mockWizardBuilder.build.mockReturnValue({
         message: commitMessage,
         files: [],
       });
 
-      await sut.handle(mockWizardCommitBuilder);
+      await sut.handle(mockWizardBuilder);
 
       expect(mockGitManager.commit).toHaveBeenCalledWith(commitMessage);
       expect(mockPromptManager.outro).toHaveBeenCalledWith({
@@ -122,12 +122,12 @@ describe("WizardCommitRunnerHandler", () => {
       const files = ["file1", "file2"];
       mockGitManager.isGitRepository.mockResolvedValue(true);
       mockGitManager.hasStagedFiles.mockResolvedValue(false);
-      mockWizardCommitBuilder.build.mockReturnValue({
+      mockWizardBuilder.build.mockReturnValue({
         message: commitMessage,
         files,
       });
 
-      await sut.handle(mockWizardCommitBuilder);
+      await sut.handle(mockWizardBuilder);
 
       expect(mockGitManager.stageFiles).toHaveBeenCalledWith(files);
       expect(mockGitManager.commit).toHaveBeenCalledWith(commitMessage);
@@ -142,7 +142,7 @@ describe("WizardCommitRunnerHandler", () => {
       mockGitManager.hasStagedFiles.mockResolvedValue(true);
       mockGitManager.commit.mockRejectedValue(new Error(errorMessage));
 
-      await sut.handle(mockWizardCommitBuilder);
+      await sut.handle(mockWizardBuilder);
 
       expect(mockPromptManager.outro).toHaveBeenCalledWith({
         message: expect.stringContaining(
@@ -157,12 +157,12 @@ describe("WizardCommitRunnerHandler", () => {
       mockGitManager.isGitRepository.mockResolvedValue(true);
       mockGitManager.hasStagedFiles.mockResolvedValue(false);
       mockGitManager.stageFiles.mockRejectedValue(new Error(errorMessage));
-      mockWizardCommitBuilder.build.mockReturnValue({
+      mockWizardBuilder.build.mockReturnValue({
         message: "",
         files,
       });
 
-      await sut.handle(mockWizardCommitBuilder);
+      await sut.handle(mockWizardBuilder);
 
       expect(mockPromptManager.outro).toHaveBeenCalledWith({
         message: expect.stringContaining(

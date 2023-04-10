@@ -1,12 +1,10 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
 import { CommitBuilder } from "~/modules/commit";
-import {
-  ConventionalFooterHandler,
-  ABORT_MESSAGE,
-} from "./ConventionalFooterHandler";
+import { ConventionalFooterHandler } from "./ConventionalFooterHandler";
 
 describe("ConventionalFooterHandler", () => {
+  const ABORT_MESSAGE = "Commit footer aborted!";
   // Mocks
   const mockConfigurationManager = {
     getVersion: jest.fn(),

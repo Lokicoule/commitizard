@@ -1,9 +1,8 @@
-import { yellow } from "picocolors";
 import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
-import { CommitReferences } from "~/modules/commit/types";
+import { CommitReferences } from "~/modules/commit/builder/types";
 import { BaseConventionalHandler } from "../BaseConventionalHandler";
 
-export const ABORT_MESSAGE = yellow("✖") + " Commit issue numbers aborted!";
+const ABORT_MESSAGE = "Commit references aborted!";
 
 export class ConventionalReferencesHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {

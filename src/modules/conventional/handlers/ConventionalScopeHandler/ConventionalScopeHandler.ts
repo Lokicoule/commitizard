@@ -1,10 +1,9 @@
-import { yellow } from "picocolors";
 import { CliOptions } from "~/core/configuration/types";
 import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
-import { CommitScope } from "~/modules/commit/types";
+import { CommitScope } from "~/modules/commit/builder/types";
 import { BaseConventionalHandler } from "../BaseConventionalHandler";
 
-export const ABORT_MESSAGE = yellow("✖") + " Commit scope selection aborted!";
+const ABORT_MESSAGE = "Commit scope aborted!";
 
 export class ConventionalScopeHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {

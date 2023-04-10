@@ -1,6 +1,6 @@
 import { bgGreen, red } from "picocolors";
-import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
-import { WizardCommit } from "../../types";
+import { WizardBuilder } from "../../builder";
+import { Wizard } from "../../builder/types";
 import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
 
 /**
@@ -11,9 +11,7 @@ import { BaseWizardCommitHandler } from "../BaseWizardCommitHandler";
  * This handler is responsible for running the git commit process.
  */
 export class WizardCommitRunnerHandler extends BaseWizardCommitHandler {
-  protected async processInput(
-    commitBuilder: WizardCommitBuilder
-  ): Promise<void> {
+  protected async processInput(commitBuilder: WizardBuilder): Promise<void> {
     try {
       const commit = commitBuilder.build();
       const isValid = await this.validate(commit);
@@ -45,7 +43,7 @@ export class WizardCommitRunnerHandler extends BaseWizardCommitHandler {
     }
   }
 
-  private async validate(commit: WizardCommit): Promise<boolean> {
+  private async validate(commit: Wizard): Promise<boolean> {
     const isGitRepository = await this.gitManager.isGitRepository();
     const hasStagedFiles = await this.gitManager.hasStagedFiles();
 

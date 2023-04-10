@@ -1,10 +1,10 @@
 import { blue } from "picocolors";
 import { CliOptions } from "~/core/configuration/types";
 import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
-import { CommitSubject } from "~/modules/commit/types";
+import { CommitSubject } from "~/modules/commit/builder/types";
 import { BaseRedGreenRefactorHandler } from "../BaseRedGreenRefactorHandler";
 
-export const DEFAULT_COMMIT_SUBJECT = "No commit subject";
+const DEFAULT_COMMIT_SUBJECT = "No commit subject";
 
 export class RedGreenRefactorSubjectHandler extends BaseRedGreenRefactorHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {

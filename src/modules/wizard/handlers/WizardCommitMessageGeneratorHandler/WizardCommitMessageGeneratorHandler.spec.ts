@@ -5,8 +5,8 @@ import {
   CommitConventionStrategy,
   CommitConventionStrategyType,
 } from "~/modules/commit/strategy/CommitConventionStrategy";
-import { WizardCommitBuilder } from "../../builder/WizardCommitBuilder";
-import { WizardCommitMessageGeneratorHandler } from "./WizardCommitMessageGeneratorHandler";
+import { WizardBuilder } from "~/modules/wizard/builder";
+import { WizardCommitMessageGeneratorHandler } from "~/modules/wizard/handlers/WizardCommitMessageGeneratorHandler/WizardCommitMessageGeneratorHandler";
 
 describe("WizardCommitMessageGeneratorHandler", () => {
   const mockConfigurationManager = {
@@ -88,7 +88,7 @@ describe("WizardCommitMessageGeneratorHandler", () => {
         withMessage: jest.fn(),
         withFiles: jest.fn(),
         build: jest.fn(),
-      } satisfies WizardCommitBuilder;
+      } satisfies WizardBuilder;
 
       mockPromptManager.select.mockResolvedValue(convention);
 
@@ -124,7 +124,7 @@ describe("WizardCommitMessageGeneratorHandler", () => {
       withMessage: jest.fn(),
       withFiles: jest.fn(),
       build: jest.fn(),
-    } satisfies WizardCommitBuilder;
+    } satisfies WizardBuilder;
 
     mockPromptManager.select.mockResolvedValue(convention);
 
@@ -176,7 +176,7 @@ describe("WizardCommitMessageGeneratorHandler", () => {
         withMessage: jest.fn(),
         withFiles: jest.fn(),
         build: jest.fn(),
-      } satisfies WizardCommitBuilder;
+      } satisfies WizardBuilder;
 
       await sut.handle(mockCommitBuilder);
 

@@ -2,10 +2,7 @@ import { blue } from "picocolors";
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
 import { CommitBuilder } from "~/modules/commit";
-import {
-  DEFAULT_COMMIT_SUBJECT,
-  RedGreenRefactorSubjectHandler,
-} from "./RedGreenRefactorSubjectHandler";
+import { RedGreenRefactorSubjectHandler } from "./RedGreenRefactorSubjectHandler";
 
 describe("RedGreenRefactorSubjectHandler", () => {
   // Mocks
@@ -466,7 +463,7 @@ describe("RedGreenRefactorSubjectHandler", () => {
       });
 
     (mockPromptManager.select as jest.Mock).mockResolvedValue(
-      DEFAULT_COMMIT_SUBJECT
+      "No commit subject"
     );
     (mockPromptManager.text as jest.Mock).mockImplementation((options) => {
       if (options.validate) {

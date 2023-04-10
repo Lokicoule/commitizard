@@ -1,12 +1,10 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
 import { CommitBuilder } from "~/modules/commit";
-import {
-  ConventionalReferencesHandler,
-  ABORT_MESSAGE,
-} from "./ConventionalReferencesHandler";
+import { ConventionalReferencesHandler } from "./ConventionalReferencesHandler";
 
 describe("ConventionalReferencesHandler", () => {
+  const ABORT_MESSAGE = "Commit references aborted!";
   // Mocks
   const mockConfigurationManager = {
     getVersion: jest.fn(),

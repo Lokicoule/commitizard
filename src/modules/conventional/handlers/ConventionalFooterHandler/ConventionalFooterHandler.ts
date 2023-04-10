@@ -1,9 +1,8 @@
-import { yellow } from "picocolors";
 import { CommitBuilder } from "~/modules/commit/builder/CommitBuilder";
-import { CommitFooter } from "~/modules/commit/types";
+import { CommitFooter } from "~/modules/commit/builder/types";
 import { BaseConventionalHandler } from "../BaseConventionalHandler";
 
-export const ABORT_MESSAGE = yellow("✖") + " Commit footer aborted!";
+const ABORT_MESSAGE = "Commit footer aborted!";
 
 export class ConventionalFooterHandler extends BaseConventionalHandler {
   protected async processInput(commitBuilder: CommitBuilder): Promise<void> {

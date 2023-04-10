@@ -1,4 +1,4 @@
-import { ChainHandler } from "~/core/handler";
-import { WizardCommitBuilder } from "../builder/WizardCommitBuilder";
+import { ChainHandler } from "~/core/chain-handler";
+import { WizardBuilder } from "../builder";
 
-export type WizardCommitHandler = ChainHandler<WizardCommitBuilder>;
+export type WizardCommitHandler = ChainHandler<WizardBuilder>;

@@ -1,7 +1,7 @@
 import { CliBuilder } from "commandzen";
 import { configCommandFactory } from "./modules/config";
 import { hookCommandFactory } from "./modules/hook/command/hookCommandFactory";
-import { wizardCommandFactory } from "./modules/wizard/command/wizardCommandFactory";
+import { wizardCommandFactory } from "./modules/wizard";
 
 function main() {
   const cli = CliBuilder.create({

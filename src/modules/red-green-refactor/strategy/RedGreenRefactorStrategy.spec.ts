@@ -1,6 +1,5 @@
 import { ConfigurationManager } from "~/core/configuration";
 import { PromptManager } from "~/core/prompt";
-import { DEFAULT_COMMIT_SUBJECT } from "../handlers/RedGreenRefactorSubjectHandler/RedGreenRefactorSubjectHandler";
 import { RedGreenRefactorStrategy } from "./RedGreenRefactorStrategy";
 
 describe("RedGreenRefactorStrategy", () => {
@@ -81,7 +80,7 @@ describe("RedGreenRefactorStrategy", () => {
       });
     jest
       .spyOn(mockPromptManager, "select")
-      .mockResolvedValueOnce(DEFAULT_COMMIT_SUBJECT);
+      .mockResolvedValueOnce("No commit subject");
 
     mockPromptManager.text.mockResolvedValueOnce("subject");
 
