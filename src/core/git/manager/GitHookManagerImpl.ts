@@ -1,12 +1,17 @@
 import { promises as fs } from "fs";
 import { join } from "path";
-import { GitHookManager } from "../GitHookManager";
+import { GitHookManager } from "../interfaces/GitHookManager";
+import { GitHookManagerOptions } from "../types/GitHookManagerOptions";
 
 export class GitHookManagerImpl implements GitHookManager {
   private hooksDir: string;
 
-  constructor(gitRoot: string) {
+  private constructor(gitRoot: string = process.cwd()) {
     this.hooksDir = join(gitRoot, ".git", "hooks");
+  }
+
+  public static create(options: GitHookManagerOptions): GitHookManagerImpl {
+    return new GitHookManagerImpl(options.root);
   }
 
   public async installHook(hookName: string, script: string): Promise<void> {

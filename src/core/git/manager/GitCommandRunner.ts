@@ -1,10 +1,7 @@
-import { ProcessBuilderFactory } from "~/core/process/builder/ProcessBuilderFactory";
-import { GitManagerOptions } from "../../types";
-import { GitManager } from "../GitManager";
-import { promises as fs } from "fs";
-import { COMMIT_MSG_TMP_PATH } from "~/core/configuration";
+import { Process } from "~/core/process";
+import { GitManagerOptions } from "../types/GitManagerOptions";
 
-export class GitManagerImpl implements GitManager {
+export class GitCommandRunner {
   private options: GitManagerOptions;
 
   constructor(options: GitManagerOptions) {
@@ -50,52 +47,14 @@ export class GitManagerImpl implements GitManager {
     await this.runGitCommand(["add", ...files]);
   }
 
-  public async commit(message: string): Promise<void> {
-    if (this.options.fromHook) {
-      try {
-        const tempCommitMsgFile = `${COMMIT_MSG_TMP_PATH}.tmp`;
-
-        await fs.writeFile(tempCommitMsgFile, message, {
-          encoding: "utf8",
-        });
-
-        try {
-          await fs.access(COMMIT_MSG_TMP_PATH);
-        } catch (error: any) {
-          if (error.code === "ENOENT") {
-            await fs.writeFile(COMMIT_MSG_TMP_PATH, "", { encoding: "utf8" });
-          } else {
-            throw error;
-          }
-        }
-
-        await fs.appendFile(
-          tempCommitMsgFile,
-          await fs.readFile(COMMIT_MSG_TMP_PATH, { encoding: "utf8" })
-        );
-        await fs.rename(tempCommitMsgFile, COMMIT_MSG_TMP_PATH);
-      } catch (error) {
-        console.log("error: ", error);
-      }
-    } else {
-      await this.runGitCommand(["commit", "-m", message], {
-        env: {
-          ...process.env,
-          BYPASS_HOOKS: "1",
-        },
-      });
-    }
-  }
-
-  public async runGitCommand(
-    command: string[],
-    options: Record<string, unknown> = {}
-  ): Promise<string> {
-    const gitCommit = ProcessBuilderFactory.create()
-      .addArgs(command)
-      .addOption(options)
-      .spawn("git");
-    return await this.streamToString(gitCommit.stdout);
+  public async commitWithoutHook(message: string): Promise<void> {
+    console.log("message: ", message);
+    await this.runGitCommand(["commit", "-m", message], {
+      env: {
+        ...process.env,
+        BYPASS_HOOKS: "1",
+      },
+    });
   }
 
   private async getFiles(command: string[]): Promise<string[]> {
@@ -108,6 +67,17 @@ export class GitManagerImpl implements GitManager {
 
   private getExcludedOptions(): string[] {
     return this.options.exclude.map((file) => `:(exclude)${file}`);
+  }
+
+  public async runGitCommand(
+    command: string[],
+    options: Record<string, unknown> = {}
+  ): Promise<string> {
+    const gitCommit = Process.create()
+      .addArgs(command)
+      .addOption(options)
+      .spawn("git");
+    return await this.streamToString(gitCommit.stdout);
   }
 
   private async streamToString(

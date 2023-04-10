@@ -49,7 +49,6 @@ describe("WizardCommitMessageGeneratorHandler", () => {
     isGitRepository: jest.fn(),
     hasStagedFiles: jest.fn(),
     getDeletedFiles: jest.fn(),
-    runGitCommand: jest.fn(),
   } satisfies GitManager;
 
   const mockConventionalStrategy = {

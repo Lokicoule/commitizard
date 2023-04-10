@@ -1,6 +1,6 @@
 import { Command } from "commandzen";
-import { COMMIT_MSG_TMP_PATH } from "~/core/configuration";
-import { GitManagerFactory } from "~/core/git";
+import { createGitManager, createGitHookManager } from "~/core/git";
+import { COMMIT_MSG_TMP_PATH } from "~/core/git/configuration";
 
 export interface HookCommandOptions {
   install: boolean;
@@ -8,11 +8,11 @@ export interface HookCommandOptions {
 }
 
 export const hookCommandFactory = () => {
-  const gitManager = GitManagerFactory.create({
+  const gitManager = createGitManager({
     exclude: [],
   });
 
-  const gitHookManager = GitManagerFactory.createHookManager();
+  const gitHookManager = createGitHookManager({});
 
   const hooks = [
     {

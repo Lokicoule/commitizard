@@ -7,7 +7,7 @@ import {
   ConfigurationServiceFactory,
   DEFAULT_CONFIG_PATH,
 } from "~/core/configuration";
-import { GitManagerFactory } from "~/core/git";
+import { createGitManager } from "~/core/git";
 import { PromptManagerFactory } from "~/core/prompt";
 import { CommitConventionStrategyType } from "~/modules/commit";
 import { ConventionalStrategy } from "~/modules/conventional";
@@ -68,7 +68,7 @@ export const wizardCommandFactory = (
       const configurationManager =
         ConfigurationManagerFactory.create(configuration);
 
-      const gitManager = GitManagerFactory.create({
+      const gitManager = createGitManager({
         exclude: configurationManager.getExcludePaths(),
         fromHook: options.fromHook,
       });

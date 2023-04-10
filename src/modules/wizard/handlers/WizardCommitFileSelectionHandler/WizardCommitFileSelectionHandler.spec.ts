@@ -44,7 +44,6 @@ describe("WizardCommitFileSelectionHandler", () => {
     getUpdatedFiles: jest.fn(),
     isGitRepository: jest.fn(),
     hasStagedFiles: jest.fn(),
-    runGitCommand: jest.fn(),
     getDeletedFiles: jest.fn(),
   } satisfies GitManager;
 
