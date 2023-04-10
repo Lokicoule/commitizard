@@ -1,5 +1,5 @@
 import { FilesystemAdapter } from "~/adapters/filesystem";
-import { ConfigurationService } from "./ConfigurationService";
+import { ConfigurationService } from "./interfaces/ConfigurationService";
 import { ConfigurationServiceImpl } from "./impl/ConfigurationServiceImpl";
 
 export class ConfigurationServiceFactory {

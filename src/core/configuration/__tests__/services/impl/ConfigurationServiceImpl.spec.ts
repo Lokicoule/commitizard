@@ -1,8 +1,8 @@
 import { FilesystemAdapter } from "~/adapters/filesystem";
-import { Configuration } from "../../types";
-import { defaultConfig } from "../../__config__/default";
-import { defaultConfigWithEmojis } from "../../__config__/default-with-emojis";
-import { ConfigurationServiceImpl } from "./ConfigurationServiceImpl";
+import { Configuration } from "../../../types";
+import { defaultConfig } from "../../../__config__/default";
+import { defaultConfigWithEmojis } from "../../../__config__/default-with-emojis";
+import { ConfigurationServiceImpl } from "../../../services/impl/ConfigurationServiceImpl";
 
 describe("ConfigurationServiceImpl", () => {
   let filesystemAdapter: FilesystemAdapter;

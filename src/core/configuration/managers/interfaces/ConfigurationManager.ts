@@ -3,7 +3,7 @@ import {
   ConventionalCommitTemplate,
   RedGreenRefactorCliOptionsType,
   RedGreenRefactorCommitTemplate,
-} from "../types";
+} from "../../types";
 
 export interface ConfigurationManager {
   getVersion(): string;

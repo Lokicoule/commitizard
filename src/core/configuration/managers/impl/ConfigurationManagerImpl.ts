@@ -1,4 +1,4 @@
-import { ConfigurationManager } from "../ConfigurationManager";
+import { ConfigurationManager } from "../interfaces/ConfigurationManager";
 import {
   Configuration,
   CliOptions,

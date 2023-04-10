@@ -1,6 +1,6 @@
 import { Configuration } from "../types";
-import { ConfigurationManager } from "./ConfigurationManager";
-import { ConfigurationManagerImpl } from "./impl/ConfigurationManagerImpl";
+import { ConfigurationManager } from "../managers/interfaces/ConfigurationManager";
+import { ConfigurationManagerImpl } from "../managers/impl/ConfigurationManagerImpl";
 
 export class ConfigurationManagerFactory {
   public static create(config: Configuration): ConfigurationManager {

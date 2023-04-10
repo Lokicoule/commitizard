@@ -1,5 +1,5 @@
-import { ConfigurationServiceFactory } from "./ConfigurationServiceFactory";
-import { ConfigurationServiceImpl } from "./impl/ConfigurationServiceImpl";
+import { ConfigurationServiceFactory } from "../../factories";
+import { ConfigurationServiceImpl } from "../../services/impl/ConfigurationServiceImpl";
 
 describe("ConfigurationServiceFactory", () => {
   it("should create a ConfigurationService", () => {

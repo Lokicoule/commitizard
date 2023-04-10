@@ -1,4 +1,4 @@
-import { Configuration } from "../types";
+import { Configuration } from "../../types";
 
 export interface ConfigurationService {
   load(configPath?: string, withEmoji?: boolean): Configuration;

@@ -1,5 +1,5 @@
 import { FilesystemAdapter } from "~/adapters/filesystem";
-import { ConfigurationService } from "../ConfigurationService";
+import { ConfigurationService } from "../interfaces/ConfigurationService";
 import { DEFAULT_CONFIG_PATH } from "../../constants";
 import { defaultConfig } from "../../__config__/default";
 import { Configuration } from "../../types";

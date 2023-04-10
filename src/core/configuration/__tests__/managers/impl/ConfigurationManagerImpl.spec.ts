@@ -1,10 +1,10 @@
-import { MAX_FILES_TO_SHOW } from "../../constants";
+import { MAX_FILES_TO_SHOW } from "../../../constants";
 import {
   Configuration,
   ConventionalCommitTemplate,
   RedGreenRefactorCommitTemplate,
-} from "../../types";
-import { ConfigurationManagerImpl } from "./ConfigurationManagerImpl";
+} from "../../../types";
+import { ConfigurationManagerImpl } from "../../../managers/impl/ConfigurationManagerImpl";
 
 describe("ConfigurationManagerImpl", () => {
   let config: Configuration;
