@@ -3,9 +3,11 @@ import { ProcessBuilder } from "../ProcessBuilder";
 
 export class ProcessBuilderImpl implements ProcessBuilder {
   private args: string[] = [];
+  private options: Record<string, unknown> = {};
 
-  constructor(args: string[]) {
+  constructor(args: string[], options: Record<string, unknown> = {}) {
     this.args = args;
+    this.options = options;
   }
 
   addArg(arg: string): ProcessBuilder {
@@ -18,7 +20,12 @@ export class ProcessBuilderImpl implements ProcessBuilder {
     return this;
   }
 
+  addOption(option: Record<string, unknown>): ProcessBuilder {
+    this.options = { ...this.options, ...option };
+    return this;
+  }
+
   spawn(command: string): ChildProcessWithoutNullStreams {
-    return spawn(command, this.args);
+    return spawn(command, this.args, this.options);
   }
 }

@@ -1,4 +1,3 @@
-import { FilesystemAdapter } from "~/adapters/filesystem";
 import { GitManagerOptions } from "../types";
 import { GitHookManager } from "./GitHookManager";
 import { GitManager } from "./GitManager";

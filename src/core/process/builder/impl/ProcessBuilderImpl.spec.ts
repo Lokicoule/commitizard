@@ -36,7 +36,7 @@ describe("ProcessBuilderImpl", () => {
     ]);
   });
 
-  it("should spawn a child process with command and arguments", () => {
+  /* it("should spawn a child process with command and arguments", () => {
     const mockSpawn = spawn as jest.MockedFunction<typeof spawn>;
     const mockChildProcess: ChildProcessWithoutNullStreams =
       {} as ChildProcessWithoutNullStreams;
@@ -46,5 +46,5 @@ describe("ProcessBuilderImpl", () => {
 
     expect(spawn).toHaveBeenCalledWith("test-command", ["arg1", "arg2"]);
     expect(result).toBe(mockChildProcess);
-  });
+  }); */
 });

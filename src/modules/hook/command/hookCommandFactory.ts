@@ -19,8 +19,18 @@ export const hookCommandFactory = () => {
       name: "pre-commit",
       script: `#!/bin/sh
 echo "Running pre-commit hook"
-exec < /dev/tty
-node ./dist/bundle.js --from-hook
+if [ -z "$BYPASS_HOOKS" ]; then
+  export BYPASS_HOOKS=1
+  exec < /dev/tty
+  node ./dist/bundle.js --from-hook
+fi
+`.trim(),
+      windowsScript: `@echo off
+echo Running pre-commit hook
+if not defined BYPASS_HOOKS (
+  set BYPASS_HOOKS=1
+  node ./dist/bundle.js --from-hook
+)
 `.trim(),
     },
     {
@@ -31,33 +41,46 @@ echo "Generated commit message: $commit_msg"
 echo "$commit_msg" > $1
 rm .git/COMMIT_MSG_TMP
 `.trim(),
+      windowsScript: `@echo off
+set /p commit_msg=<${COMMIT_MSG_TMP_PATH}
+echo Generated commit message: %commit_msg%
+echo %commit_msg% > %1
+del .git/COMMIT_MSG_TMP
+`.trim(),
     },
   ];
 
   // Install hooks
   const installHooks = async () => {
-    for (const hook of hooks) {
+    const installPromises = hooks.map(async (hook) => {
       if (await gitHookManager.isHookInstalled(hook.name)) {
         console.warn(
           `Hook '${hook.name}' is already installed, please remove it before installing commit-craft`
         );
         return;
       }
-      await gitHookManager.installHook(hook.name, hook.script);
-    }
-    console.log("Hooks installed");
+
+      const script =
+        process.platform === "win32" ? hook.windowsScript : hook.script;
+      await gitHookManager.installHook(hook.name, script);
+    });
+
+    await Promise.all(installPromises);
+    console.info("Hooks installed");
   };
 
   // Uninstall hooks
   const uninstallHooks = async () => {
-    for (const hook of hooks) {
+    const uninstallPromises = hooks.map(async (hook) => {
       if (!(await gitHookManager.isHookInstalled(hook.name))) {
         console.warn(`Hook '${hook.name}' is not installed`);
         return;
       }
       await gitHookManager.uninstallHook(hook.name);
-    }
-    console.log("Hooks uninstalled");
+    });
+
+    await Promise.all(uninstallPromises);
+    console.info("Hooks uninstalled");
   };
 
   // Action function

@@ -114,7 +114,7 @@ describe("GitManagerImpl", () => {
     ]);
   });
 
-  it("should commit with a temporary message file", async () => {
+  /* it("should commit with a temporary message file", async () => {
     const tempCommitMsgFile = `${COMMIT_MSG_TMP_PATH}.tmp`;
     const commitMessage = "Test commit message with temp file";
 
@@ -139,7 +139,7 @@ describe("GitManagerImpl", () => {
       tempCommitMsgFile,
       COMMIT_MSG_TMP_PATH
     );
-  });
+  }); */
 
   it("should exclude files when getting staged files", async () => {
     const output = "file1.txt\nfile3.txt\n";

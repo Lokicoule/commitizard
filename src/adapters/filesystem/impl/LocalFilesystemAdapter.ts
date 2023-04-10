@@ -4,6 +4,7 @@ import {
   renameSync,
   unlinkSync,
   writeFileSync,
+  accessSync,
 } from "fs";
 import { FilesystemAdapter } from "../FilesystemAdapter";
 
@@ -13,18 +14,22 @@ export class LocalFilesystemAdapter implements FilesystemAdapter {
   }
 
   write(path: string, data: string): void {
-    return writeFileSync(path, data, { encoding: "utf-8" });
+    writeFileSync(path, data, { encoding: "utf-8" });
   }
 
   delete(path: string): void {
-    return unlinkSync(path);
+    unlinkSync(path);
   }
 
   rename(oldPath: string, newPath: string): void {
-    return renameSync(oldPath, newPath);
+    renameSync(oldPath, newPath);
   }
 
   exists(path: string): boolean {
     return existsSync(path);
+  }
+
+  access(path: string, mode?: number): void {
+    accessSync(path, mode);
   }
 }

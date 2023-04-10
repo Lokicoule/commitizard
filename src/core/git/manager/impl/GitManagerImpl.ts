@@ -51,38 +51,51 @@ export class GitManagerImpl implements GitManager {
   }
 
   public async commit(message: string): Promise<void> {
-    try {
-      const tempCommitMsgFile = `${COMMIT_MSG_TMP_PATH}.tmp`;
-
-      await fs.writeFile(tempCommitMsgFile, message, {
-        encoding: "utf8",
-      });
-
+    if (this.options.fromHook) {
       try {
-        await fs.access(COMMIT_MSG_TMP_PATH);
-      } catch (error: any) {
-        if (error.code === "ENOENT") {
-          await fs.writeFile(COMMIT_MSG_TMP_PATH, "", { encoding: "utf8" });
-        } else {
-          throw error;
-        }
-      }
+        const tempCommitMsgFile = `${COMMIT_MSG_TMP_PATH}.tmp`;
 
-      await fs.appendFile(
-        tempCommitMsgFile,
-        await fs.readFile(COMMIT_MSG_TMP_PATH, { encoding: "utf8" })
-      );
-      await fs.rename(tempCommitMsgFile, COMMIT_MSG_TMP_PATH);
-    } catch (error) {
-      console.log("error: ", error);
+        await fs.writeFile(tempCommitMsgFile, message, {
+          encoding: "utf8",
+        });
+
+        try {
+          await fs.access(COMMIT_MSG_TMP_PATH);
+        } catch (error: any) {
+          if (error.code === "ENOENT") {
+            await fs.writeFile(COMMIT_MSG_TMP_PATH, "", { encoding: "utf8" });
+          } else {
+            throw error;
+          }
+        }
+
+        await fs.appendFile(
+          tempCommitMsgFile,
+          await fs.readFile(COMMIT_MSG_TMP_PATH, { encoding: "utf8" })
+        );
+        await fs.rename(tempCommitMsgFile, COMMIT_MSG_TMP_PATH);
+      } catch (error) {
+        console.log("error: ", error);
+      }
+    } else {
+      await this.runGitCommand(["commit", "-m", message], {
+        env: {
+          ...process.env,
+          BYPASS_HOOKS: "1",
+        },
+      });
     }
   }
 
-  public async runGitCommand(command: string[]): Promise<string> {
-    const process = ProcessBuilderFactory.create()
+  public async runGitCommand(
+    command: string[],
+    options: Record<string, unknown> = {}
+  ): Promise<string> {
+    const gitCommit = ProcessBuilderFactory.create()
       .addArgs(command)
+      .addOption(options)
       .spawn("git");
-    return await this.streamToString(process.stdout);
+    return await this.streamToString(gitCommit.stdout);
   }
 
   private async getFiles(command: string[]): Promise<string[]> {
