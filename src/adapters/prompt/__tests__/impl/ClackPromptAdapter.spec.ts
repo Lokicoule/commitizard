@@ -1,4 +1,4 @@
-import { ClackPromptAdapter } from "./ClackPromptAdapter";
+import { ClackPromptAdapter } from "../../impl/ClackPromptAdapter";
 import * as clackPrompts from "@clack/prompts";
 import {
   Confirm,
@@ -7,7 +7,7 @@ import {
   Select,
   SelectOption,
   Text,
-} from "../types";
+} from "../../types";
 
 jest.mock("@clack/prompts");
 
