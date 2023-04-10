@@ -1,5 +1,5 @@
 import { bgBlue, bgCyan, black } from "picocolors";
-import { PromptAdapter } from "~/adapters/prompt/PromptAdapter";
+import { PromptAdapter } from "~/adapters/prompt/interfaces/PromptAdapter";
 import {
   Confirm,
   MultiSelect,
@@ -9,18 +9,14 @@ import {
   Text,
 } from "~/adapters/prompt/types";
 import { chunk } from "~/core/utils/chunk";
-import { IntroInput, IPaginateOptions, OutroInput } from "../types";
-import { PromptManager } from "../interface/PromptManager";
+import { IntroInput, IPaginateOptions, OutroInput } from "../../types";
+import { PromptManager } from "../interfaces/PromptManager";
 
 export class PromptManagerImpl implements PromptManager {
   private readonly adapter: PromptAdapter;
 
-  private constructor(adapter: PromptAdapter) {
+  constructor(adapter: PromptAdapter) {
     this.adapter = adapter;
-  }
-
-  public static create(adapter: PromptAdapter): PromptManager {
-    return new PromptManagerImpl(adapter);
   }
 
   public async confirm({

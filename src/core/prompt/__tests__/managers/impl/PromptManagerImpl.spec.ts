@@ -1,11 +1,12 @@
 import { bgCyan, black } from "picocolors";
-import { PromptAdapter } from "~/adapters/prompt/PromptAdapter";
+import { PromptAdapter } from "~/adapters/prompt/interfaces/PromptAdapter";
 import { MultiText } from "~/adapters/prompt/types";
-import { PromptManagerImpl } from "./PromptManagerImpl";
+import { PromptManagerImpl } from "~/core/prompt/managers/impl/PromptManagerImpl";
+import { PromptManager } from "../../../managers/interfaces/PromptManager";
 
 describe("PromptManagerImpl", () => {
   let adapter: PromptAdapter;
-  let sut: PromptManagerImpl;
+  let sut: PromptManager;
 
   beforeEach(() => {
     adapter = {

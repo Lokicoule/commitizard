@@ -7,7 +7,7 @@ import {
   SelectOption,
   Text,
 } from "~/adapters/prompt/types";
-import { IntroInput, IPaginateOptions, OutroInput } from "../types";
+import { IntroInput, IPaginateOptions, OutroInput } from "../../types";
 
 export interface PromptManager {
   confirm: (options: Confirm) => Promise<boolean>;
