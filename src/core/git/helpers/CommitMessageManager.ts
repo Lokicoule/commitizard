@@ -1,5 +1,5 @@
 import { promises as fs } from "fs";
-import { COMMIT_MSG_TMP_PATH } from "../configuration";
+import { COMMIT_MSG_TMP_PATH } from "../constants";
 
 export class CommitMessageManager {
   public async commitFromHook(message: string): Promise<void> {
