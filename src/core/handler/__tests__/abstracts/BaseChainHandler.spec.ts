@@ -1,4 +1,4 @@
-import { BaseChainHandler } from "./BaseChainHandler";
+import { BaseChainHandler } from "../../abstracts/BaseChainHandler";
 
 describe("BaseChainHandler", () => {
   class String {

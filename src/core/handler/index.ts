@@ -1,2 +1,2 @@
-export * from "./abstract/BaseChainHandler";
-export * from "./interface/ChainHandler";
+export * from "./abstracts/BaseChainHandler";
+export * from "./interfaces/ChainHandler";
