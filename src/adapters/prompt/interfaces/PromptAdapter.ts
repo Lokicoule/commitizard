@@ -6,7 +6,7 @@ import {
   Select,
   SelectOption,
   Text,
-} from "./types";
+} from "../types";
 
 export interface PromptAdapter {
   confirm(options: Confirm): Promise<boolean>;

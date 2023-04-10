@@ -9,7 +9,7 @@ import {
   select as clackSelect,
   text as clackText,
 } from "@clack/prompts";
-import { PromptAdapter } from "../PromptAdapter";
+import { PromptAdapter } from "../interfaces/PromptAdapter";
 
 import {
   Confirm,

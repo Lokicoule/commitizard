@@ -1,2 +1,2 @@
-export * from "./PromptAdapter";
-export * from "./PromptAdapterFactory";
+export * from "./interfaces/PromptAdapter";
+export * from "./factories/PromptAdapterFactory";

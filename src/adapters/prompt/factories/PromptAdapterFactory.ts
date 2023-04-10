@@ -1,5 +1,5 @@
-import { ClackPromptAdapter } from "./impl/ClackPromptAdapter";
-import { PromptAdapter } from "./PromptAdapter";
+import { ClackPromptAdapter } from "../impl/ClackPromptAdapter";
+import { PromptAdapter } from "../interfaces/PromptAdapter";
 
 export class PromptAdapterFactory {
   static createClackPromptAdapter(): PromptAdapter {
