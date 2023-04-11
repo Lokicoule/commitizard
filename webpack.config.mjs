@@ -8,7 +8,7 @@ export default {
   output: {
     filename: "bundle.js",
     path: path.resolve(process.cwd(), "dist"),
-    library: "commit-craft",
+    library: "commitizard",
     libraryTarget: "commonjs",
   },
   resolve: {

@@ -5,7 +5,7 @@ import { WizardCommand } from "./modules/wizard";
 
 function main() {
   CliBuilder.create({
-    name: "commit-craft",
+    name: "commitizard",
     description: "A CLI tool for generating commit messages",
   })
     .setDefaultCommand(WizardCommand.create())

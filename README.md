@@ -1,44 +1,44 @@
-# CommitCraft
+# Commitizard
 
-[![Coverage Status](https://coveralls.io/repos/github/Lokicoule/CommitCraft/badge.svg?branch=main)](https://coveralls.io/github/Lokicoule/CommitCraft?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/Lokicoule/commitizard/badge.svg?branch=main)](https://coveralls.io/github/Lokicoule/commitizard?branch=main)
 
-Commit Craft is a powerful command-line tool designed to simplify the process of generating high-quality commit messages. It provides an interactive prompt that guides users through the process of writing a commit message, making it easy to adhere to conventional commit message guidelines. With support for two commit message strategies, including conventional and red-green-refactor, Commit Craft offers a flexible and customizable solution to meet your unique commit message needs. Plus, with the ability to customize the configuration file, users can tailor Commit Craft to fit their specific preferences and requirements.
+**Commitizard** is a powerful command-line tool designed to simplify the process of generating high-quality commit messages. It provides an interactive prompt that guides users through the process of writing a commit message, making it easy to adhere to conventional commit message guidelines. With support for two commit message strategies, including conventional and red-green-refactor, **CMW** offers a flexible and customizable solution to meet your unique commit message needs. Plus, with the ability to customize the configuration file, users can tailor **CMW** to fit their specific preferences and requirements.
 
 ## Installation
 
-Commit Craft is primarily designed to be used locally as part of a development workflow. It can be installed locally in your project by running:
+**CMW** is primarily designed to be used locally as part of a development workflow. It can be installed locally in your project by running:
 
 ```sh
-npm install --save-dev commit-craft
+npm install --save-dev commitizard
 ```
 
 Alternatively, you can install it globally so that it can be run from any git directory:
 
 ```sh
-npm install -g commit-craft
+npm install -g commitizard
 ```
 
 ## Usage TO COMPLETE
 
-To use the Commit Craft CLI tool, simply run the `commit-craft` command in your terminal.
+To use the **CMW** CLI tool, simply run the `commitizard` command in your terminal.
 
 ```sh
-commit-craft
+commitizard
 ```
 
 This will start the wizard in interactive mode, prompting you for the necessary information to generate a commit message. You can customize the behavior of the wizard using various command-line options and configuration file.
 
 ### Red-green-refactor
 
-The Red-Green-Refactor commit type is used to describe the process of Test-Driven Development (TDD), where a test is written first, then the code is written to pass the test, and then the code is refactored to improve it without changing its functionality. Commit Craft supports Red-Green-Refactor commits and allows you to customize them based on your needs.
+The Red-Green-Refactor commit type is used to describe the process of Test-Driven Development (TDD), where a test is written first, then the code is written to pass the test, and then the code is refactored to improve it without changing its functionality. **CMW** supports Red-Green-Refactor commits and allows you to customize them based on your needs.
 
 ## Commands
 
-Commit Craft supports the following commands:
+**CMW** supports the following commands:
 
 1. ### **_wizard_** _(default)_
 
-By default, Commit Craft will run the wizard command, which provides an interactive prompt to guide you through the process of generating a commit message.
+By default, **CMW** will run the wizard command, which provides an interactive prompt to guide you through the process of generating a commit message.
 This command supports the following options:
 
 - `--path` or `-p`: Path to the configuration file (default is config.json).
@@ -60,7 +60,7 @@ The config command manages the application configuration. This command supports 
 
 ## Configuration
 
-Commit Craft is fully configurable via a JSON file. It can be generated into your project folder using the `commit-craft config -i` command.
+**CMW** is fully configurable via a JSON file. It can be generated into your project folder using the `commitizard config -i` command.
 
 The configuration file includes settings for both **_conventional_** and **_red-green-refactor_** commit message patterns. Here is an example of the available configuration options:
 
@@ -80,7 +80,7 @@ The configuration file includes settings for both **_conventional_** and **_red-
   - `label` is the text that will be displayed in the interactive prompt to describe the type of the commit.
   - `patterns` is an array of regular expressions or strings that will be used to match against the commit message when generating a commit. If a match is found, the commit type will be automatically set to the corresponding value.
 
-The configuration file can be edited to add, remove, or modify the available options for commit types and scopes. This allows you to fully customize the prompts and messages generated by Commit Craft to match your team's specific needs.
+The configuration file can be edited to add, remove, or modify the available options for commit types and scopes. This allows you to fully customize the prompts and messages generated by **CMW** to match your team's specific needs.
 
 ## Example
 
