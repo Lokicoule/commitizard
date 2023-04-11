@@ -206,4 +206,24 @@ describe("GitCommandRunner", () => {
 
     expect(result).toEqual([]);
   });
+
+  it("should commit without hooks", async () => {
+    mockProcess.stdout.push(null);
+
+    const commitMessage = "Test commit";
+    await gitRunner.commitWithoutHook(commitMessage);
+
+    expect(ProcessFactory.create().addArgs).toHaveBeenCalledWith([
+      "commit",
+      "-m",
+      commitMessage,
+    ]);
+
+    expect(ProcessFactory.create().addOption).toHaveBeenCalledWith({
+      env: {
+        ...process.env,
+        BYPASS_HOOKS: "1",
+      },
+    });
+  });
 });

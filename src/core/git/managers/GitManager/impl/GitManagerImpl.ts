@@ -8,10 +8,14 @@ export class GitManagerImpl implements GitManager {
   private gitCommandRunner: GitCommandRunner;
   private commitMessageManager: CommitMessageManager;
 
-  constructor(options: GitManagerOptions) {
+  constructor(
+    options: GitManagerOptions,
+    gitCommandRunner: GitCommandRunner,
+    commitMessageManager: CommitMessageManager
+  ) {
     this.options = options;
-    this.gitCommandRunner = new GitCommandRunner(options);
-    this.commitMessageManager = new CommitMessageManager();
+    this.gitCommandRunner = gitCommandRunner;
+    this.commitMessageManager = commitMessageManager;
   }
 
   public async getStagedFiles(): Promise<string[]> {

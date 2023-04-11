@@ -3,55 +3,95 @@ import { CommitMessageManager } from "../../../helpers/CommitMessageManager";
 import { GitManagerImpl } from "./GitManagerImpl";
 import { GitManagerOptions } from "../GitManagerOptions";
 
-jest.mock("../../../helpers/GitCommandRunner");
-jest.mock("../../../helpers/CommitMessageManager");
-
 describe("GitManagerImpl", () => {
+  let gitManagerOptions: GitManagerOptions;
   let gitManager: GitManagerImpl;
-  let options: GitManagerOptions;
   let gitCommandRunner: GitCommandRunner;
   let commitMessageManager: CommitMessageManager;
 
   beforeEach(() => {
-    options = {
-      exclude: [],
-    };
-    gitCommandRunner = new GitCommandRunner(options);
+    gitManagerOptions = { exclude: [], fromHook: false };
+    gitCommandRunner = new GitCommandRunner(gitManagerOptions);
     commitMessageManager = new CommitMessageManager();
-    gitManager = new GitManagerImpl(options);
+    gitManager = new GitManagerImpl(
+      gitManagerOptions,
+      gitCommandRunner,
+      commitMessageManager
+    );
   });
 
-  it("should create a new instance", () => {
-    expect(gitManager).toBeInstanceOf(GitManagerImpl);
+  it("should get staged files", async () => {
+    gitCommandRunner.getStagedFiles = jest.fn().mockResolvedValue([]);
+    await gitManager.getStagedFiles();
+    expect(gitCommandRunner.getStagedFiles).toHaveBeenCalledTimes(1);
   });
 
-  /* describe("commit", () => {
-    it("should commit with commitFromHook if fromHook is true", async () => {
-      options.fromHook = true;
-      gitManager = new GitManagerImpl(options);
-      commitMessageManager.commitFromHook = jest
-        .fn()
-        .mockResolvedValue(undefined);
-      const message = "Test commit message";
+  it("should get created files", async () => {
+    gitCommandRunner.getCreatedFiles = jest.fn().mockResolvedValue([]);
+    await gitManager.getCreatedFiles();
+    expect(gitCommandRunner.getCreatedFiles).toHaveBeenCalledTimes(1);
+  });
 
-      await gitManager.commit(message);
+  it("should get updated files", async () => {
+    gitCommandRunner.getUpdatedFiles = jest.fn().mockResolvedValue([]);
+    await gitManager.getUpdatedFiles();
+    expect(gitCommandRunner.getUpdatedFiles).toHaveBeenCalledTimes(1);
+  });
 
-      //expect(commitMessageManager.commitFromHook).toHaveBeenCalledTimes(1);
-      expect(commitMessageManager.commitFromHook).toHaveBeenCalledWith(message);
-    });
+  it("should get deleted files", async () => {
+    gitCommandRunner.getDeletedFiles = jest.fn().mockResolvedValue([]);
+    await gitManager.getDeletedFiles();
+    expect(gitCommandRunner.getDeletedFiles).toHaveBeenCalledTimes(1);
+  });
 
-    it("should commit with commitWithoutHook if fromHook is false or undefined", async () => {
-      options.fromHook = false;
-      gitManager = new GitManagerImpl(options);
-      gitCommandRunner.commitWithoutHook = jest
-        .fn()
-        .mockResolvedValue(undefined);
-      const message = "Test commit message";
+  it("should check if the directory is a Git repository", async () => {
+    gitCommandRunner.isGitRepository = jest.fn().mockResolvedValue(true);
+    const result = await gitManager.isGitRepository();
+    expect(result).toBe(true);
+    expect(gitCommandRunner.isGitRepository).toHaveBeenCalledTimes(1);
+  });
 
-      await gitManager.commit(message);
+  it("should check if there are staged files", async () => {
+    gitCommandRunner.hasStagedFiles = jest.fn().mockResolvedValue(true);
+    const result = await gitManager.hasStagedFiles();
+    expect(result).toBe(true);
+    expect(gitCommandRunner.hasStagedFiles).toHaveBeenCalledTimes(1);
+  });
 
-      expect(gitCommandRunner.commitWithoutHook).toHaveBeenCalledTimes(1);
-      expect(gitCommandRunner.commitWithoutHook).toHaveBeenCalledWith(message);
-    });
-  }); */
+  it("should stage files", async () => {
+    gitCommandRunner.stageFiles = jest.fn().mockResolvedValue(undefined);
+    const files = ["file1.txt", "file2.txt"];
+    await gitManager.stageFiles(files);
+    expect(gitCommandRunner.stageFiles).toHaveBeenCalledWith(files);
+  });
+
+  it("should commit with commitFromHook if fromHook is true", async () => {
+    commitMessageManager.commitFromHook = jest
+
+      .fn()
+      .mockResolvedValue(undefined);
+    gitCommandRunner.commitWithoutHook = jest.fn().mockResolvedValue(undefined);
+    const message = "Test commit";
+    gitManagerOptions.fromHook = true;
+
+    await gitManager.commit(message);
+
+    expect(commitMessageManager.commitFromHook).toHaveBeenCalledWith(message);
+    expect(gitCommandRunner.commitWithoutHook).toHaveBeenCalledTimes(0);
+  });
+
+  it("should commit with commitWithoutHook if fromHook is false", async () => {
+    commitMessageManager.commitFromHook = jest
+
+      .fn()
+      .mockResolvedValue(undefined);
+    gitCommandRunner.commitWithoutHook = jest.fn().mockResolvedValue(undefined);
+    const message = "Test commit";
+    gitManagerOptions.fromHook = false;
+
+    await gitManager.commit(message);
+
+    expect(commitMessageManager.commitFromHook).toHaveBeenCalledTimes(0);
+    expect(gitCommandRunner.commitWithoutHook).toHaveBeenCalledWith(message);
+  });
 });
