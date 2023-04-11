@@ -94,7 +94,6 @@ describe("ClackPromptAdapter", () => {
     });
   });
 
-  // Add these tests to the existing test suite
   it("should prompt for multiple text inputs", async () => {
     (clackPrompts.text as jest.Mock)
       .mockResolvedValueOnce("First line")
@@ -151,7 +150,6 @@ describe("ClackPromptAdapter", () => {
         { label: "Option A", value: "Option A" },
         { label: "Option B", value: "Option B" },
       ],
-      required: false,
       abortMessage: "Operation canceled",
     };
 

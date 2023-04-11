@@ -32,13 +32,15 @@ describe("PromptManagerImpl", () => {
     it("should call the adapter with the correct options", async () => {
       const options = {
         message: "message",
-        defaultValue: false,
         abortMessage: "abortMessage",
       };
 
       await sut.confirm(options);
 
-      expect(adapter.confirm).toHaveBeenCalledWith(options);
+      expect(adapter.confirm).toHaveBeenCalledWith({
+        ...options,
+        defaultValue: false,
+      });
     });
   });
 
