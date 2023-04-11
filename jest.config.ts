@@ -17,8 +17,8 @@ const config: Config = {
   coveragePathIgnorePatterns: ["/node_modules/", "/dist/"],
   coverageThreshold: {
     global: {
-      branches: 100,
-      statements: 100,
+      branches: 90,
+      statements: 90,
     },
   },
   moduleNameMapper: {

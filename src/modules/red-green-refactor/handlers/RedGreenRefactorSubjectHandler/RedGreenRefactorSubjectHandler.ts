@@ -85,10 +85,11 @@ export class RedGreenRefactorSubjectHandler extends BaseRedGreenRefactorHandler 
       } else {
         placeholderValue = await this.promptManager.text({
           message: `Enter value for placeholder ${blue(placeholder)}:`,
-          validate: (value) =>
-            value.length === 0
-              ? `${blue(placeholder)} is required!`
-              : undefined,
+          validate: (input) => {
+            if (input.trim().length === 0) {
+              return `Value for placeholder ${blue(placeholder)} is required!`;
+            }
+          },
         });
       }
 
@@ -102,8 +103,9 @@ export class RedGreenRefactorSubjectHandler extends BaseRedGreenRefactorHandler 
     const commitSubject = await this.promptManager.text({
       message: "Enter custom commit subject:",
       abortMessage: "Commit subject selection aborted!",
-      validate: (value) =>
-        value.length === 0 ? `Subject is required!` : undefined,
+      validate: (input) => {
+        if (input.trim().length === 0) return "Subject is required!";
+      },
     });
 
     return commitSubject;

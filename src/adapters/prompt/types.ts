@@ -11,7 +11,7 @@ export type Text = Message & {
   placeholder?: string;
   defaultValue?: string;
   abortMessage?: string;
-  validate?: (value: string) => string | undefined;
+  validate?: (value: string) => string | void;
 };
 
 export type MultiText = {
