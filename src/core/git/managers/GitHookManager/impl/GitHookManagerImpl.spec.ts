@@ -55,7 +55,7 @@ describe("GitHookManagerImpl", () => {
 
     (fs.access as jest.Mock).mockResolvedValue(true);
 
-    const isInstalled = await gitHookManager.isHookInstalled(hookName);
+    const isInstalled = await gitHookManager.hookExists(hookName);
 
     expect(isInstalled).toBe(true);
     expect(fs.access).toHaveBeenCalledWith(
@@ -68,7 +68,7 @@ describe("GitHookManagerImpl", () => {
     const hookName = "pre-commit";
     (fs.access as jest.Mock).mockRejectedValue(new Error("Hook not found"));
 
-    const isInstalled = await gitHookManager.isHookInstalled(hookName);
+    const isInstalled = await gitHookManager.hookExists(hookName);
 
     expect(isInstalled).toBe(false);
     expect(fs.access).toHaveBeenCalledWith(

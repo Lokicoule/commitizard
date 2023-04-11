@@ -1,2 +1,2 @@
-export * from "./hookCommandFactory";
+export * from "./HookCommand";
 export * from "./types";

@@ -1,6 +1,6 @@
 import { CliBuilder } from "commandzen";
 import { configCommandFactory } from "./modules/config";
-import { hookCommandFactory } from "./modules/hook/hookCommandFactory";
+import { HookCommand } from "./modules/hook";
 import { wizardCommandFactory } from "./modules/wizard";
 
 function main() {
@@ -10,7 +10,7 @@ function main() {
   })
     .setDefaultCommand(wizardCommandFactory())
     .addCommand(configCommandFactory())
-    .addCommand(hookCommandFactory());
+    .addCommand(HookCommand.createDefault().createCommand());
 
   cli.parse();
 }

@@ -1,12 +1,28 @@
-import { Command } from "commandzen";
 import { GitHookManager } from "~/core/git";
 
 export abstract class BaseHookCommand {
-  protected gitHookManager: GitHookManager;
+  constructor(protected gitHookManager: GitHookManager) {}
 
-  constructor(gitHookManager: GitHookManager) {
-    this.gitHookManager = gitHookManager;
+  protected abstract getHookName(): string;
+  protected abstract getScript(): string;
+  protected abstract getWindowsScript(): string;
+
+  public async install(): Promise<void> {
+    if (await this.gitHookManager.hookExists(this.getHookName())) {
+      console.warn(`${this.getHookName()} hook already exists.`);
+      return;
+    }
+    await this.gitHookManager.installHook(
+      this.getHookName(),
+      process.platform === "win32" ? this.getWindowsScript() : this.getScript()
+    );
   }
 
-  abstract createCommand(): Command;
+  public async uninstall(): Promise<void> {
+    if (!(await this.gitHookManager.hookExists(this.getHookName()))) {
+      console.warn(`${this.getHookName()} hook does not exist.`);
+      return;
+    }
+    await this.gitHookManager.uninstallHook(this.getHookName());
+  }
 }

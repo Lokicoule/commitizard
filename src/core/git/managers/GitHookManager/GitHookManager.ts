@@ -14,5 +14,5 @@
 export interface GitHookManager {
   installHook(hookName: string, script: string): Promise<void>;
   uninstallHook(hookName: string): Promise<void>;
-  isHookInstalled(hookName: string): Promise<boolean>;
+  hookExists(hookName: string): Promise<boolean>;
 }

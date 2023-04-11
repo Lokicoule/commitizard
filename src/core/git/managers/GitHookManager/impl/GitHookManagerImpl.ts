@@ -27,7 +27,7 @@ export class GitHookManagerImpl implements GitHookManager {
     }
   }
 
-  public async isHookInstalled(hookName: string): Promise<boolean> {
+  public async hookExists(hookName: string): Promise<boolean> {
     const hookPath = join(this.hooksDir, hookName);
     try {
       await fs.access(hookPath, fs.constants.F_OK);
