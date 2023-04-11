@@ -1,1 +1,1 @@
-export * from "./command/configCommandFactory";
+export * from "./ConfigCommand";

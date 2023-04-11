@@ -1,1 +1,1 @@
-export * from "./command/wizardCommandFactory";
+export * from "./WizardCommand";

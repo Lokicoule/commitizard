@@ -15,9 +15,10 @@ export class HookCommand {
 
   constructor(
     private readonly gitManager: GitManager,
-    private readonly gitHookManager: GitHookManager
+    private readonly gitHookManager: GitHookManager,
+    hookCommands?: BaseHookCommand[]
   ) {
-    this.hookCommands = [
+    this.hookCommands = hookCommands ?? [
       new PreCommitHookCommand(gitHookManager),
       new PrepareCommitMsgHookCommand(gitHookManager),
     ];

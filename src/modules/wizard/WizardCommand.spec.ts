@@ -10,8 +10,8 @@ import { PromptManagerFactory } from "~/core/prompt";
 import { CommitConventionStrategyType } from "~/modules/commit/strategy/CommitConventionStrategy";
 import { ConventionalStrategy } from "~/modules/conventional/strategy/ConventionalStrategy";
 import { RedGreenRefactorStrategy } from "~/modules/red-green-refactor/strategy/RedGreenRefactorStrategy";
-import { WizardCommitHandlerChainBuilder } from "../handlers/builder/WizardCommitHandlerChainBuilder";
-import { wizardCommandFactory } from "./wizardCommandFactory";
+import { WizardCommand } from "./WizardCommand";
+import { WizardCommitHandlerChainBuilder } from "./handlers/builder/WizardCommitHandlerChainBuilder";
 
 jest.mock("~/core/configuration");
 jest.mock("~/core/git");
@@ -51,13 +51,13 @@ describe("WizardCommand", () => {
   });
 
   it("should create a WizardCommand instance", () => {
-    const wizardCommand = wizardCommandFactory(configurationService);
+    const wizardCommand = WizardCommand.create();
 
     expect(wizardCommand).toBeInstanceOf(Command);
   });
 
   it("should execute WizardCommand action", () => {
-    const wizardCommand = wizardCommandFactory(configurationService);
+    const wizardCommand = WizardCommand.create(configurationService);
 
     wizardCommand.emit("wizard", {
       path: DEFAULT_CONFIG_PATH,
