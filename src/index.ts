@@ -1,6 +1,6 @@
 import { CliBuilder } from "commandzen";
 import { configCommandFactory } from "./modules/config";
-import { hookCommandFactory } from "./modules/hook/command/hookCommandFactory";
+import { hookCommandFactory } from "./modules/hook/hookCommandFactory";
 import { wizardCommandFactory } from "./modules/wizard";
 
 function main() {

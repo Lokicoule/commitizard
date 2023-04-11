@@ -16,7 +16,7 @@ export class RedGreenRefactorSubjectHandler extends BaseRedGreenRefactorHandler 
       );
     if (!type) {
       throw new Error(
-        "No commit type configuration found for " + blue(commitType.message)
+        "No commit type configuration found for " + blue(commitType?.message)
       );
     }
 
