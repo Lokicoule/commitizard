@@ -1,34 +1,30 @@
-import { FilesystemAdapter } from "~/adapters/filesystem";
-import { Configuration } from "../../types";
+import {
+  existsSync,
+  readFileSync,
+  renameSync,
+  unlinkSync,
+  writeFileSync,
+} from "fs";
 import { defaultConfig } from "../../__config__/default";
 import { defaultConfigWithEmojis } from "../../__config__/default-with-emojis";
+import { Configuration } from "../../types";
 import { ConfigurationServiceImpl } from "./ConfigurationServiceImpl";
 
-describe("ConfigurationServiceImpl", () => {
-  let filesystemAdapter: FilesystemAdapter;
+jest.mock("fs");
 
+describe("ConfigurationServiceImpl", () => {
   beforeEach(() => {
-    filesystemAdapter = {
-      read: jest.fn(),
-      write: jest.fn(),
-      delete: jest.fn(),
-      exists: jest.fn(),
-      rename: jest.fn(),
-    };
+    jest.clearAllMocks();
   });
 
   it("should create a ConfigurationServiceImpl instance", () => {
-    const configurationService = new ConfigurationServiceImpl(
-      filesystemAdapter
-    );
+    const configurationService = new ConfigurationServiceImpl();
     expect(configurationService).toBeInstanceOf(ConfigurationServiceImpl);
   });
 
   it("should load default configuration when config file is not available", () => {
-    (filesystemAdapter.exists as jest.Mock).mockReturnValue(false);
-    const configurationService = new ConfigurationServiceImpl(
-      filesystemAdapter
-    );
+    (existsSync as jest.Mock).mockReturnValue(false);
+    const configurationService = new ConfigurationServiceImpl();
 
     const config = configurationService.load();
 
@@ -36,10 +32,8 @@ describe("ConfigurationServiceImpl", () => {
   });
 
   it("should load default configuration with emojis when withEmoji flag is true", () => {
-    (filesystemAdapter.exists as jest.Mock).mockReturnValue(false);
-    const configurationService = new ConfigurationServiceImpl(
-      filesystemAdapter
-    );
+    (existsSync as jest.Mock).mockReturnValue(false);
+    const configurationService = new ConfigurationServiceImpl();
 
     const config = configurationService.load(undefined, true);
 
@@ -54,43 +48,21 @@ describe("ConfigurationServiceImpl", () => {
         excludePaths: ["node_modules"],
       },
     } as Configuration;
-    (filesystemAdapter.exists as jest.Mock).mockReturnValue(true);
-    (filesystemAdapter.read as jest.Mock).mockReturnValue(
-      JSON.stringify(userConfig)
-    );
-    const configurationService = new ConfigurationServiceImpl(
-      filesystemAdapter
-    );
+    (existsSync as jest.Mock).mockReturnValue(true);
+    (readFileSync as jest.Mock).mockReturnValue(JSON.stringify(userConfig));
+    const configurationService = new ConfigurationServiceImpl();
 
     const config = configurationService.load();
 
     expect(config).toEqual({ ...defaultConfig, ...userConfig });
   });
 
-  it("should not create a backup when config file does not exist", () => {
-    (filesystemAdapter.exists as jest.Mock).mockReturnValue(false);
-    const configurationService = new ConfigurationServiceImpl(
-      filesystemAdapter
-    );
-    const consoleLogSpy = jest.spyOn(console, "log").mockImplementation();
-    const renameSpy = jest.spyOn(filesystemAdapter, "rename");
-
-    configurationService.backup();
-
-    expect(renameSpy).not.toHaveBeenCalled();
-    expect(consoleLogSpy).not.toHaveBeenCalled();
-
-    consoleLogSpy.mockRestore();
-  });
-
   it("should handle error when reading config file", () => {
-    (filesystemAdapter.exists as jest.Mock).mockReturnValue(true);
-    (filesystemAdapter.read as jest.Mock).mockImplementation(() => {
+    (existsSync as jest.Mock).mockReturnValue(true);
+    (readFileSync as jest.Mock).mockImplementation(() => {
       throw new Error("Read error");
     });
-    const configurationService = new ConfigurationServiceImpl(
-      filesystemAdapter
-    );
+    const configurationService = new ConfigurationServiceImpl();
     const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
 
     const config = configurationService.load();
@@ -101,14 +73,49 @@ describe("ConfigurationServiceImpl", () => {
     consoleErrorSpy.mockRestore();
   });
 
+  it("should write configuration to file", () => {
+    const config: Configuration = {
+      version: "1.0.0",
+      settings: {
+        maxViewFilesToShow: 10,
+        excludePaths: ["node_modules"],
+      },
+    } as Configuration;
+    const configurationService = new ConfigurationServiceImpl();
+
+    configurationService.write(config);
+
+    expect(writeFileSync).toHaveBeenCalled();
+  });
+
+  it("should delete configuration file", () => {
+    const configurationService = new ConfigurationServiceImpl();
+
+    configurationService.delete();
+
+    expect(unlinkSync).toHaveBeenCalled();
+  });
+
+  it("should backup configuration file", () => {
+    const configurationService = new ConfigurationServiceImpl();
+
+    configurationService.backup();
+
+    expect(renameSync).toHaveBeenCalled();
+  });
+
   it("should handle error when writing config file", () => {
-    const configurationService = new ConfigurationServiceImpl(
-      filesystemAdapter
-    );
-    const config = defaultConfig;
-    (filesystemAdapter.write as jest.Mock).mockImplementation(() => {
+    const config: Configuration = {
+      version: "1.0.0",
+      settings: {
+        maxViewFilesToShow: 10,
+        excludePaths: ["node_modules"],
+      },
+    } as Configuration;
+    (writeFileSync as jest.Mock).mockImplementation(() => {
       throw new Error("Write error");
     });
+    const configurationService = new ConfigurationServiceImpl();
     const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
 
     configurationService.write(config);
@@ -119,12 +126,10 @@ describe("ConfigurationServiceImpl", () => {
   });
 
   it("should handle error when deleting config file", () => {
-    const configurationService = new ConfigurationServiceImpl(
-      filesystemAdapter
-    );
-    (filesystemAdapter.delete as jest.Mock).mockImplementation(() => {
+    (unlinkSync as jest.Mock).mockImplementation(() => {
       throw new Error("Delete error");
     });
+    const configurationService = new ConfigurationServiceImpl();
     const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
 
     configurationService.delete();
@@ -134,14 +139,11 @@ describe("ConfigurationServiceImpl", () => {
     consoleErrorSpy.mockRestore();
   });
 
-  it("should handle error when creating backup of config file", () => {
-    (filesystemAdapter.exists as jest.Mock).mockReturnValue(true);
-    (filesystemAdapter.rename as jest.Mock).mockImplementation(() => {
+  it("should handle error when backup config file", () => {
+    (renameSync as jest.Mock).mockImplementation(() => {
       throw new Error("Backup error");
     });
-    const configurationService = new ConfigurationServiceImpl(
-      filesystemAdapter
-    );
+    const configurationService = new ConfigurationServiceImpl();
     const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
 
     configurationService.backup();

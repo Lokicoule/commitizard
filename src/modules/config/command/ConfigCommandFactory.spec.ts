@@ -1,5 +1,4 @@
 import { Command } from "commandzen";
-import { FilesystemAdapterFactory } from "~/adapters/filesystem";
 import {
   ConfigurationService,
   ConfigurationServiceFactory,
@@ -11,9 +10,7 @@ describe("configCommandFactory", () => {
   let configurationService: ConfigurationService;
 
   beforeEach(() => {
-    configurationService = ConfigurationServiceFactory.create(
-      FilesystemAdapterFactory.createLocalFilesystemAdapter()
-    );
+    configurationService = ConfigurationServiceFactory.create();
   });
 
   test("should create a config command", () => {

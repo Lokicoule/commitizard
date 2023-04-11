@@ -1,5 +1,4 @@
 import { Command } from "commandzen";
-import { FilesystemAdapterFactory } from "~/adapters/filesystem";
 import {
   ConfigurationService,
   ConfigurationServiceFactory,
@@ -7,9 +6,7 @@ import {
 } from "~/core/configuration";
 
 export const configCommandFactory = (
-  configurationService: ConfigurationService = ConfigurationServiceFactory.create(
-    FilesystemAdapterFactory.createLocalFilesystemAdapter()
-  )
+  configurationService: ConfigurationService = ConfigurationServiceFactory.create()
 ) => {
   return Command.create({
     name: "config",

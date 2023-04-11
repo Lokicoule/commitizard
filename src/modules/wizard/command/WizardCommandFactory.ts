@@ -1,5 +1,4 @@
 import { Command } from "commandzen";
-import { FilesystemAdapterFactory } from "~/adapters/filesystem";
 import { PromptAdapterFactory } from "~/adapters/prompt";
 import {
   ConfigurationManagerFactory,
@@ -12,13 +11,11 @@ import { PromptManagerFactory } from "~/core/prompt";
 import { CommitConventionStrategyType } from "~/modules/commit";
 import { ConventionalStrategy } from "~/modules/conventional";
 import { RedGreenRefactorStrategy } from "~/modules/red-green-refactor";
-import { WizardBuilderFactory } from "../builder/WizardBuilderFactory";
+import { WizardBuilderFactory } from "../builder";
 import { WizardCommitHandlerChainBuilder } from "../handlers/builder/WizardCommitHandlerChainBuilder";
 
 export const wizardCommandFactory = (
-  configurationService: ConfigurationService = ConfigurationServiceFactory.create(
-    FilesystemAdapterFactory.createLocalFilesystemAdapter()
-  )
+  configurationService: ConfigurationService = ConfigurationServiceFactory.create()
 ) => {
   return Command.create({
     name: "wizard",
