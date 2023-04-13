@@ -377,9 +377,7 @@ Replace `New custom pattern for RED commits {{feature}}` with your desired patte
 
 ### 3. Bypassing Hooks with the Environment Variable
 
-- [Design doc](https://github.com/Lokicoule/commitizard/blob/main/docs/bypassing_hooks.md)
-
-In some cases, you might want to bypass the git hooks managed by **Commitizard**. This can be done by setting the `COMMITIZARD_BYPASS` environment variable to true before executing the git command.
+In some cases, you might want to bypass the git hooks managed by **Commitizard**. This can be done by setting the `COMMITIZARD_BYPASS` environment variable to true before executing the git command. [Here](https://github.com/Lokicoule/commitizard/blob/main/docs/bypassing_hooks.md), you can find more information about the technical choice
 
 ##### Unix-based Systems
 
