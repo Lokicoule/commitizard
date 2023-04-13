@@ -4,9 +4,13 @@
   "description": "Commitizard is a powerful command-line tool designed to simplify the process of generating high-quality commit messages",
   "main": "src/index.ts",
   "bin": {
-    "commitizard": "dist/bundle.js",
-    "cmw": "dist/bundle.js"
+    "commitizard": "dist/bundle.js"
   },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "npm run clean && webpack && chmod +x dist/bundle.js",
     "clean": "rm -rf dist",
