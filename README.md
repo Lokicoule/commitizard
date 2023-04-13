@@ -2,11 +2,41 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/Lokicoule/commitizard/badge.svg?branch=main)](https://coveralls.io/github/Lokicoule/commitizard?branch=main)
 
-**Commitizard** is a powerful command-line tool designed to simplify the process of generating high-quality commit messages. It provides an interactive prompt that guides users through the process of writing a commit message, making it easy to adhere to conventional commit message guidelines. With support for two commit message strategies, including conventional and red-green-refactor, **CMW** offers a flexible and customizable solution to meet your unique commit message needs. Plus, with the ability to customize the configuration file, users can tailor **CMW** to fit their specific preferences and requirements.
+**Commitizard** is a TypeScript-based Command Line Interface (CLI) wizard application designed to help developers write better commit messages. It supports **conventional** commits and **red-green-refactor** commit strategies. The project is fully configurable through the `.commitizard.json` file.
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [Wizard (default)](#wizard-default)
+    - [Options](#options)
+    - [Overviews](#overviews)
+  - [Config](#config)
+    - [Options](#options-1)
+  - [Hook](#hook)
+    - [Options](#options-2)
+- [Configuration](#configuration)
+- [Examples](#examples)
+- [Advanced Usage](#advanced-usage)
+  - [Customizing Prompts](#customizing-prompts)
+  - [Custom Commit Message Templates for Red-Green-Refactor Strategy](#custom-commit-message-templates-for-red-green-refactor-strategy)
+- [Design Document: Bypassing Hooks](#design-document-bypassing-hooks)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Features
+
+- Wizard-style commit message generation
+- Supports conventional and red-green-refactor commit strategies
+- Fully configurable through `.commitizard.json`
+- Git hook management
+- Application configuration management
 
 ## Installation
 
-**CMW** is primarily designed to be used locally as part of a development workflow. It can be installed locally in your project by running:
+**Commitizard** is primarily designed to be used locally as part of a development workflow. It can be installed locally in your project by running:
 
 ```sh
 npm install --save-dev commitizard
@@ -18,49 +48,80 @@ Alternatively, you can install it globally so that it can be run from any git di
 npm install -g commitizard
 ```
 
-## Usage TO COMPLETE
-
-To use the **CMW** CLI tool, simply run the `commitizard` command in your terminal.
+## Usage
 
 ```sh
-commitizard
+commitizard [command] [options]
 ```
 
-This will start the wizard in interactive mode, prompting you for the necessary information to generate a commit message. You can customize the behavior of the wizard using various command-line options and configuration file.
+For more detailed information on available commands and options, run:
 
-### Red-green-refactor
-
-The Red-Green-Refactor commit type is used to describe the process of Test-Driven Development (TDD), where a test is written first, then the code is written to pass the test, and then the code is refactored to improve it without changing its functionality. **CMW** supports Red-Green-Refactor commits and allows you to customize them based on your needs.
+```sh
+commitizard --help
+```
 
 ## Commands
 
-**CMW** supports the following commands:
+**Commitizard** provides the following commands:
 
-1. ### **_wizard_** _(default)_
+1. wizard: A CLI tool for generating commit messages.
+2. config: Manage the application configuration.
+3. hook: Manage the application hooks.
 
-By default, **CMW** will run the wizard command, which provides an interactive prompt to guide you through the process of generating a commit message.
-This command supports the following options:
+### Wizard (default)
 
-- `--path` or `-p`: Path to the configuration file (default is config.json).
-- `--display-staged-files` or `-D`: Display staged files before prompting for commit message.
-- `--select-files` or `-S`: Prompt user to select files to stage before prompting for commit message.
-- `--strategy` or `-s`: Commit message strategy to use (e.g. conventional or red-green-refactor).
-- `--with-emoji` or `-e`: Use a relevant emoji as a prefix for the commit message type.
+The Wizard command is responsible for generating commit messages based on user input and the selected commit strategy. If the `-s`, `--strategy` option is not provided, **Commitizard** will prompt the user to choose between the _conventional_ and _red-green-refactor_ commit strategies before proceeding with the commit message generation. This interactive confirmation ensures that the appropriate commit message format is used based on the user's preference or project requirements.
 
-2. ### **_config_**
+#### Options
 
-The config command manages the application configuration. This command supports the following options:
+- `-p, --path <path>`: Path to the configuration file
+- `-D, --display-staged-files`: Display staged files before prompting for commit message
+- `-S, --select-files`: Prompt user to select files to stage before prompting for commit message
+- `-s, --strategy`: Commit message strategy to use
+- `-e, --with-emoji`: Use a relevant emoji as a prefix for the commit message type
+- `--from-hook`: Indicates that the command was called from a git hook
 
-- `--path` or `-p`: Path to the configuration file (default is config.json).
-- `--install` or `-i`: Install the configuration file.
-- `--with-emoji` or `-e`: Use the emoji configuration file.
-- `--backup` or `-b`: Backup the configuration file.
-- `--restore` or `-r`: Restore the configuration file.
-- `--delete` or `-d`: Delete the configuration file.
+#### Overviews
+
+1. `commitizard --display-staged-files --strategy red-green-refactor`
+   [![asciicast](https://asciinema.org/a/s3a9kBzZgeYGMBzD8h1C9BXLX.svg)](https://asciinema.org/a/s3a9kBzZgeYGMBzD8h1C9BXLX)
+2. `commitizard --select-files`
+   [![asciicast](https://asciinema.org/a/wqmj7Vh9gYfoM7cCRdBi25Su7.svg)](https://asciinema.org/a/wqmj7Vh9gYfoM7cCRdBi25Su7)
+
+3. `commitizard --strategy conventional --with-emoji`
+   [![asciicast](https://asciinema.org/a/vObWwGShHEXBRwjtY0ryboyHW.svg)](https://asciinema.org/a/vObWwGShHEXBRwjtY0ryboyHW)
+
+4. `commitizard --display-staged-files`
+   [![asciicast](https://asciinema.org/a/UUJb1jXv11j5PXyz0LR1F0iSR.svg)](https://asciinema.org/a/UUJb1jXv11j5PXyz0LR1F0iSR)
+
+5. Using hooks: `git commit`
+   [![asciicast](https://asciinema.org/a/H1t2ZK3DmdScB1Fs2UGQQrZPq.svg)](https://asciinema.org/a/H1t2ZK3DmdScB1Fs2UGQQrZPq)
+
+### Config
+
+The Config command is responsible for managing the application configuration.
+
+#### Options
+
+- `-p, --path <path>`: Path to the configuration file
+- `-i, --install`: Install the configuration file
+- `-e, --with-emoji`: Use the emoji configuration file
+- `-b, --backup`: Backup the configuration file
+- `-r, --restore`: Restore the configuration file
+- `-d, --delete`: Delete the configuration file
+
+### Hook
+
+The Hook command is responsible for managing the application hooks.
+
+#### Options
+
+- `-i, --install`: Install the hooks
+- `-u, --uninstall`: Uninstall the hooks
 
 ## Configuration
 
-**CMW** is fully configurable via a JSON file. It can be generated into your project folder using the `commitizard config -i` command.
+**Commitizard** is fully configurable via a JSON file. It can be generated into your project folder using the `commitizard config -i` or `commitizard config --install` command.
 
 The configuration file includes settings for both **_conventional_** and **_red-green-refactor_** commit message patterns. Here is an example of the available configuration options:
 
@@ -80,11 +141,14 @@ The configuration file includes settings for both **_conventional_** and **_red-
   - `label` is the text that will be displayed in the interactive prompt to describe the type of the commit.
   - `patterns` is an array of regular expressions or strings that will be used to match against the commit message when generating a commit. If a match is found, the commit type will be automatically set to the corresponding value.
 
-The configuration file can be edited to add, remove, or modify the available options for commit types and scopes. This allows you to fully customize the prompts and messages generated by **CMW** to match your team's specific needs.
+The configuration file can be edited to add, remove, or modify the available options for commit types and scopes. This allows you to fully customize the prompts and messages generated by **Commitizard** to match your team's specific needs.
 
-## Example
+## Examples
 
 Here's an example configuration file:
+
+<details>
+  <summary>Click to show</summary>
 
 ```json
 {
@@ -94,15 +158,10 @@ Here's an example configuration file:
     "excludePaths": [
       "package-lock.json",
       "yarn.lock",
-      "yarn-error.log",
       "pnpm-lock.yaml",
       "**/yarn.lock",
       "**/pnpm-lock.yaml",
-      "**/package-lock.json",
-      "**/yarn-error.log",
-      "**/yarn.lock.*",
-      "**/yarn.lock/*.log",
-      "**/.yarn/cache"
+      "**/package-lock.json"
     ]
   },
   "conventional": {
@@ -127,6 +186,28 @@ Here's an example configuration file:
       ]
     },
     "cliOptions": {
+      "scopes": [
+        {
+          "value": "core",
+          "label": "Core"
+        },
+        {
+          "value": "common",
+          "label": "Common"
+        },
+        {
+          "value": "domain",
+          "label": "Domain"
+        },
+        {
+          "value": "infra",
+          "label": "Infra"
+        },
+        {
+          "value": "business",
+          "label": "Business"
+        }
+      ],
       "types": [
         {
           "value": "feat",
@@ -230,4 +311,58 @@ Here's an example configuration file:
 }
 ```
 
+</details>
+
 ## Advanced Usage
+
+1. Customizing Prompts for Conventional Strategy
+
+You can customize the interactive prompts displayed by **Commitizard** by modifying the `label` property of the `types` and `scopes` objects in your `.commitizard.json` configuration file. This allows you to provide more descriptive or project-specific information to guide users when creating commit messages.
+
+For example, if your project has a specific set of modules, you can define custom scope labels like this:
+
+```json
+"scopes": [
+  {
+    "value": "module-a",
+    "label": "Module A (user management)"
+  },
+  {
+    "value": "module-b",
+    "label": "Module B (payment processing)"
+  }
+]
+```
+
+These custom labels will be displayed in the interactive prompts, making it easier for users to select the appropriate scope for their commit.
+
+2. Custom Commit Message Templates for Red-Green-Refactor Strategy
+
+You can create custom commit message templates for the Red-Green-Refactor strategy to fit your project's specific requirements. To do this, modify the **patterns** array for each commit type (**RED**, **GREEN**, and **REFACTOR**) in the `redGreenRefactor.cliOptions.types` section of your `.commitizard.json` configuration file.
+
+For example, to add a custom pattern for the **RED** type, your configuration file could include the following entry:
+
+```json
+{
+  "value": "RED",
+  "label": "RED: Write a test that fails",
+  "patterns": [
+    ...,
+    "Custom pattern for {{feature}}"
+  ]
+}
+```
+
+When using the custom pattern, replace `{{feature}}` with the relevant feature name in your commit message (e.g., `Custom pattern for user authentication`).
+
+## Design Document: Bypassing Hooks
+
+- [Design doc](https://github.com/Lokicoule/commitizard/blob/main/docs/bypassing_hooks.md)
+
+## Contributing
+
+Please feel free to submit issues and pull requests for bug fixes, features, or improvements. We appreciate your contribution to the project!
+
+## License
+
+Commitizard is [MIT licensed](https://github.com/Lokicoule/commitizard/blob/main/LICENSE).
