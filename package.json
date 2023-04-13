@@ -16,13 +16,7 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint --ext .ts src",
     "coverage": "jest --coverage && coveralls < coverage/lcov.info",
-    "release": "webpack && release-it",
-    "release:patch": "release-it patch",
-    "release:minor": "release-it minor",
-    "release:major": "release-it major",
-    "release:prerelease": "release-it prerelease",
-    "release:prerelease:alpha": "release-it prerelease --preReleaseId alpha",
-    "release:prerelease:beta": "release-it prerelease --preReleaseId beta"
+    "release": "npm run build && release-it"
   },
   "repository": {
     "type": "git",
@@ -58,7 +52,6 @@
     "nodemon": "^2.0.21",
     "picocolors": "^1.0.0",
     "release-it": "^15.9.3",
-    "rimraf": "^4.4.0",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
