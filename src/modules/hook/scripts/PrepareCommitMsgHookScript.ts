@@ -8,7 +8,7 @@ export class PrepareCommitMsgHookScript extends BaseHookScript {
 
   protected getScript(): string {
     return `#!/bin/sh
-    if [ -z "$BYPASS_HOOKS" ]; then
+    if [ -z "$COMMITIZARD_BYPASS" ]; then
       commit_msg=$(cat ${COMMIT_MSG_TMP_PATH})
       echo "Generated commit message: $commit_msg"
       echo "$commit_msg" > $1
@@ -18,7 +18,7 @@ export class PrepareCommitMsgHookScript extends BaseHookScript {
 
   protected getWindowsScript(): string {
     return `@echo off
-    if not defined BYPASS_HOOKS (
+    if not defined COMMITIZARD_BYPASS (
       set /p commit_msg=<${COMMIT_MSG_TMP_PATH}
       echo Generated commit message: %commit_msg%
       echo %commit_msg% > %1

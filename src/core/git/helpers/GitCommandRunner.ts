@@ -48,11 +48,10 @@ export class GitCommandRunner {
   }
 
   public async commitWithoutHook(message: string): Promise<void> {
-    console.log("message: ", message);
     await this.runGitCommand(["commit", "-m", message], {
       env: {
         ...process.env,
-        BYPASS_HOOKS: "1",
+        COMMITIZARD_BYPASS: "1",
       },
     });
   }

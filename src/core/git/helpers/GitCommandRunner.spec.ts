@@ -222,7 +222,7 @@ describe("GitCommandRunner", () => {
     expect(ProcessFactory.create().addOption).toHaveBeenCalledWith({
       env: {
         ...process.env,
-        BYPASS_HOOKS: "1",
+        COMMITIZARD_BYPASS: "1",
       },
     });
   });

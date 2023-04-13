@@ -22,7 +22,9 @@
 - [Advanced Usage](#advanced-usage)
   - [Customizing Prompts](#customizing-prompts)
   - [Custom Commit Message Templates for Red-Green-Refactor Strategy](#custom-commit-message-templates-for-red-green-refactor-strategy)
-- [Design Document: Bypassing Hooks](#design-document-bypassing-hooks)
+  - [Bypassing Git Hooks](#bypassing-hooks-with-the-environment-variable)
+    - [Unix based systems](#unix-based-systems)
+    - [Windows](#windows)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -59,6 +61,25 @@ For more detailed information on available commands and options, run:
 ```sh
 commitizard --help
 ```
+
+### Recommended Usage
+
+The recommended way to use Commitizard is to create a script in your `package.json` file. This allows you to pass any desired options and helps you avoid potential side effects related to hooks.
+
+### Adding a Commitizard Script
+
+To add a script to your `package.json` file, add the following line to the `scripts` section:
+
+```json
+"commitizard": "commitizard -s conventional -D"
+```
+
+Replace `-s conventional` and `-D` options with any Commitizard wizard options you want to use.
+
+### Warning about Hooks
+
+Please be aware that using git hooks, such as the pre-commit hook, can introduce potential side effects, especially when they are not configured correctly. Always test your hooks thoroughly and ensure that they are compatible with your workflow to avoid any issues.
+More information available [here](#bypassing-hooks-with-the-environment-variable)
 
 ## Commands
 
@@ -315,7 +336,7 @@ Here's an example configuration file:
 
 ## Advanced Usage
 
-1. Customizing Prompts for Conventional Strategy
+### 1. Customizing Prompts for Conventional Strategy
 
 You can customize the interactive prompts displayed by **Commitizard** by modifying the `label` property of the `types` and `scopes` objects in your `.commitizard.json` configuration file. This allows you to provide more descriptive or project-specific information to guide users when creating commit messages.
 
@@ -336,7 +357,7 @@ For example, if your project has a specific set of modules, you can define custo
 
 These custom labels will be displayed in the interactive prompts, making it easier for users to select the appropriate scope for their commit.
 
-2. Custom Commit Message Templates for Red-Green-Refactor Strategy
+### 2. Custom Commit Message Templates for Red-Green-Refactor Strategy
 
 You can create custom commit message templates for the Red-Green-Refactor strategy to fit your project's specific requirements. To do this, modify the **patterns** array for each commit type (**RED**, **GREEN**, and **REFACTOR**) in the `redGreenRefactor.cliOptions.types` section of your `.commitizard.json` configuration file.
 
@@ -348,16 +369,47 @@ For example, to add a custom pattern for the **RED** type, your configuration fi
   "label": "RED: Write a test that fails",
   "patterns": [
     ...,
-    "Custom pattern for {{feature}}"
-  ]
+      "New custom pattern for RED commits {{feature}}"  ]
 }
 ```
 
-When using the custom pattern, replace `{{feature}}` with the relevant feature name in your commit message (e.g., `Custom pattern for user authentication`).
+Replace `New custom pattern for RED commits {{feature}}` with your desired pattern. The `{{feature}}` placeholder will be replaced by the user input when generating the commit message.
 
-## Design Document: Bypassing Hooks
+### 3. Bypassing Hooks with the Environment Variable
 
 - [Design doc](https://github.com/Lokicoule/commitizard/blob/main/docs/bypassing_hooks.md)
+
+In some cases, you might want to bypass the git hooks managed by **Commitizard**. This can be done by setting the `COMMITIZARD_BYPASS` environment variable to true before executing the git command.
+
+##### Unix-based Systems
+
+On Unix-based systems (Linux, macOS), use the following command to bypass the pre-commit hook:
+
+```sh
+COMMITIZARD_BYPASS=true git commit -m "Your commit message"
+```
+
+or
+
+```sh
+COMMITIZARD_BYPASS=true git rebase -i HEAD~3
+```
+
+##### Windows
+
+On Windows, you can bypass the pre-commit hook using the following command:
+
+```sh
+set COMMITIZARD_BYPASS=true && git commit -m "Your commit message"
+```
+
+or
+
+```sh
+set COMMITIZARD_BYPASS=true && git rebase -i HEAD~3
+```
+
+By setting the `COMMITIZARD_BYPASS` environment variable, you can control when the hooks should be executed, giving more flexibility during development.
 
 ## Contributing
 

@@ -2,13 +2,13 @@
 
 ## Overview
 
-This design document explains the rationale behind using an environment variable (i.e., `BYPASS_HOOKS`) to bypass specific hooks inside the content hook, as opposed to using the `--no-verify` option when running git commands.
+This design document explains the rationale behind using an environment variable (i.e., `COMMITIZARD_BYPASS`) to bypass specific hooks inside the content hook, as opposed to using the `--no-verify` option when running git commands.
 
 ## Background
 
 Git hooks allow custom scripts to be run during specific git events, such as committing changes. In our use case, we have two hooks, `pre-commit` and `prepare-commit-msg`. The `pre-commit` hook generates a commit message, and the `prepare-commit-msg` hook displays the generated commit message.
 
-To avoid an infinite loop when the pre-commit hook runs the same command it is triggered by, we use an environment variable `BYPASS_HOOKS` to bypass the hook execution.
+To avoid an infinite loop when the pre-commit hook runs the same command it is triggered by, we use an environment variable `COMMITIZARD_BYPASS` to bypass the hook execution.
 
 An alternative approach to bypass hooks is to use the `--no-verify` option with git commands, such as `git commit --no-verify`.
 
@@ -20,7 +20,7 @@ Determine whether it is better to bypass hooks using an environment variable ins
 
 ### Bypassing Hooks Using an Environment Variable
 
-Using an environment variable like `BYPASS_HOOKS` to bypass hooks has the following benefits:
+Using an environment variable like `COMMITIZARD_BYPASS` to bypass hooks has the following benefits:
 
 1. Selective bypass: It allows developers to selectively bypass certain hooks while still running others. This provides fine-grained control over hook execution.
 
@@ -36,4 +36,4 @@ Using the `--no-verify` option to bypass hooks has the following drawbacks:
 
 ## Conclusion
 
-Given the design rationale, using an environment variable like `BYPASS_HOOKS` to selectively bypass specific hooks inside the content hook is a better solution than using the `--no-verify` option when running git commands. This approach provides greater flexibility, consistency, and control over hook execution.
+Given the design rationale, using an environment variable like `COMMITIZARD_BYPASS` to selectively bypass specific hooks inside the content hook is a better solution than using the `--no-verify` option when running git commands. This approach provides greater flexibility, consistency, and control over hook execution.

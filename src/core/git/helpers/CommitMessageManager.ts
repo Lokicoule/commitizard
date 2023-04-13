@@ -3,7 +3,6 @@ import { COMMIT_MSG_TMP_PATH } from "../constants";
 
 export class CommitMessageManager {
   public async commitFromHook(message: string): Promise<void> {
-    console.info("message from hook: ", message);
     try {
       const tempCommitMsgFile = `${COMMIT_MSG_TMP_PATH}.tmp`;
 

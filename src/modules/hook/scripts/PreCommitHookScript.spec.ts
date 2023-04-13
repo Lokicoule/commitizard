@@ -36,8 +36,8 @@ describe("PreCommitHookScript", () => {
   test("should have a script for Unix-based systems", () => {
     const expectedScript = `#!/bin/sh
     echo "Running pre-commit hook"
-    if [ -z "$BYPASS_HOOKS" ]; then
-      export BYPASS_HOOKS=1
+    if [ -z "$COMMITIZARD_BYPASS" ]; then
+      export COMMITIZARD_BYPASS=1
       exec < /dev/tty
       node ./dist/bundle.js --from-hook
     fi`.trim();
@@ -48,8 +48,8 @@ describe("PreCommitHookScript", () => {
   test("should have a script for Windows", () => {
     const expectedScript = `@echo off
     echo Running pre-commit hook
-    if not defined BYPASS_HOOKS (
-      set BYPASS_HOOKS=1
+    if not defined COMMITIZARD_BYPASS (
+      set COMMITIZARD_BYPASS=1
       node ./dist/bundle.js --from-hook
     )`.trim();
 
