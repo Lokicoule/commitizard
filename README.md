@@ -19,10 +19,10 @@
     - [Options](#options-2)
 - [Configuration](#configuration)
 - [Examples](#examples)
-- [Advanced Usage](#advanced-usage)
-  - [Customizing Prompts](#customizing-prompts)
-  - [Custom Commit Message Templates for Red-Green-Refactor Strategy](#custom-commit-message-templates-for-red-green-refactor-strategy)
-  - [Bypassing Git Hooks](#bypassing-hooks-with-the-environment-variable)
+- [Advanced Usages](#advanced-usages)
+  - [Customizing Prompts](#1-customizing-prompts-for-conventional-strategy)
+  - [Custom Commit Message Templates for Red-Green-Refactor Strategy](#2-custom-commit-message-templates-for-red-green-refactor-strategy)
+  - [Bypassing Git Hooks with the environment variable](#3-bypassing-hooks-with-the-environment-variable)
     - [Unix based systems](#unix-based-systems)
     - [Windows](#windows)
 - [Contributing](#contributing)
@@ -79,7 +79,7 @@ Replace `-s conventional` and `-D` options with any Commitizard wizard options y
 ### Warning about Hooks
 
 Please be aware that using git hooks, such as the pre-commit hook, can introduce potential side effects, especially when they are not configured correctly. Always test your hooks thoroughly and ensure that they are compatible with your workflow to avoid any issues.
-More information available [here](#bypassing-hooks-with-the-environment-variable)
+More information available [here](#3-bypassing-hooks-with-the-environment-variable)
 
 ## Commands
 
@@ -334,7 +334,7 @@ Here's an example configuration file:
 
 </details>
 
-## Advanced Usage
+## Advanced Usages
 
 ### 1. Customizing Prompts for Conventional Strategy
 
