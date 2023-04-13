@@ -1,8 +1,8 @@
 import { GitHookManager } from "~/core/git";
 import { COMMIT_MSG_TMP_PATH } from "~/core/git";
-import { PrepareCommitMsgHookCommand } from "./PrepareCommitMsgHookCommand";
+import { PrepareCommitMsgHookScript } from "./PrepareCommitMsgHookScript";
 
-class TestPrepareCommitMsgHookCommand extends PrepareCommitMsgHookCommand {
+class TestPrepareCommitMsgHookScript extends PrepareCommitMsgHookScript {
   public exposedGetHookName(): string {
     return this.getHookName();
   }
@@ -16,9 +16,9 @@ class TestPrepareCommitMsgHookCommand extends PrepareCommitMsgHookCommand {
   }
 }
 
-describe("PrepareCommitMsgHookCommand", () => {
+describe("PrepareCommitMsgHookScript", () => {
   let gitHookManager: GitHookManager;
-  let prepareCommitMsgHookCommand: TestPrepareCommitMsgHookCommand;
+  let prepareCommitMsgHookScript: TestPrepareCommitMsgHookScript;
 
   beforeEach(() => {
     gitHookManager = {
@@ -27,13 +27,13 @@ describe("PrepareCommitMsgHookCommand", () => {
       uninstallHook: jest.fn(),
     } as unknown as GitHookManager;
 
-    prepareCommitMsgHookCommand = new TestPrepareCommitMsgHookCommand(
+    prepareCommitMsgHookScript = new TestPrepareCommitMsgHookScript(
       gitHookManager
     );
   });
 
   test("should have a hook name", () => {
-    expect(prepareCommitMsgHookCommand.exposedGetHookName()).toBe(
+    expect(prepareCommitMsgHookScript.exposedGetHookName()).toBe(
       "prepare-commit-msg"
     );
   });
@@ -47,7 +47,7 @@ describe("PrepareCommitMsgHookCommand", () => {
       rm .git/COMMIT_MSG_TMP
     fi`.trim();
 
-    expect(prepareCommitMsgHookCommand.exposedGetScript()).toBe(expectedScript);
+    expect(prepareCommitMsgHookScript.exposedGetScript()).toBe(expectedScript);
   });
 
   test("should have a script for Windows", () => {
@@ -59,32 +59,32 @@ describe("PrepareCommitMsgHookCommand", () => {
       del .git/COMMIT_MSG_TMP
     )`.trim();
 
-    expect(prepareCommitMsgHookCommand.exposedGetWindowsScript()).toBe(
+    expect(prepareCommitMsgHookScript.exposedGetWindowsScript()).toBe(
       expectedScript
     );
   });
 
   test("should install hook if not exists", async () => {
     (gitHookManager.hookExists as jest.Mock).mockResolvedValue(false);
-    await prepareCommitMsgHookCommand.install();
+    await prepareCommitMsgHookScript.install();
     expect(gitHookManager.installHook).toHaveBeenCalled();
   });
 
   test("should not install hook if already exists", async () => {
     (gitHookManager.hookExists as jest.Mock).mockResolvedValue(true);
-    await prepareCommitMsgHookCommand.install();
+    await prepareCommitMsgHookScript.install();
     expect(gitHookManager.installHook).not.toHaveBeenCalled();
   });
 
   test("should uninstall hook if exists", async () => {
     (gitHookManager.hookExists as jest.Mock).mockResolvedValue(true);
-    await prepareCommitMsgHookCommand.uninstall();
+    await prepareCommitMsgHookScript.uninstall();
     expect(gitHookManager.uninstallHook).toHaveBeenCalled();
   });
 
   test("should not uninstall hook if not exists", async () => {
     (gitHookManager.hookExists as jest.Mock).mockResolvedValue(false);
-    await prepareCommitMsgHookCommand.uninstall();
+    await prepareCommitMsgHookScript.uninstall();
     expect(gitHookManager.uninstallHook).not.toHaveBeenCalled();
   });
 });

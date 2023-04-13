@@ -1,7 +1,7 @@
-import { BaseHookCommand } from "./BaseHookCommand";
+import { BaseHookScript } from "./BaseHookScript";
 import { COMMIT_MSG_TMP_PATH } from "~/core/git";
 
-export class PrepareCommitMsgHookCommand extends BaseHookCommand {
+export class PrepareCommitMsgHookScript extends BaseHookScript {
   protected getHookName(): string {
     return "prepare-commit-msg";
   }

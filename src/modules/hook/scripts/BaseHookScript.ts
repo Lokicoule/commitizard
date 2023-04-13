@@ -1,6 +1,6 @@
 import { GitHookManager } from "~/core/git";
 
-export abstract class BaseHookCommand {
+export abstract class BaseHookScript {
   constructor(protected gitHookManager: GitHookManager) {}
 
   protected abstract getHookName(): string;

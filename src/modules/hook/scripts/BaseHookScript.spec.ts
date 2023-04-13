@@ -1,7 +1,7 @@
 import { GitHookManager, GitHookManagerFactory } from "~/core/git";
-import { BaseHookCommand } from "./BaseHookCommand";
+import { BaseHookScript } from "./BaseHookScript";
 
-class MockHookCommand extends BaseHookCommand {
+class MockHookScript extends BaseHookScript {
   getHookName(): string {
     return "mock-hook";
   }
@@ -15,13 +15,13 @@ class MockHookCommand extends BaseHookCommand {
   }
 }
 
-describe("BaseHookCommand", () => {
+describe("BaseHookScript", () => {
   let gitHookManager: GitHookManager;
-  let mockHookCommand: MockHookCommand;
+  let mockHookScript: MockHookScript;
 
   beforeEach(() => {
     gitHookManager = GitHookManagerFactory.create();
-    mockHookCommand = new MockHookCommand(gitHookManager);
+    mockHookScript = new MockHookScript(gitHookManager);
   });
 
   it("should install hook if it does not exist", async () => {
@@ -30,14 +30,14 @@ describe("BaseHookCommand", () => {
       .spyOn(gitHookManager, "hookExists")
       .mockResolvedValue(false);
 
-    await mockHookCommand.install();
+    await mockHookScript.install();
 
     expect(hookExistsSpy).toHaveBeenCalledWith("mock-hook");
     expect(installHookSpy).toHaveBeenCalledWith(
       "mock-hook",
       process.platform === "win32"
-        ? mockHookCommand.getWindowsScript()
-        : mockHookCommand.getScript()
+        ? mockHookScript.getWindowsScript()
+        : mockHookScript.getScript()
     );
   });
 
@@ -47,7 +47,7 @@ describe("BaseHookCommand", () => {
       .spyOn(gitHookManager, "hookExists")
       .mockResolvedValue(true);
 
-    await mockHookCommand.install();
+    await mockHookScript.install();
 
     expect(hookExistsSpy).toHaveBeenCalledWith("mock-hook");
     expect(installHookSpy).toHaveBeenCalledTimes(0);
@@ -59,7 +59,7 @@ describe("BaseHookCommand", () => {
       .spyOn(gitHookManager, "hookExists")
       .mockResolvedValue(true);
 
-    await mockHookCommand.uninstall();
+    await mockHookScript.uninstall();
 
     expect(hookExistsSpy).toHaveBeenCalledWith("mock-hook");
     expect(uninstallHookSpy).toHaveBeenCalledWith("mock-hook");
@@ -71,7 +71,7 @@ describe("BaseHookCommand", () => {
       .spyOn(gitHookManager, "hookExists")
       .mockResolvedValue(false);
 
-    await mockHookCommand.uninstall();
+    await mockHookScript.uninstall();
 
     expect(hookExistsSpy).toHaveBeenCalledWith("mock-hook");
     expect(uninstallHookSpy).toHaveBeenCalledTimes(0);
@@ -87,12 +87,12 @@ describe("BaseHookCommand", () => {
       value: "win32",
     });
 
-    await mockHookCommand.install();
+    await mockHookScript.install();
 
     expect(hookExistsSpy).toHaveBeenCalledWith("mock-hook");
     expect(installHookSpy).toHaveBeenCalledWith(
       "mock-hook",
-      mockHookCommand.getWindowsScript()
+      mockHookScript.getWindowsScript()
     );
   });
 });

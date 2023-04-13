@@ -1,6 +1,6 @@
-import { BaseHookCommand } from "./BaseHookCommand";
+import { BaseHookScript } from "./BaseHookScript";
 
-export class PreCommitHookCommand extends BaseHookCommand {
+export class PreCommitHookScript extends BaseHookScript {
   protected getHookName(): string {
     return "pre-commit";
   }

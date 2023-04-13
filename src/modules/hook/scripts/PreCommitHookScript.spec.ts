@@ -1,7 +1,7 @@
 import { GitHookManager } from "~/core/git";
-import { PreCommitHookCommand } from "./PreCommitHookCommand";
+import { PreCommitHookScript } from "./PreCommitHookScript";
 
-class TestPreCommitHookCommand extends PreCommitHookCommand {
+class TestPreCommitHookScript extends PreCommitHookScript {
   public exposedGetHookName(): string {
     return this.getHookName();
   }
@@ -15,9 +15,9 @@ class TestPreCommitHookCommand extends PreCommitHookCommand {
   }
 }
 
-describe("PreCommitHookCommand", () => {
+describe("PreCommitHookScript", () => {
   let gitHookManager: GitHookManager;
-  let preCommitHookCommand: TestPreCommitHookCommand;
+  let preCommitHookScript: TestPreCommitHookScript;
 
   beforeEach(() => {
     gitHookManager = {
@@ -26,11 +26,11 @@ describe("PreCommitHookCommand", () => {
       uninstallHook: jest.fn(),
     } as unknown as GitHookManager;
 
-    preCommitHookCommand = new TestPreCommitHookCommand(gitHookManager);
+    preCommitHookScript = new TestPreCommitHookScript(gitHookManager);
   });
 
   test("should have a hook name", () => {
-    expect(preCommitHookCommand.exposedGetHookName()).toBe("pre-commit");
+    expect(preCommitHookScript.exposedGetHookName()).toBe("pre-commit");
   });
 
   test("should have a script for Unix-based systems", () => {
@@ -42,7 +42,7 @@ describe("PreCommitHookCommand", () => {
       node ./dist/bundle.js --from-hook
     fi`.trim();
 
-    expect(preCommitHookCommand.exposedGetScript()).toBe(expectedScript);
+    expect(preCommitHookScript.exposedGetScript()).toBe(expectedScript);
   });
 
   test("should have a script for Windows", () => {
@@ -53,30 +53,30 @@ describe("PreCommitHookCommand", () => {
       node ./dist/bundle.js --from-hook
     )`.trim();
 
-    expect(preCommitHookCommand.exposedGetWindowsScript()).toBe(expectedScript);
+    expect(preCommitHookScript.exposedGetWindowsScript()).toBe(expectedScript);
   });
 
   test("should install hook if not exists", async () => {
     (gitHookManager.hookExists as jest.Mock).mockResolvedValue(false);
-    await preCommitHookCommand.install();
+    await preCommitHookScript.install();
     expect(gitHookManager.installHook).toHaveBeenCalled();
   });
 
   test("should not install hook if already exists", async () => {
     (gitHookManager.hookExists as jest.Mock).mockResolvedValue(true);
-    await preCommitHookCommand.install();
+    await preCommitHookScript.install();
     expect(gitHookManager.installHook).not.toHaveBeenCalled();
   });
 
   test("should uninstall hook if exists", async () => {
     (gitHookManager.hookExists as jest.Mock).mockResolvedValue(true);
-    await preCommitHookCommand.uninstall();
+    await preCommitHookScript.uninstall();
     expect(gitHookManager.uninstallHook).toHaveBeenCalled();
   });
 
   test("should not uninstall hook if not exists", async () => {
     (gitHookManager.hookExists as jest.Mock).mockResolvedValue(false);
-    await preCommitHookCommand.uninstall();
+    await preCommitHookScript.uninstall();
     expect(gitHookManager.uninstallHook).not.toHaveBeenCalled();
   });
 });

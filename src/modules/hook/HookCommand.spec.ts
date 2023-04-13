@@ -6,8 +6,8 @@ import {
   GitManagerFactory,
 } from "~/core/git";
 import { HookCommand } from "./HookCommand";
-import { PreCommitHookCommand } from "./commands/PreCommitHookCommand";
-import { PrepareCommitMsgHookCommand } from "./commands/PrepareCommitMsgHookCommand";
+import { PreCommitHookScript } from "./scripts/PreCommitHookScript";
+import { PrepareCommitMsgHookScript } from "./scripts/PrepareCommitMsgHookScript";
 
 jest.mock("~/core/git");
 
@@ -46,8 +46,8 @@ describe("HookCommand", () => {
   });
 
   test("should execute install action", async () => {
-    const preCommitHookCommand = new PreCommitHookCommand(gitHookManager);
-    const prepareCommitMsgHookCommand = new PrepareCommitMsgHookCommand(
+    const preCommitHookCommand = new PreCommitHookScript(gitHookManager);
+    const prepareCommitMsgHookCommand = new PrepareCommitMsgHookScript(
       gitHookManager
     );
 
@@ -70,8 +70,8 @@ describe("HookCommand", () => {
   });
 
   test("should execute uninstall action", async () => {
-    const preCommitHookCommand = new PreCommitHookCommand(gitHookManager);
-    const prepareCommitMsgHookCommand = new PrepareCommitMsgHookCommand(
+    const preCommitHookCommand = new PreCommitHookScript(gitHookManager);
+    const prepareCommitMsgHookCommand = new PrepareCommitMsgHookScript(
       gitHookManager
     );
 
@@ -98,8 +98,8 @@ describe("HookCommand", () => {
       throw new Error("process.exit() called");
     });
 
-    const preCommitHookCommand = new PreCommitHookCommand(gitHookManager);
-    const prepareCommitMsgHookCommand = new PrepareCommitMsgHookCommand(
+    const preCommitHookCommand = new PreCommitHookScript(gitHookManager);
+    const prepareCommitMsgHookCommand = new PrepareCommitMsgHookScript(
       gitHookManager
     );
 

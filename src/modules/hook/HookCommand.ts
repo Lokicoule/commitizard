@@ -6,21 +6,21 @@ import {
   GitManagerFactory,
 } from "~/core/git";
 import { HookCommandOptions } from "./types/HookCommandOptions";
-import { PreCommitHookCommand } from "./commands/PreCommitHookCommand";
-import { PrepareCommitMsgHookCommand } from "./commands/PrepareCommitMsgHookCommand";
-import { BaseHookCommand } from "./commands/BaseHookCommand";
+import { PreCommitHookScript } from "./scripts/PreCommitHookScript";
+import { PrepareCommitMsgHookScript } from "./scripts/PrepareCommitMsgHookScript";
+import { BaseHookScript } from "./scripts/BaseHookScript";
 
 export class HookCommand {
-  private hookCommands: BaseHookCommand[];
+  private hookCommands: BaseHookScript[];
 
   constructor(
     private readonly gitManager: GitManager,
     private readonly gitHookManager: GitHookManager,
-    hookCommands?: BaseHookCommand[]
+    hookCommands?: BaseHookScript[]
   ) {
     this.hookCommands = hookCommands ?? [
-      new PreCommitHookCommand(gitHookManager),
-      new PrepareCommitMsgHookCommand(gitHookManager),
+      new PreCommitHookScript(gitHookManager),
+      new PrepareCommitMsgHookScript(gitHookManager),
     ];
   }
 
