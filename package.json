@@ -6,7 +6,9 @@
     "commitizard": "dist/bundle.js"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "npm run clean && webpack && chmod +x dist/bundle.js",
