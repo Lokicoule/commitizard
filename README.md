@@ -1,5 +1,6 @@
 # Commitizard 🧙‍♂️
 
+[![CI Pipeline](https://github.com/Lokicoule/commitizard/actions/workflows/ci.js.yml/badge.svg)](https://github.com/Lokicoule/commitizard/actions/workflows/ci.js.yml)
 [![Coverage Status](https://coveralls.io/repos/github/Lokicoule/commitizard/badge.svg?branch=main)](https://coveralls.io/github/Lokicoule/commitizard?branch=main)
 
 **Commitizard** is a TypeScript-based Command Line Interface (CLI) wizard application designed to help developers write better commit messages. It supports **conventional** commits and **red-green-refactor** commit strategies. The project is fully configurable through the `.commitizard.json` file.
