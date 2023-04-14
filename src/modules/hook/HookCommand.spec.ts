@@ -6,7 +6,6 @@ import {
   GitManagerFactory,
 } from "~/core/git";
 import { HookCommand } from "./HookCommand";
-import { PreCommitHookScript } from "./scripts/PreCommitHookScript";
 import { PrepareCommitMsgHookScript } from "./scripts/PrepareCommitMsgHookScript";
 
 jest.mock("~/core/git");
@@ -46,16 +45,13 @@ describe("HookCommand", () => {
   });
 
   test("should execute install action", async () => {
-    const preCommitHookCommand = new PreCommitHookScript(gitHookManager);
     const prepareCommitMsgHookCommand = new PrepareCommitMsgHookScript(
       gitHookManager
     );
 
-    preCommitHookCommand.install = jest.fn();
     prepareCommitMsgHookCommand.install = jest.fn();
 
     const hookCommand = new HookCommand(gitManager, gitHookManager, [
-      preCommitHookCommand,
       prepareCommitMsgHookCommand,
     ]);
 
@@ -65,21 +61,17 @@ describe("HookCommand", () => {
 
     await command.emit("hook", { install: true });
 
-    expect(preCommitHookCommand.install).toHaveBeenCalled();
-    //expect(prepareCommitMsgHookCommand.install).toHaveBeenCalled();
+    expect(prepareCommitMsgHookCommand.install).toHaveBeenCalled();
   });
 
   test("should execute uninstall action", async () => {
-    const preCommitHookCommand = new PreCommitHookScript(gitHookManager);
     const prepareCommitMsgHookCommand = new PrepareCommitMsgHookScript(
       gitHookManager
     );
 
-    preCommitHookCommand.uninstall = jest.fn();
     prepareCommitMsgHookCommand.uninstall = jest.fn();
 
     const hookCommand = new HookCommand(gitManager, gitHookManager, [
-      preCommitHookCommand,
       prepareCommitMsgHookCommand,
     ]);
 
@@ -89,8 +81,7 @@ describe("HookCommand", () => {
 
     await command.emit("hook", { uninstall: true });
 
-    expect(preCommitHookCommand.uninstall).toHaveBeenCalled();
-    //expect(prepareCommitMsgHookCommand.uninstall).toHaveBeenCalled();
+    expect(prepareCommitMsgHookCommand.uninstall).toHaveBeenCalled();
   });
 
   test("should not execute action if not in a git repository", async () => {
@@ -98,16 +89,13 @@ describe("HookCommand", () => {
       throw new Error("process.exit() called");
     });
 
-    const preCommitHookCommand = new PreCommitHookScript(gitHookManager);
     const prepareCommitMsgHookCommand = new PrepareCommitMsgHookScript(
       gitHookManager
     );
 
-    preCommitHookCommand.install = jest.fn();
     prepareCommitMsgHookCommand.install = jest.fn();
 
     const hookCommand = new HookCommand(gitManager, gitHookManager, [
-      preCommitHookCommand,
       prepareCommitMsgHookCommand,
     ]);
 
@@ -119,7 +107,6 @@ describe("HookCommand", () => {
       expect(e.message).toEqual("process.exit() called");
     }
 
-    expect(preCommitHookCommand.install).not.toHaveBeenCalled();
     expect(prepareCommitMsgHookCommand.install).not.toHaveBeenCalled();
 
     mockExit.mockRestore();
