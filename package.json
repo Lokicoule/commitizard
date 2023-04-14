@@ -2,14 +2,11 @@
   "name": "commitizard",
   "version": "0.0.1-2",
   "description": "Commitizard is a powerful command-line tool designed to simplify the process of generating high-quality commit messages",
-  "main": "src/index.ts",
   "bin": {
     "commitizard": "dist/bundle.js"
   },
   "files": [
-    "dist/",
-    "README.md",
-    "LICENSE"
+    "dist/"
   ],
   "scripts": {
     "build": "npm run clean && webpack && chmod +x dist/bundle.js",
