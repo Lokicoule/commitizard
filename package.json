@@ -1,6 +1,6 @@
 {
   "name": "commitizard",
-  "version": "0.0.1-1",
+  "version": "0.0.1-2",
   "description": "Commitizard is a powerful command-line tool designed to simplify the process of generating high-quality commit messages",
   "main": "src/index.ts",
   "bin": {
