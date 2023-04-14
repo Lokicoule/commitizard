@@ -6,9 +6,9 @@ This design document explains the rationale behind using an environment variable
 
 ## Background
 
-Git hooks allow custom scripts to be run during specific git events, such as committing changes. In our use case, we have two hooks, `pre-commit` and `prepare-commit-msg`. The `pre-commit` hook generates a commit message, and the `prepare-commit-msg` hook displays the generated commit message.
+Git hooks allow custom scripts to be run during specific git events, such as committing changes. In our use case, we have one hook, `prepare-commit-msg`. The `prepare-commit-msg` hook generates a commit message.
 
-To avoid an infinite loop when the pre-commit hook runs the same command it is triggered by, we use an environment variable `COMMITIZARD_BYPASS` to bypass the hook execution.
+To avoid an infinite loop when the `prepare-commit-msg` hook runs the same command it is triggered by, we use an environment variable `COMMITIZARD_BYPASS` to bypass the hook execution.
 
 An alternative approach to bypass hooks is to use the `--no-verify` option with git commands, such as `git commit --no-verify`.
 

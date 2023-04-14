@@ -387,7 +387,7 @@ In some cases, you might want to bypass the git hooks managed by **Commitizard**
 
 ##### Unix-based Systems
 
-On Unix-based systems (Linux, macOS), use the following command to bypass the pre-commit hook:
+On Unix-based systems (Linux, macOS), use the following command to bypass the `prepare-commit-msg` hook:
 
 ```sh
 COMMITIZARD_BYPASS=true git commit -m "Your commit message"
@@ -401,7 +401,7 @@ COMMITIZARD_BYPASS=true git rebase -i HEAD~3
 
 ##### Windows
 
-On Windows, you can bypass the pre-commit hook using the following command:
+On Windows, you can bypass the `prepare-commit-msg` hook using the following command:
 
 ```sh
 set COMMITIZARD_BYPASS=true && git commit -m "Your commit message"
