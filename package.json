@@ -52,7 +52,7 @@
     "mock-fs": "^5.2.0",
     "nodemon": "^3.0.0",
     "picocolors": "^1.0.0",
-    "release-it": "^16.0.0",
+    "release-it": "^17.0.0",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
